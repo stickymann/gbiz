@@ -96,7 +96,7 @@ class Site_Model extends Model
 		return $arr;
 	}
 
-	public function getAllRecsByFields($table,$fields,$prefix="",$where="")
+	public function getAllRecsByFields($table,$fields,$prefix="",$where="",$orderby="")
 	{
 		if(is_array($fields))
 		{
@@ -107,7 +107,7 @@ class Site_Model extends Model
 					$fields[$key] = sprintf('%s as %s%s',$value,$prefix,$value);		
 				}
 			}
-			$query = sprintf('select %s from %s %s', join(',',$fields),$table,$where);
+			$query = sprintf('select %s from %s %s %s', join(',',$fields),$table,$where,$orderby);
 		}
 		else
 		{
@@ -118,7 +118,7 @@ class Site_Model extends Model
 					$fields = sprintf('%s as %s_%s',$value,$prefix,$value);		
 				}
 			}
-			$query = sprintf('select %s from %s %s', $fields,$table,$where);
+			$query = sprintf('select %s from %s %s %s', $fields,$table,$where,$orderby);
 		}
 		$result = $this->db->query($query);
 		$arr = array();
@@ -516,6 +516,37 @@ class Site_Model extends Model
 				$lbl = sprintf('%s',$field->subname);
 				$labelarr[$lbl] = sprintf('%s',$field->sublabel);
 			}
+		}
+		return $arr;
+	}
+
+	public function getSubFormColumnDef($controller,$prefix="")
+	{
+		$labels = false; 
+		if(isset($labelarr)){ $labels = true; }
+		$query = sprintf('select %s from %s where %s = "%s"','formfields','params','controller',$controller);
+		$result = $this->db->query($query);
+		$arr = array();
+		$row = $result[0];
+
+		$i=0;
+		$formfields = new SimpleXMLElement($row->formfields);
+		foreach ($formfields->subformfields->subfield as $rowfield)
+		{
+			$field = sprintf('%s',$rowfield->subname);
+			$vals = preg_split('/:/',$field);
+			if(is_array($vals) && count($vals)==2)
+			{
+				$field = $vals[1];
+			}	
+			$field = $prefix.$field;
+			$title = sprintf('%s',$rowfield->sublabel);
+			$align = sprintf('%s',$rowfield->align);
+			$width = sprintf('%s',$rowfield->width);
+			$editor = sprintf('%s',$rowfield->editor);
+			$formatter = sprintf('%s',$rowfield->formatter);
+			$arr[$i] = array('field'=>$field,'title'=>$title,'width'=>$width,'align'=>$align,'formatter'=>$formatter,'editor'=>$editor);
+			$i++;
 		}
 		return $arr;
 	}

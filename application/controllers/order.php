@@ -16,7 +16,7 @@ class Order_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/subform','media/js/order'));
+		return html::script(array('media/js/order'));
 	}
 
 	function input_validation()
@@ -65,9 +65,8 @@ class Order_Controller extends Site_Controller
 		{ 
 			foreach ($rows->row as $row) 
 			{ 
-				$description = sprintf('%s',$row->description);
 				$user_text = sprintf('%s',$row->user_text);
-				if($description == "?" && ($user_text == "?" || strlen($user_text) < 3)) { $usertext_required = true; }
+				if(!($user_text == "?") && (strlen($user_text) < 3)) { $usertext_required = true; }
 				$count++; 
 			} 
 		}
@@ -181,11 +180,11 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 	
 	public function authorize_post_update_existing_record()
 	{
-		$this->inventoryCheckout();
+		//$this->inventoryCheckout();
 	}
 
 	public function authorize_post_insert_new_record()
 	{
-		$this->inventoryCheckout();
+		//$this->inventoryCheckout();
 	}
 }

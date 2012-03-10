@@ -50,8 +50,15 @@ img {border-style: none;}
 #inau {border: #000066 solid 0px; color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; margin: 0px 0px 0px 0px;  padding: 3px 3px 3px 3px; text-align: left; position: relative; overflow:hidden;}
 #hist {border: #000066 solid 0px; color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8em; margin: 0px 0px 0px 0px;  padding: 3px 3px 3px 3px; text-align: left; position: relative; overflow:hidden;}
 
-#i input[type=text], input[type=password], textarea, .datagrid-body .datagrid-editable .datagrid-editable-input
+/*
+#i input[type=text], input[type=password], textarea
 {border:solid 1px #0000ad; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #ffffff; -moz-border-radius:3px; -webkit-border-radius:3px; margin:0 0 0 0px; padding:1px; white-space: nowrap; }
+.datagrid-body, .datagrid-editable, .datagrid-editable-input
+{border:solid 0px #0000ad; color: #000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #fff;}
+*/
+.input-i
+{border:solid 1px #0000ad; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #ffffff; -moz-border-radius:3px; -webkit-border-radius:3px; margin:0 0 0 0px; padding:1px; white-space: nowrap; }
+
 /*#tmpval {display: none;}*/ 
 /*
 display:block;  white-space: nowrap;}

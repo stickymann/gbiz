@@ -399,11 +399,11 @@ class Site_Controller extends Template_Controller
 			$ctrl=$this->param['permissions'];
 			if($ctrl['if']) 
 			{
-				$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50"')."</td></tr>\n"; 
+				$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50" class="input-i"')."</td></tr>\n"; 
 			}
 			else
 			{
-				$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50" readonly')."</td><td></td></tr>\n"; 
+				$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50" class="input-i" readonly')."</td><td></td></tr>\n"; 
 			}
 			$content->pagebody .="</table>\n";
 			$content->pagebody .=form::close();
@@ -737,9 +737,9 @@ class Site_Controller extends Template_Controller
 								$SIDEFUNC_HTML = $this->createSideFunc($key,$options);
 																
 								if(isset($LABEL))
-									$pagebody->add("<tr valign='center'><td>".$LABEL.$this->colon."</td><td>".form::input($key,$this->form[$key],$options)."</td></tr>\n"); 
+									$pagebody->add("<tr valign='center'><td>".$LABEL.$this->colon."</td><td>".form::input($key,$this->form[$key],$options." class='input-i'")."</td></tr>\n"); 
 								else
-									$pagebody->add("<tr valign='center'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key],$options).$POPOUT_HTML.$SIDEINFO_HTML.$SIDEFUNC_HTML.$SIDELINK_HTML."</td></tr>\n"); 
+									$pagebody->add("<tr valign='center'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key],$options." class='input-i'").$POPOUT_HTML.$SIDEINFO_HTML.$SIDEFUNC_HTML.$SIDELINK_HTML."</td></tr>\n"); 
 								
 							break;
 					
@@ -750,7 +750,7 @@ class Site_Controller extends Template_Controller
 
 							case 'password':
 								$SIDELINK_HTML = $this->createSideLink($key,$this->form['current_no']);
-								$pagebody->add("<tr valign='center'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::password($key,$this->form[$key],$options)."</td><td>".$SIDELINK_HTML."</td></tr>\n"); 
+								$pagebody->add("<tr valign='center'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::password($key,$this->form[$key],$options." class='input-i'")."</td><td>".$SIDELINK_HTML."</td></tr>\n"); 
 							break;
 
 							case 'upload':
@@ -763,7 +763,7 @@ class Site_Controller extends Template_Controller
 								{
 									$SIDELINK_HTML = $this->createSideLink($key,$this->form['current_no']);
 								}
-								$pagebody->add("<tr valign='top'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::textarea($key,$this->form[$key],$options).$SIDELINK_HTML."</td></tr>\n"); 
+								$pagebody->add("<tr valign='top'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::textarea($key,$this->form[$key],$options." class='input-i'").$SIDELINK_HTML."</td></tr>\n"); 
 							break;
 
 							case 'dropdown':
