@@ -98,6 +98,11 @@ class Ajaxtodb_Controller extends Controller
 				print json_encode($result);
 			break;
 			
+			case 'jdefaultorderdetailscolumndef':
+				$columnfield = $this->sitedb->getSubFormColumnDef("orderdetail","subform_order_details_");
+				print json_encode($columnfield);
+			break;
+
 			case 'jdata':
 				$controller = $_REQUEST['controller'];
 				$fields = $_REQUEST['fields'];
@@ -117,10 +122,15 @@ class Ajaxtodb_Controller extends Controller
 					}
 					$where = substr_replace($where, '', -5);	
 				}
+				$orderby ="";
+				if(isset($_REQUEST['orderby']))
+				{ 
+					$orderby = "ORDER BY ".$_REQUEST['orderby']; 
+				}
 				$param  = $this->sitedb->getControllerParams($controller);
 				if($table_type == "live"){ $table = $param['tb_live']; }else if($table_type == "inau"){ $table = $param['tb_inau'];}else if($table_type == "hist"){ $table = $param['tb_hist'];}
 				$fields = explode(",", $fields);
-				$result = $this->sitedb->getAllRecsByFields($table,$fields,$prefix,$where);
+				$result = $this->sitedb->getAllRecsByFields($table,$fields,$prefix,$where,$orderby);
 				print json_encode($result);
 			break;
 

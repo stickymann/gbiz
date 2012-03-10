@@ -1,6 +1,8 @@
+var lastIndex = 0;
 var order_status = "";
+var edittype = "DEFAULT";
 var subtable = "subform_table_order_details";
-var url_products = siteutils.getAjaxURL() + "option=jdata&controller=product&fields=product_id&prefix=&wfields=status&wvals=ACTIVE";
+var url_products = siteutils.getAjaxURL() + "option=jdata&controller=product&fields=product_id&prefix=&wfields=status&orderby=product_id&wvals=ACTIVE";
 		
 $(document).ready(function()	
 {
@@ -24,11 +26,85 @@ $(document).ready(function()
 	}
 });
 	
+function DefaultColumns(tt)
+{
+	//var url_cols = siteutils.getAjaxURL() + "option=jdefaultorderdetailscolumndef";
+	//$.getJSON(url_cols, function(data) {
+	//	var colArr = $.parseJSON(data );
+	//	$('#'+tt).datagrid({columns: [colArr] });
+	//});
+	var colArr =new Array();
+	colArr = [[
+				{field:'subform_order_details_product_id',title:'<b>Product Id</b>',width:120,align:'left',editor:{type:'combobox',options:{valueField:'product_id',textField:'product_id', url:url_products,onSelect:order_GetProductData, mode:'remote',required:true}}},
+				{field:'subform_order_details_qty',title:'<b>Qty</b>',width:30,align:'center',editor:{type:'numberbox',options:{required:true}}},
+				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left'},
+				{field:'subform_order_details_unit_price',title:'<b>Unit Price</b>',width:70,align:'right'},
+				{field:'subform_order_details_unit_total',title:'<b>Unit Total</b>',width:70,align:'right'},
+				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true}}},
+				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
+				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
+				{field:'subform_order_details_extended',title:'<b>Extended</b>',width:70,align:'right'},
+				{field:'subform_order_details_taxable',title:'<b>Taxable</b>',width:50,align:'center'},
+				{field:'subform_order_details_discount_type',title:'<b>DiscountType</b>',width:50,align:'left',editor:{type:'checkbox',options:{on:'DOLLAR',off:'PERCENT'}}},
+				{field:'subform_order_details_description_type',title:'<b>DescriptionType</b>',width:100,align:'left',editor:{type:'checkbox',options:{on:'EXTENDED',off:'STANDARD'}}},
+				{field:'subform_order_details_user_text',title:'<b>User Text</b>',width:140,align:'left',editor:{type:'textarea'}},
+				{field:'subform_order_details_order_id',title:'<b>Order Id</b>',width:140,align:'left'},
+				{field:'subform_order_details_id',title:'<b>Id</b>',width:50,align:'left'}
+			]]
+			$('#'+tt).datagrid({columns: colArr });
+}
+
+function MiscColumns(tt)
+{
+	var colArr = new Array();
+	colArr = [[
+				{field:'subform_order_details_product_id',title:'<b>Product Id</b>',width:120,align:'left'},			
+				{field:'subform_order_details_qty',title:'<b>Qty</b>',width:30,align:'center',editor:{type:'numberbox',options:{required:true}}}, 
+				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left',editor:{type:'validatebox',options:{required:true}}},
+				{field:'subform_order_details_unit_price',title:'<b>Unit Price</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true}}},
+				{field:'subform_order_details_unit_total',title:'<b>Unit Total</b>',width:70,align:'right'},
+				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',align:'right',width:70},
+				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
+				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
+				{field:'subform_order_details_extended',title:'<b>Extended</b>',align:'right',width:70},
+				{field:'subform_order_details_taxable',title:'<b>Taxable</b>',width:50,align:'center',editor:{type:'checkbox',options:{on:'Y',off:'N'}}},
+				{field:'subform_order_details_discount_type',title:'<b>DiscountType</b>',width:50,align:'left'},
+				{field:'subform_order_details_description_type',title:'<b>DescriptionType</b>',width:100,align:'left'},
+				{field:'subform_order_details_user_text',title:'<b>User Text</b>',width:140,align:'left',editor:{type:'textarea'}},
+				{field:'subform_order_details_order_id',title:'<b>Order Id</b>',width:140,align:'left'},
+				{field:'subform_order_details_id',title:'<b>Id</b>',width:50,align:'left'}
+	]]
+	$('#'+tt).datagrid({columns: colArr });
+}
+
 function DefaultNewRow(tt)
 {
-	$('#'+tt).datagrid('appendRow',{subform_order_details_order_id:$('#order_id').val(),subform_order_details_qty:'1',subform_order_details_discount_amount:'0.00',subform_order_details_discount_type:'DOLLAR',subform_order_details_description_type:'STANDARD',subform_order_details_user_text:'?'});
+	$('#'+tt).datagrid('appendRow',
+	{
+		subform_order_details_order_id:$('#order_id').val(),
+		subform_order_details_qty:'1',
+		subform_order_details_discount_amount:'0.00',
+		subform_order_details_discount_type:'PERCENT',
+		subform_order_details_description_type:'STANDARD',
+		subform_order_details_user_text:'?'
+	});
 }	
-	
+
+function MiscNewRow(tt)
+{
+	$('#'+tt).datagrid('appendRow',
+	{
+		subform_order_details_product_id:'MISC',
+		subform_order_details_qty:'1',
+		subform_order_details_discount_amount:'0.00',
+		subform_order_details_taxable:'N',
+		subform_order_details_discount_type:'PERCENT',
+		subform_order_details_description_type:'STANDARD',
+		subform_order_details_user_text:'?',
+		subform_order_details_order_id:$('#order_id').val()
+	});
+}
+
 function getCellsValue(val)
 {
 	if( val == "undefined"){ return "null"; }
@@ -68,15 +144,24 @@ function doAcceptChanges()
 			
 		if(row.subform_order_details_taxable == 'Y')
 		{
+			if(row.subform_order_details_product_id=="MISC")
+			{
+				row.subform_order_details_tax_percentage = "15.00";
+			}
 			row.subform_order_details_tax_amount = siteutils.formatCurrency(((row.subform_order_details_qty*row.subform_order_details_unit_price)-discount_amount) * (row.subform_order_details_tax_percentage/100)); 
 		}
 		else
 		{
+			if(row.subform_order_details_product_id=="MISC")
+			{
+				row.subform_order_details_tax_percentage = "0.00";
+			}
 			row.subform_order_details_tax_amount ="0.00";
 		}
 		row.subform_order_details_extended = siteutils.formatCurrency(parseFloat((row.subform_order_details_qty*row.subform_order_details_unit_price)) - parseFloat(discount_amount) + parseFloat(row.subform_order_details_tax_amount));
 		row.subform_order_details_discount_amount = siteutils.formatCurrency(row.subform_order_details_discount_amount);
 		row.subform_order_details_unit_total = siteutils.formatCurrency(parseFloat(row.subform_order_details_qty*row.subform_order_details_unit_price));
+		row.subform_order_details_unit_price = siteutils.formatCurrency(row.subform_order_details_unit_price);
 	}
 	$('#'+subtable).datagrid('refreshRow', index);
 	order_UpdateDetails();
@@ -203,4 +288,108 @@ function order_GetUserBranch()
 function order_ToggleCheckoutType()
 {
 	if($('#inventory_checkout_type').val() == "AUTO") { $('#inventory_checkout_type').val("MANUAL"); } else { $('#inventory_checkout_type').val("AUTO"); }
+}
+
+function subform_InitDataGridReadOnly(tt)
+{
+	$('#'+tt).datagrid(
+	{
+		onLoadSuccess: function()
+		{
+			//abstract function, add to controller
+			doOnLoadSuccess();
+		}	
+	});
+}
+
+function subform_InitDataGridReadWrite(tt)
+{
+	$('#'+tt).datagrid(
+	{
+				toolbar:[{text:'Add',iconCls:'icon-add',handler:function()
+					{
+						DefaultColumns(tt)
+						$('#'+tt).datagrid('endEdit', lastIndex);
+						//abstract function, add to controller
+						DefaultNewRow(tt);
+						var index = $('#'+tt).datagrid('getRows').length-1;
+						$('#'+tt).datagrid('selectRow', index);
+						$('#'+tt).datagrid('beginEdit', index);
+					}
+				},'-',
+						{text:'Misc',iconCls:'icon-add',handler:function()
+					{
+						MiscColumns(tt)
+						$('#'+tt).datagrid('endEdit', lastIndex);
+						MiscNewRow(tt);
+						edittype = "MISC";
+						var index = $('#'+tt).datagrid('getRows').length-1;
+						$('#'+tt).datagrid('selectRow', index);
+						$('#'+tt).datagrid('beginEdit', index);
+					}
+				},'-',
+						{text:'Remove',iconCls:'icon-remove',handler:function()
+					{
+						var row = $('#'+tt).datagrid('getSelected');
+						if(row)
+						{
+							var index = $('#'+tt).datagrid('getRowIndex', row);
+							$('#'+tt).datagrid('deleteRow', index);
+						}
+						//abstract function, add to controller
+						doRemove();
+					}
+				},'-',
+						{text:'Undo',iconCls:'icon-undo',handler:function()
+					{
+						$('#'+tt).datagrid('rejectChanges');
+						//abstract function, add to controller
+						doUndo();
+					}
+				},'-',
+						{text:'Accept',	iconCls:'icon-save', handler:function()
+					{
+						$('#'+tt).datagrid('acceptChanges');
+						if(edittype == "MISC")
+						{
+							//DefaultColumns(tt);
+							edittype = "DEFAULT";
+						}
+						//abstract function, add to controller
+						doAcceptChanges();
+					}
+				}],
+
+				onBeforeLoad: function()
+				{
+					$(this).datagrid('rejectChanges');
+				},
+				
+				onLoadSuccess: function()
+				{
+					//abstract function, add to controller
+					doOnLoadSuccess();
+				},
+
+				onDblClickRow: function(rowIndex)
+				{
+					//if (lastIndex != rowIndex)
+					//{
+						$('#'+tt).datagrid('endEdit', lastIndex);
+						row = $('#'+tt).datagrid('getSelected');
+						if(row.subform_order_details_product_id=="MISC")
+						{
+							MiscColumns(tt);
+							edittype = "MISC";
+						}
+						else
+						{
+							DefaultColumns(tt);
+							edittype = "DEFAULT";
+						}
+					//}
+					$('#'+tt).datagrid('beginEdit', rowIndex);
+					lastIndex = rowIndex;
+				}		
+	});
 }
