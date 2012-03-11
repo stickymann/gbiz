@@ -180,11 +180,11 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 	
 	public function authorize_post_update_existing_record()
 	{
-		//$this->inventoryCheckout();
+		$this->inventoryCheckout();
 	}
 
 	public function authorize_post_insert_new_record()
 	{
-		//$this->inventoryCheckout();
+		$this->inventoryCheckout();
 	}
 }
