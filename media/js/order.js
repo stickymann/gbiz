@@ -2,11 +2,15 @@ var lastIndex = 0;
 var order_status = "";
 var edittype = "DEFAULT";
 var subtable = "subform_table_order_details";
+var init_status_change_date = "";
+var init_invoice_date = "";
+var init_order_status = "";
 var url_products = siteutils.getAjaxURL() + "option=jdata&controller=product&fields=product_id&prefix=&wfields=status&orderby=product_id&wvals=ACTIVE";
 		
 $(document).ready(function()	
 {
 	order_status = $('#order_status').val();
+	init_order_status = $('#order_status').val();
 	if( $('#order_status').val() == "NEW" || $('#order_status').val() == "QUOTATION" || $('#current_no').val() == 0)
 	{
 		subform_InitDataGridReadWrite(subtable); 
@@ -15,17 +19,27 @@ $(document).ready(function()
 	{
 		subform_InitDataGridReadOnly(subtable)
 	}
+	
+	if( !($('#order_status').val() == "NEW" || $('#order_status').val() == "QUOTATION"))
+	{
+		$('#quotation_date').datepick({showOnFocus: false, showTrigger: null}); 
+		$('#quotation_date').attr('readonly', true);
+		$('#quotation_date').css('background-color','#EBEBE0');
+	}
 
 	if($('#current_no').val() == '0' && $('#order_id').val() == '')
 	{
 		order_UpdateDetails();
 		order_CreateID();
 		$('#order_date').val(siteutils.currentDate('Y-m-d'));
+		$('#quotation_date').val(siteutils.currentDate('Y-m-d'));
 		$('#status_change_date').val(siteutils.currentDate('Y-m-d'));
 		order_GetUserBranch();
 	}
+	init_status_change_date = $('#status_change_date').val();
+	init_invoice_date = $('#invoice_date').val();
 });
-	
+
 function DefaultColumns(tt)
 {
 	//var url_cols = siteutils.getAjaxURL() + "option=jdefaultorderdetailscolumndef";
@@ -269,6 +283,28 @@ function order_StatusUpdate(fldval)
 {
 	$('#order_status').val(fldval);
 	$( '#chklight' ).dialog( "close" );
+	order_SetStatusChangeDate();
+	order_SetInvoiceDate();
+}
+
+function order_SetStatusChangeDate()
+{
+	if( init_order_status != $('#order_status').val() )
+	{
+		$('#status_change_date').val(siteutils.currentDate('Y-m-d'));
+	}
+	else
+		$('#status_change_date').val(init_status_change_date);
+}
+
+function order_SetInvoiceDate()
+{
+	if( $('#order_status').val() == "INVOICE.ISSUED")
+	{
+		$('#invoice_date').val(siteutils.currentDate('Y-m-d'));
+	}
+	else
+		$('#invoice_date').val(init_invoice_date);
 }
 
 function order_CreateID()
