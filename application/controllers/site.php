@@ -1487,23 +1487,23 @@ _TEXT_;
 		else
 		{
 			$pagehead = new Sitehtml_Controller(html::stylesheet(array('media/css/tablesorterblue','media/css/site'),array('screen','screen')));
-			//$pagehead->add(html::stylesheet(array('media/css/smoothness/jquery-ui-1.7.2.custom'),array('screen')));
 			$pagehead->add(html::stylesheet(array($this->easyui_css,$this->easyui_icon),array('screen','screen')));
 			$pagehead->add(html::script(array($this->jquery_js,$this->easyui_js,'media/js/jquery.tablesorter')));
 			$controller = $this->param['controller'];
+	
 			$TEXT = <<<_TEXT_
 			<script type="text/javascript">
 			controller="$controller";
 			if(controller=="message")
 			{
 				//sort on firstcolumn(id) desc
-				$(function() { $("#mytable").tablesorter({sortList:[[0,1]], widgets: ['zebra']}); });
+				$(function() { $("#enqrestab").tablesorter({sortList:[[0,1]], widgets: ['zebra']}); });
 			}
 			else
 			{
 				$(function() 
 					{		
-						$("#mytable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});
+						$("#enqrestab").tablesorter({sortList:[[0,0]], widgets: ['zebra']});
 						$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
 					}
 				);
@@ -1518,7 +1518,7 @@ _TEXT_;
 			$htmltable .= '</div>';
 			$htmltable .= '<div id="pagebody">';
 			$htmltable .= '<div id="e">'."\n";
-			$htmltable .= '<table id="mytable" class="tablesorter" border="0" cellpadding="0" cellspacing="1" width=500%>'."\n";
+			$htmltable .= '<table id="enqrestab" class="tablesorter" border="0" cellpadding="0" cellspacing="1" width=500%>'."\n";
 			$firstpass = true;
 			$lbl=$this->label;
 			foreach($arr as $row => $linerec)

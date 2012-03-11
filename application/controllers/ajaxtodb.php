@@ -550,7 +550,7 @@ _TEXT_;
 
 	function printEnquiryResult($controller,$result,$tabletype,$label,$fn)
 	{
-		$RESULT = '<table id="potable" class="tablesorter" border="0" cellpadding="0" cellspacing="1" width="500%">'."\n";
+		$RESULT = '<table id="enqrestab" class="tablesorter" border="0" cellpadding="0" cellspacing="1" width="500%">'."\n";
 		$firstpass = true;
 		$idfield  = 'id';
 		
@@ -626,8 +626,16 @@ _TEXT_;
 			$firstpass = false;
 		}
 		$RESULT .='</tbody>'."\n".'</table>'."\n";
-		//print $RESULT.DELIMITER;
-		print $RESULT;
+		$TEXT = <<<_TEXT_
+			<script type="text/javascript">
+			$(function() 
+			{		
+				$("#enqrestab").tablesorter({sortList:[[0,0]], widgets: ['zebra']});
+				$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
+			});
+			</script> 
+_TEXT_;
+		print $RESULT.$TEXT;
 	}
 	
 	function printCSVId($controller,$result,$tabletype,$label,$fn,$idname,$type)
