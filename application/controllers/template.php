@@ -27,10 +27,12 @@ abstract class Template_Controller extends Controller {
 	 */
 	public $jquery_js	= 'media/js/jquery-1.7.min';
 	public $easyui_js	= 'media/js/jquery.easyui.min';
+	public $datepick_js	= 'media/js/jquery.datepick';
 	public $easyui_css	= 'media/css/easyui/gray/easyui';
 	public $easyui_icon	= 'media/css/easyui/icon';
 	public $site_css	= 'media/css/site';
-
+	public $datepick_css= 'media/css/custom.datepick';
+	
 	public function __construct()
 	{
 		parent::__construct();

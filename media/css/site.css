@@ -106,6 +106,7 @@ display:block;  white-space: nowrap;}
 .nobrd{color: #4f4f4f ;background-color: #ffffff; border: solid black 0px;}
 .input-c {border:1px solid #000000; color: #4f4f4f;	font-family:  Arial, Helvetica, sans-serif, Verdana, Geneva, Lucida, \"Lucida Grande\";	font-size: 10pt; font-weight: normal; background-color: #FFFFFF;}
 .dlgbg  {background-color:#ebf2f9; display:none;}
+.dateicon {margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;}
 
 table.subform {width:70%; height:250px; 	border-width: 1px;
 	border-spacing: 2px;

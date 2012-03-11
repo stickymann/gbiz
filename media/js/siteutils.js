@@ -126,36 +126,6 @@ var siteutils = new function()
 		} );
 	};
 
-	this.datePicker = function (date_field,onnew,onedit)
-	{
-		var init_date = $('#'+ date_field).val();
-		var current_no = $('#current_no').val();
-		var display = true;
-		if(!onnew){ var onnew=1; }
-		if(!onedit){ var onedit=1; }
-
-		if((current_no==0 && onnew==0) || (current_no > 0 && onedit==0))
-		{
-			//do not display on new record or onedit;
-			display = false;
-		}
-		
-		if(display)
-		{
-			$('#'+ date_field).change(function() {siteutils.dateSaneValue(date_field,init_date);});
-			$('#'+ date_field).datebox(
-			{  
-				required:false,
-				formatter: function(value,param)
-				{  
-					datestr = value.getFullYear()+"-"+ ( '0' + ( value.getMonth() + 1 ) ).slice(-2) +"-"+ ( '0' + value.getDate() ).slice(-2) 
-					
-					return datestr; 
-				}
-			});
-		}
-	}
-	
 	this.dateSaneValue = function(date_field,init_date)
 	{
 		

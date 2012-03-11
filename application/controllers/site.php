@@ -54,8 +54,8 @@ class Site_Controller extends Template_Controller
 		$this->formdata = $this->getControllerFormDefs($controller);
 		$this->setFormFieldsAndLabels();
 
-		$htmlhead = new Sitehtml_Controller(html::stylesheet(array('media/css/site','media/css/tablesorterblue',$this->easyui_css,$this->easyui_icon),array('screen','screen','screen','screen')));
-		$htmlhead->add(html::script(array($this->jquery_js,$this->easyui_js,'media/js/jquery.tablesorter','media/js/jquery.datevalidate','media/js/siteutils')));
+		$htmlhead = new Sitehtml_Controller(html::stylesheet(array('media/css/site','media/css/tablesorterblue',$this->easyui_css,$this->easyui_icon,$this->datepick_css),array('screen','screen','screen','screen')));
+		$htmlhead->add(html::script(array($this->jquery_js,$this->easyui_js,$this->datepick_js,'media/js/jquery.tablesorter','media/js/jquery.datevalidate','media/js/siteutils')));
 		$htmlhead->add(html::script(array('media/js/sideinfo','media/js/enquiry','media/js/popoutselector')));
 		$this->param['htmlhead'] = $htmlhead->getHtml();
 	}
@@ -682,7 +682,7 @@ class Site_Controller extends Template_Controller
 		
 			foreach($this->form as $key => $value)
 			{
-				$POPOUT_HTML =""; $SIDEINFO_HTML=""; $SIDELINK_HTML=""; $table =""; $fields=""; $idstr=""; $po_type=""; $disabled="" ; $style="";
+				$POPOUT_HTML =""; $SIDEINFO_HTML=""; $SIDELINK_HTML=""; $DATEICON_HTML=""; $table =""; $fields=""; $idstr=""; $po_type=""; $disabled="" ; $style="";
 				switch($key)
 				{
 					case 'inputter':
@@ -726,11 +726,16 @@ class Site_Controller extends Template_Controller
 						switch($this->formopts[$key]['inputtype'])
 						{	
 							case 'input':
+							case 'date':
 							/*popout div*/
 								if($po_type == 'enabled_po' || $po_type == 'readonly_po')
 								{
 									$POPOUT_HTML = $this->createPopOut($key,$this->form['current_no']);
 									$SIDELINK_HTML = $this->createSideLink($key,$this->form['current_no']);
+									if($this->formopts[$key]['inputtype']=="date")
+									{
+										$DATEICON_HTML = $this->createDatePopOut($key);
+									}
 								}
 							/*side info span*/	
 								$SIDEINFO_HTML = $this->createSideInfo($key,$options);
@@ -739,8 +744,7 @@ class Site_Controller extends Template_Controller
 								if(isset($LABEL))
 									$pagebody->add("<tr valign='center'><td>".$LABEL.$this->colon."</td><td>".form::input($key,$this->form[$key],$options." class='input-i'")."</td></tr>\n"); 
 								else
-									$pagebody->add("<tr valign='center'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key],$options." class='input-i'").$POPOUT_HTML.$SIDEINFO_HTML.$SIDEFUNC_HTML.$SIDELINK_HTML."</td></tr>\n"); 
-								
+									$pagebody->add("<tr valign='center'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key],$options." class='input-i'").$DATEICON_HTML.$POPOUT_HTML.$SIDELINK_HTML.$SIDEINFO_HTML.$SIDEFUNC_HTML."</td></tr>\n"); 
 							break;
 					
 							case 'hidden':
@@ -1717,6 +1721,30 @@ _HTML_;
 		return $SIDEFUNC_LINK;
 	}
 	
+	public function createDatePopOut($key)
+	{
+		$baseurl = url::base();
+		$iconurl = $baseurl."media/css/calendar-blue.gif";
+		$TEXT=<<<_text_
+		<script type="text/javascript">
+			$(function() 
+			{
+				$('#$key').datepick(
+				{
+					showOnFocus: false, 
+					showTrigger: '<span class="dateicon">&nbsp&nbsp<img src="$iconurl" align="absbottom">&nbsp</span>',
+					dateFormat: 'yyyy-mm-dd',
+					yearRange: '1900:c+100',
+					showAnim: '',
+					alignment: 'bottomLeft',
+					onSelect: function() { $('#$key').focus(); }
+				});
+			});
+	</script>
+_text_;
+		return $TEXT;
+	}
+
 	public function createSubFormJSONLoad($key,$current_no,$subtable_type=false)
 	{
 		$TABLE = ""; $TABLEHEAD = ""; $TABLEROWS = ""; $columnfield = array(); $columnlabel = array(); 
