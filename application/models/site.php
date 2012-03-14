@@ -592,6 +592,32 @@ class Site_Model extends Model
 		}
 		return $arr;
 	}
+
+	public function getXMLFieldDataByIdVal($table,$idfield,$idval,$field,$prefix="")
+	{
+		$query = sprintf('select %s from %s where %s = "%s"',$field,$table,$idfield,$idval);
+		$result = $this->db->query($query);
+		$arr = array();
+		$xml = $result[0]->$field;
+		
+		$i=0;
+		$formfields = new SimpleXMLElement($xml);
+		foreach ($formfields->rows->row as $row)
+		{
+			$rowarr = array();
+				
+			foreach ($row->children() as $field)
+			{
+				$id  = sprintf('%s',$field->getName() );
+				$val = sprintf('%s',$row->$id );
+				$index = $prefix.$id;
+				$rowarr[$index] = $val;
+			}
+			$arr[$i] = $rowarr;
+			$i++;
+		}
+		return $arr;
+	}
 	
 	public function getSubFormViewRecords($controller,$idfield,$idval,$current_no,$table_type,&$lbl)
 	{

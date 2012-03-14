@@ -156,6 +156,23 @@ class Ajaxtodb_Controller extends Controller
 				}
 			break;
 
+			case 'jxmldatabyid':
+				$controller = $_REQUEST['controller'];
+				$field = $_REQUEST['field'];
+				$idfield = $_REQUEST['idfield'];
+				$idval  = $_REQUEST['idval'];
+				if(isset($_REQUEST['tabletype'])){$table_type = $_REQUEST['tabletype'];} else {$table_type = "live";}
+				if(isset($_REQUEST['prefix'])){$prefix = $_REQUEST['prefix'];} else {$prefix = "";}
+
+				$param  = $this->sitedb->getControllerParams($controller);
+				if($table_type == "live"){ $table = $param['tb_live']; }else if($table_type == "inau"){ $table = $param['tb_inau'];}else if($table_type == "hist"){ $table = $param['tb_hist'];}
+				if($result = $this->sitedb->getXMLFieldDataByIdVal($table,$idfield,$idval,$field,$prefix))
+				{
+					print json_encode($result);
+					return;
+				}
+			break;
+
 			case 'popout':
 				$fields		= $_REQUEST['fields'];
 				$table		= $_REQUEST['table'];

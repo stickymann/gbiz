@@ -5,12 +5,18 @@ class Inventchkout_Controller extends Site_Controller
 	public function __construct()
     {
 		parent::__construct('inventchkout');
+		$this->param['htmlhead'] .= $this->insertHeadJS();
 	}	
 		
 	public function index($opt="")
 	{
 		$this->param['indexfieldvalue'] = strtoupper($opt);
 		$this->processIndex();
+	}
+
+	function insertHeadJS()
+	{
+		return html::script(array('media/js/inventchkout'));
 	}
 
 	function input_validation()
@@ -71,5 +77,61 @@ class Inventchkout_Controller extends Site_Controller
 				$this->param['primarymodel']->insertRecord($this->param['tb_live'],$arr);
 			}
 		}
+	}
+
+	public function xmlSubFormColDef($key,$xml)
+	{
+/*
+function DefaultColumns(tt)
+{
+	colArr = [[
+				{field:'subform_checkout_details_product_id',title:'<b>Product Id</b>',width:120,align:'left'},
+				{field:'subform_checkout_details_description',title:'<b>Description</b>',width:200,align:'left'},
+				{field:'subform_checkout_details_order_qty',title:'<b>Order Qty</b>',width:75,align:'center'},
+				{field:'subform_checkout_details_filled_qty',title:'<b>Filled Qty</b>',width:75,align:'center'},
+				{field:'subform_checkout_details_checkout_qty',title:'<b>Checkout Qty</b>',width:100,align:'center',editor:{type:'numberbox',options:{required:true}}},
+				{field:'subform_checkout_details_status',title:'<b>Checkout Status</b>',width:125,align:'left'},
+			]]
+}
+*/		$i=0;
+		$coldefarr = array(
+			"product_id"	=> "width:120,align:'left'",
+			"description"	=> "width:200,align:'left'",
+			"order_qty"		=> "width:75 ,align:'center'",
+			"filled_qty"	=> "width:120,align:'center'",
+			"checkout_qty"	=> "width:100,align:'left',editor:{type:'numberbox',options:{required:true}}",
+			"status"		=> "width:125,align:'left'"
+		);
+		
+		$formfields = new SimpleXMLElement($xml);
+		$row = $formfields->rows->row;
+		foreach ($row->children() as $field)
+		{
+			$colarr[$i] = sprintf('%s',$field->getName() );
+			$i++;
+		}
+
+		$i=0;
+		$COLDEFROW = "";  
+		foreach($formfields->header->column as $val)
+		{
+			$val = sprintf('%s',$val);
+			$colname = $colarr[$i];
+			if(isset($coldefarr[$colname])) { $coldef = $coldefarr[$colname];} else {$coldef ="";}
+			$COLDEFROW .= sprintf("{field:'subform_%s_%s',title:'<b>%s</b>',%s},",$key,$colname,$val,$coldef)."\n";
+			$i++;
+		}
+
+		$TEXT=<<<_text_
+		<script type="text/javascript">
+		function DefaultColumns(tt)
+		{
+colArr = [[
+$COLDEFROW
+		]]
+		}
+		</script>
+_text_;
+		return $TEXT;
 	}
 }

@@ -762,12 +762,16 @@ class Site_Controller extends Template_Controller
 							break;
 
 							case 'textarea':
-							case 'xmltable':
 								if($po_type == 'enabled_po' || $po_type == 'readonly_po')
 								{
 									$SIDELINK_HTML = $this->createSideLink($key,$this->form['current_no']);
 								}
 								$pagebody->add("<tr valign='top'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::textarea($key,$this->form[$key],$options." class='input-i'").$SIDELINK_HTML."</td></tr>\n"); 
+							break;
+							
+							case 'xmltable':
+								$XMLTABLE_HTML = $this->editXMLTable($key,$this->form[$key],"black");
+								$pagebody->add("<td valign='top'>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key])."<span class='viewtext'>".$XMLTABLE_HTML."</span>");
 							break;
 
 							case 'dropdown':
@@ -1921,6 +1925,60 @@ $TABLETAG = "\n\n".sprintf('<div id="sf" class="sf"><table %s id="subform_table_
 		return $HTML;
 	}
 
+	public function  editXMLTable($key,$xml)
+	{
+		$TABLEHEADER = ""; $TABLEROWS ="";
+		$subtable_id = "subform_table_".$key;
+		$baseurl = url::base(TRUE,'http');
+		$controller = $this->param['controller'];
+		$field = $key;
+		$idfield = $this->param['indexfield'];
+		$idval = $this->form[$idfield];
+		$prefix = sprintf('subform_%s_',$key);
+		$tabletype = "inau";
+$url = sprintf('%sajaxtodb?option=jxmldatabyid&controller=%s&field=%s&idfield=%s&idval=%s&prefix=%s&tabletype=%s',$baseurl,$controller,$field,$idfield,$idval,$prefix,$tabletype);
+$JSURL = sprintf('<script type="text/javascript">%s_dataurl="%s"</script>',$subtable_id,$url);
+$HTML = "\n".'<div id="sf" class="sf">'.sprintf('<table id="%s" class="easyui-datagrid" resizable="true" singleSelect="true"  style="width:800px; height:auto;">',$subtable_id)."\n";
+	
+		$i=0;
+		$formfields = new SimpleXMLElement($xml);
+		$row = $formfields->rows->row;
+		foreach ($row->children() as $field)
+		{
+			$colname[$i] = sprintf('%s',$field->getName() );
+			$i++;
+		}
+
+		$i=0;
+		$TABLEHEADER = "<thead>"."\n"."<tr valign='top'>"."\n"; 
+		foreach($formfields->header->column as $val)
+		{
+			$val = sprintf('%s',$val);
+			$TABLEHEADER .= sprintf("<th field='subform_%s_%s'><b>%s</b></th>",$key,$colname[$i],$val)."\n";
+			$i++;
+		}
+		$TABLEHEADER .="</tr>"."\n"."</thead>"."\n";
+		
+		/*
+		$TABLEROWS ="<tbody>"."\n";
+		foreach($formfields->rows->row as $row)
+		{
+			$TABLEROWS .= "<tr valign='top'>"."\n";
+			foreach ($row->children() as $field)
+			{
+				$subkey = sprintf('%s',$field->getName() );
+				$val	= sprintf('%s',$row->$subkey);
+				//$TABLEROWS .= sprintf("<td valign='top' style='color:%s;'>%s</td>",$color,$val)."\n";
+				$TABLEROWS .= sprintf("<td>%s</td>",$val)."\n";
+			}
+			$TABLEROWS .= "</tr>"."\n"."</tbody>"."\n";;
+		}
+		*/
+		$COLDEF = $this->xmlSubFormColDef($key,$xml);
+		$HTML .= $TABLEHEADER.$TABLEROWS."</table></div>"."\n".$JSURL."\n".$COLDEF."\n";
+		return $HTML;
+	}
+
 	public function viewSubForm($key,$current_no,$color,$subtable_type=false)
 	{
 		$subcontroller = $this->subform[$key]['subformcontroller'];
@@ -2068,6 +2126,8 @@ $TABLETAG = "\n\n".sprintf('<div id="sf" class="sf"><table %s id="subform_table_
 
 	public function subFormSummaryHTML($results=null,$labels=null) {}
 	public function subFormFieldExclusionList() { return false;}
+	public function xmlSubFormColDef() {}
+
 }
 ?>
 
