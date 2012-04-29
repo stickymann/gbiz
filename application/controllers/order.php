@@ -132,7 +132,8 @@ class Order_Controller extends Site_Controller
 
 			$rows = new SimpleXMLElement($_POST['order_details']);
 			if($rows->row) 
-			{	 
+			{	
+				$rowcount = 0;
 				foreach ($rows->row as $row) 
 				{ 
 					$pid = sprintf('%s',$row->product_id);
@@ -142,6 +143,7 @@ class Order_Controller extends Site_Controller
 					if($result->type == "STOCK")
 					{
 $xmlrows .=sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$pid,$desc,$qty,"0",$qty,"NONE")."\n";
+						$rowcount++;
 					}
 					else if($result->type == "PACKAGE")
 					{
@@ -156,6 +158,7 @@ $xmlrows .=sprintf('<row><product_id>%s</product_id><description>%s</description
 							if($pck_result->type == "STOCK")
 							{
 $xmlrows .=sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$pck_pid,$pck_desc,$pck_qty,"0",$pck_qty,"NONE")."\n";
+								$rowcount++;
 							}
 						}
 					}
@@ -169,12 +172,19 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 			$data['order_id'] = $_POST['order_id']; 
 			$data['checkout_details'] = $xmlheader.$xmlrows.$xmlfooter;
 			$data['idname'] = $idname;
-			$chk->InsertIntoCheckoutTable($data);
 			//create inventory checkout profile
+			$chkout_record = $chk->InsertIntoCheckoutTable($data);
+			
+			//update checkout status for nonstock order
+			if($rowcount == 0 && $_POST['inventory_checkout_status'] == "NONE")
+			{
+				$chk->UpdateOrderCheckOutStatus("COMPLETED");
+			}
 		}
-		if( $_POST['inventory_checkout_type'] == "AUTO"  && !($_POST['inventory_checkout_status'] == "COMPLETED"))
+		
+		if( $_POST['inventory_checkout_type'] == "AUTO"  && !($_POST['inventory_checkout_status'] == "COMPLETED") && $rowcount > 0)
 		{
-			//excute inventory checkout profile
+			$chk->ProcessCheckout($chkout_record);
 		}
 	}
 	
