@@ -75,6 +75,7 @@ class Inventchkout_Controller extends Site_Controller
 				$arr['record_status']	 = "LIVE";
 				$arr['current_no']		 = "1";
 				$this->param['primarymodel']->insertRecord($this->param['tb_live'],$arr);
+				return $arr;
 			}
 		}
 	}
@@ -133,5 +134,100 @@ $COLDEFROW
 		</script>
 _text_;
 		return $TEXT;
+	}
+
+	public function ProcessCheckout($data)
+	{
+		$chk_c = 0; $chk_p = 0; $chk_n = 0;  $chk_e = 0; 
+		if( $data['run'] == "Y" )
+		{
+			$order = new Order_Controller();
+			$querystr = sprintf('select branch_id from %s where order_id = "%s"',$order->param['tb_live'],$data['order_id']);
+			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+			if($result)
+			{
+//print "<hr>".$val['branch_id']."<hr>";
+				$formfields = new SimpleXMLElement($data['checkout_details']);
+				if($formfields->rows) 
+				{
+					foreach ($formfields->rows->row as $row) 
+					{ 
+						$val['branch_id'] = $result[0]->branch_id;
+						$val['product_id'] = sprintf('%s',$row->product_id);
+						$val['description'] = sprintf('%s',$row->description);
+						$val['order_qty'] = sprintf('%s',$row->order_qty);
+						$val['filled_qty'] = sprintf('%s',$row->filled_qty);
+						$val['checkout_qty'] = sprintf('%s',$row->checkout_qty);
+						$val['status'] = sprintf('%s',$row->status);						
+						if($val['order_qty'] > $val['filled_qty'])
+						{
+print "[ ProcessRow() ]<br>"; 						
+							$val = $this->ProcessRow($val);
+							if( $val['status'] == "PARTIAL" ) { $chk_p++;}
+							else if( $val['status'] == "NONE" ) { $chk_n++;}
+							else if( $val['status'] == "COMPLETED" ) { $chk_c++;}
+							else if( $val['status'] == "ERROR" ) { $chk_e++;}
+print_r($val);
+print "<br>[After Update]<hr>";	
+						}
+					}
+				}
+			}
+			
+			if( $chk_e > 0){ $this->UpdateOrderCheckOutStatus("ERROR"); }
+			else if( $chk_p > 0 || ( $chk_c > 0 && $chk_n > 0)) { $this->UpdateOrderCheckOutStatus("PARTIAL"); }
+			else if( $chk_n > 0 && $chk_c == 0 && $chk_p == 0) { $this->UpdateOrderCheckOutStatus("NONE"); }
+			else if( $chk_c > 0 && $chk_n == 0 && $chk_p == 0) { $this->UpdateOrderCheckOutStatus("COMPLETED"); }
+		}
+	}
+	
+	public function ProcessRow($val)
+	{
+		$inventory = new Inventory_Controller();
+		//if inventory item exist
+		$querystr = sprintf('select count(id) as count from %s where product_id = "%s" && branch_id = "%s"',$inventory->param['tb_live'],$val['product_id'],$val['branch_id']);
+		$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+		$recs = $result[0];
+		if( $recs->count > 0 )
+		{
+			$querystr = sprintf('select qty_instock from %s where product_id = "%s" && branch_id = "%s"',$inventory->param['tb_live'],$val['product_id'],$val['branch_id']);
+			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+			$qty_instock = $result[0]->qty_instock;
+			if($qty_instock != 0)
+			{
+				if($qty_instock >= $val['checkout_qty'])
+				{    
+					//enough stock to fill order
+					$val['adjust_qty'] = $qty_instock - $val['checkout_qty'];
+					$val['filled_qty'] = $val['filled_qty'] + $val['checkout_qty'];
+					$val['checkout_qty'] = $val['order_qty'] - $val['filled_qty'];
+				}
+				else
+				{
+					//not enough stock to fill order
+					$val['adjust_qty'] =  0;
+					$val['filled_qty'] = $val['filled_qty'] + $qty_instock;
+					$val['checkout_qty'] = $val['checkout_qty'] - $qty_instock;
+				}
+				
+				if($val['order_qty'] == $val['filled_qty']) { $val['status'] = "COMPLETED"; }
+				else if($val['order_qty'] > $val['filled_qty']) { $val['status'] = "PARTIAL"; }
+				else  { $val['status'] = "ERROR"; }
+			}
+		}
+		return $val;
+	}
+	
+	public function UpdateOrderCheckOutStatus($status)
+	{
+	
+print "[Order CheckOut Status: ".$status." ]<hr>";
+	}
+	
+	public function authorize_post_update_existing_record()
+	{
+//print_r($_POST);	
+		$this->ProcessCheckout($_POST);
+		
 	}
 }
