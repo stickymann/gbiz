@@ -172,13 +172,16 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 			$data['order_id'] = $_POST['order_id']; 
 			$data['checkout_details'] = $xmlheader.$xmlrows.$xmlfooter;
 			$data['idname'] = $idname;
-			//create inventory checkout profile
-			$chkout_record = $chk->InsertIntoCheckoutTable($data);
 			
-			//update checkout status for nonstock order
-			if($rowcount == 0 && $_POST['inventory_checkout_status'] == "NONE")
+			if($rowcount > 0 )
 			{
-				$chk->UpdateOrderCheckOutStatus("COMPLETED");
+				//create inventory checkout profile
+				$chkout_record = $chk->InsertIntoCheckoutTable($data);
+			}
+			else if($rowcount == 0 && $_POST['inventory_checkout_status'] == "NONE")
+			{
+				//update checkout status for nonstock order
+				$chk->UpdateOrderCheckOutStatus($this->param['tb_live'],$_POST['order_id'],"COMPLETED");
 			}
 		}
 		

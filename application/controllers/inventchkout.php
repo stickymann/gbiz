@@ -70,7 +70,7 @@ class Inventchkout_Controller extends Site_Controller
 				$arr['comments']		 = "";
 				$arr['inputter']		 = $data['idname'];
 				$arr['input_date']		 = date('Y-m-d H:i:s'); 
-				$arr['authorizer']		 = $data['idname'];
+				$arr['authorizer']		 = 'SYSAUTH';
 				$arr['auth_date']		 = date('Y-m-d H:i:s'); 
 				$arr['record_status']	 = "LIVE";
 				$arr['current_no']		 = "1";
@@ -146,7 +146,7 @@ _text_;
 			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
 			if($result)
 			{
-//print "<hr>".$val['branch_id']."<hr>";
+				$xmlrows = "";
 				$formfields = new SimpleXMLElement($data['checkout_details']);
 				if($formfields->rows) 
 				{
@@ -161,28 +161,41 @@ _text_;
 						$val['status'] = sprintf('%s',$row->status);						
 						if($val['order_qty'] > $val['filled_qty'])
 						{
-print "[ ProcessRow() ]<br>"; 						
 							$val = $this->ProcessRow($val);
 							if( $val['status'] == "PARTIAL" ) { $chk_p++;}
 							else if( $val['status'] == "NONE" ) { $chk_n++;}
 							else if( $val['status'] == "COMPLETED" ) { $chk_c++;}
 							else if( $val['status'] == "ERROR" ) { $chk_e++;}
-print_r($val);
-print "<br>[After Update]<hr>";	
+							$xmlrows .= $val['xmlrow'];
 						}
+						else
+						{
+							$xmlrows .= sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status']);
+						}
+						
 					}
+					$xmlrows = "<rows>".$xmlrows."</rows>";
+					$replacement_xml = "<?xml version='1.0' standalone='yes'?><formfields>";
+					$replacement_xml .= htmlspecialchars_decode( $formfields->header->asXML() );
+					$replacement_xml .= $xmlrows."</formfields>";
+					$arr['table'] = $this->param['tb_live'];
+					$arr['order_id'] = $data['order_id'];
+					$arr['checkout_details'] = $replacement_xml;
+					$arr['run'] = "N";
+					$this->UpdateCheckOutRecord($arr);
 				}
 			}
 			
-			if( $chk_e > 0){ $this->UpdateOrderCheckOutStatus("ERROR"); }
-			else if( $chk_p > 0 || ( $chk_c > 0 && $chk_n > 0)) { $this->UpdateOrderCheckOutStatus("PARTIAL"); }
-			else if( $chk_n > 0 && $chk_c == 0 && $chk_p == 0) { $this->UpdateOrderCheckOutStatus("NONE"); }
-			else if( $chk_c > 0 && $chk_n == 0 && $chk_p == 0) { $this->UpdateOrderCheckOutStatus("COMPLETED"); }
+			if( $chk_e > 0){ $this->UpdateOrderCheckOutStatus($order->param['tb_live'],$data['order_id'],"ERROR"); }
+			else if( $chk_p > 0 || ( $chk_c > 0 && $chk_n > 0)) { $this->UpdateOrderCheckOutStatus($order->param['tb_live'],$data['order_id'],"PARTIAL"); }
+			else if( $chk_n > 0 && $chk_c == 0 && $chk_p == 0) { $this->UpdateOrderCheckOutStatus($order->param['tb_live'],$data['order_id'],"NONE"); }
+			else if( $chk_c > 0 && $chk_n == 0 && $chk_p == 0) { $this->UpdateOrderCheckOutStatus($order->param['tb_live'],$data['order_id'],"COMPLETED"); }
 		}
 	}
 	
 	public function ProcessRow($val)
 	{
+		$rows = "";
 		$inventory = new Inventory_Controller();
 		//if inventory item exist
 		$querystr = sprintf('select count(id) as count from %s where product_id = "%s" && branch_id = "%s"',$inventory->param['tb_live'],$val['product_id'],$val['branch_id']);
@@ -190,7 +203,7 @@ print "<br>[After Update]<hr>";
 		$recs = $result[0];
 		if( $recs->count > 0 )
 		{
-			$querystr = sprintf('select qty_instock from %s where product_id = "%s" && branch_id = "%s"',$inventory->param['tb_live'],$val['product_id'],$val['branch_id']);
+			$querystr = sprintf('select id,qty_instock,current_no from %s where product_id = "%s" && branch_id = "%s"',$inventory->param['tb_live'],$val['product_id'],$val['branch_id']);
 			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
 			$qty_instock = $result[0]->qty_instock;
 			if($qty_instock != 0)
@@ -213,21 +226,44 @@ print "<br>[After Update]<hr>";
 				if($val['order_qty'] == $val['filled_qty']) { $val['status'] = "COMPLETED"; }
 				else if($val['order_qty'] > $val['filled_qty']) { $val['status'] = "PARTIAL"; }
 				else  { $val['status'] = "ERROR"; }
+				
+				//update inventory
+				$iid = $result[0]->id;
+				$current_no = $result[0]->current_no;
+				if($this->param['primarymodel']->insertFromTableToTable($inventory->param['tb_hist'],$inventory->param['tb_live'],$iid))
+				{
+					$arr['id'] = $iid;
+					$arr['qty_instock']		 = $val['adjust_qty'];
+					$arr['last_update_type'] = "SALE";
+					$arr['inputter']		 = Auth::instance()->get_user()->idname;
+					$arr['input_date']		 = date('Y-m-d H:i:s'); 
+					$arr['authorizer']		 = 'SYSAUTH';
+					$arr['auth_date']		 = date('Y-m-d H:i:s'); 
+					$arr['record_status']	 = "LIVE";
+					$arr['current_no']		 = $current_no + 1;
+					$this->param['primarymodel']->updateRecord($inventory->param['tb_live'],$arr);
+				}
 			}
 		}
+		$xmlrow = sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status']);
+		$val['xmlrow'] = $xmlrow;
 		return $val;
 	}
 	
-	public function UpdateOrderCheckOutStatus($status)
+	public function UpdateOrderCheckOutStatus($table,$order_id,$status)
 	{
-	
-print "[Order CheckOut Status: ".$status." ]<hr>";
+		$querystr = sprintf('update %s set inventory_checkout_status = "%s" where order_id = "%s"',$table,$status,$order_id);
+		$this->param['primarymodel']->executeNonSelectQuery($querystr);
+	}
+
+	public function UpdateCheckOutRecord($arr)
+	{
+		$querystr = sprintf('update %s set checkout_details = "%s", run = "%s" where order_id = "%s"',$arr['table'],$arr['checkout_details'],$arr['run'],$arr['order_id']);
+		$this->param['primarymodel']->executeNonSelectQuery($querystr);
 	}
 	
 	public function authorize_post_update_existing_record()
 	{
-//print_r($_POST);	
 		$this->ProcessCheckout($_POST);
-		
 	}
 }
