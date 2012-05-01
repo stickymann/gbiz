@@ -771,7 +771,7 @@ class Site_Controller extends Template_Controller
 							
 							case 'xmltable':
 								$XMLTABLE_HTML = $this->editXMLTable($key,$this->form[$key],"black");
-								$pagebody->add("<td valign='top'>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key])."<span class='viewtext'>".$XMLTABLE_HTML."</span>");
+								$pagebody->add("<td valign='top'>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::hidden($key,$this->form[$key])."<span class='viewtext'>".$XMLTABLE_HTML."</span>");
 							break;
 
 							case 'dropdown':

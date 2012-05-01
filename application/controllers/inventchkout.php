@@ -50,36 +50,6 @@ class Inventchkout_Controller extends Site_Controller
         }
 	}
 
-	public function InsertIntoCheckoutTable($data)
-	{
-		//if order_id does not exist
-		$querystr = sprintf('select count(id) as count from %s where order_id = "%s"',$this->param['tb_live'],$data['order_id']);
-		$result = $this->param['primarymodel']->executeSelectQuery($querystr);
-		$recs = $result[0];
-		if( $recs->count == 0 )
-		{
-			//set up new checkout record and insert into checkout table 
-			$arr = $this->param['primarymodel']->createBlankRecord($this->param['tb_live'],$this->param['tb_inau']);
-			$arr = (array) $arr;
-			$querystr = sprintf('delete from %s where id = "%s"',$this->param['tb_inau'],$arr['id']);
-			if($result = $this->param['primarymodel']->executeNonSelectQuery($querystr))
-			{
-				$arr['order_id']		 = $data['order_id'];
-				$arr['checkout_details'] = $data['checkout_details'];
-				$arr['run']				 = "Y";
-				$arr['comments']		 = "";
-				$arr['inputter']		 = $data['idname'];
-				$arr['input_date']		 = date('Y-m-d H:i:s'); 
-				$arr['authorizer']		 = 'SYSAUTH';
-				$arr['auth_date']		 = date('Y-m-d H:i:s'); 
-				$arr['record_status']	 = "LIVE";
-				$arr['current_no']		 = "1";
-				$this->param['primarymodel']->insertRecord($this->param['tb_live'],$arr);
-				return $arr;
-			}
-		}
-	}
-
 	public function xmlSubFormColDef($key,$xml)
 	{
 /*
@@ -136,6 +106,36 @@ _text_;
 		return $TEXT;
 	}
 
+	public function InsertIntoCheckoutTable($data)
+	{
+		//if order_id does not exist
+		$querystr = sprintf('select count(id) as count from %s where order_id = "%s"',$this->param['tb_live'],$data['order_id']);
+		$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+		$recs = $result[0];
+		if( $recs->count == 0 )
+		{
+			//set up new checkout record and insert into checkout table 
+			$arr = $this->param['primarymodel']->createBlankRecord($this->param['tb_live'],$this->param['tb_inau']);
+			$arr = (array) $arr;
+			$querystr = sprintf('delete from %s where id = "%s"',$this->param['tb_inau'],$arr['id']);
+			if($result = $this->param['primarymodel']->executeNonSelectQuery($querystr))
+			{
+				$arr['order_id']		 = $data['order_id'];
+				$arr['checkout_details'] = $data['checkout_details'];
+				$arr['run']				 = "Y";
+				$arr['comments']		 = "";
+				$arr['inputter']		 = $data['idname'];
+				$arr['input_date']		 = date('Y-m-d H:i:s'); 
+				$arr['authorizer']		 = 'SYSAUTH';
+				$arr['auth_date']		 = date('Y-m-d H:i:s'); 
+				$arr['record_status']	 = "LIVE";
+				$arr['current_no']		 = "1";
+				$this->param['primarymodel']->insertRecord($this->param['tb_live'],$arr);
+				return $arr;
+			}
+		}
+	}
+
 	public function ProcessCheckout($data)
 	{
 		$chk_c = 0; $chk_p = 0; $chk_n = 0;  $chk_e = 0; 
@@ -146,7 +146,7 @@ _text_;
 			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
 			if($result)
 			{
-				$xmlrows = "";
+				$xmlrows = ""; $dnoterows = "";
 				$formfields = new SimpleXMLElement($data['checkout_details']);
 				if($formfields->rows) 
 				{
@@ -167,6 +167,7 @@ _text_;
 							else if( $val['status'] == "COMPLETED" ) { $chk_c++;}
 							else if( $val['status'] == "ERROR" ) { $chk_e++;}
 							$xmlrows .= $val['xmlrow'];
+							$dnoterows .= $val['dnoterow'];
 						}
 						else
 						{
@@ -183,6 +184,16 @@ _text_;
 					$arr['checkout_details'] = $replacement_xml;
 					$arr['run'] = "N";
 					$this->UpdateCheckOutRecord($arr);
+					
+					//create delivery note
+					$dnoterows = "<rows>".$dnoterows."</rows>";
+					$dnote_xml = "<?xml version='1.0' standalone='yes'?><formfields>";
+					$dnote_xml .= "<header><column>Product Id</column><column>Description</column><column>Qty</column></header>";
+					$dnote_xml .= $dnoterows."</formfields>";
+					$dnotedata['order_id']	= $data['order_id'];
+					$dnotedata['details']	= $dnote_xml;
+					$dnotedata['idname']	= Auth::instance()->get_user()->idname;
+					$this->CreateDeliveryNote($dnotedata);
 				}
 			}
 			
@@ -246,7 +257,9 @@ _text_;
 			}
 		}
 		$xmlrow = sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status']);
+		$dnoterow = sprintf('<row><product_id>%s</product_id><description>%s</description><filled_qty>%s</filled_qty></row>',$val['product_id'],$val['description'],$val['filled_qty']);
 		$val['xmlrow'] = $xmlrow;
+		$val['dnoterow'] = $dnoterow;
 		return $val;
 	}
 	
@@ -262,6 +275,12 @@ _text_;
 		$this->param['primarymodel']->executeNonSelectQuery($querystr);
 	}
 	
+	public function CreateDeliveryNote($data)
+	{
+		$dnote = new Deliverynote_Controller();
+		$dnote->InsertIntoDeliveryNoteTable($data);
+	}
+
 	public function authorize_post_update_existing_record()
 	{
 		$this->ProcessCheckout($_POST);

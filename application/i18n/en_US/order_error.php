@@ -12,7 +12,7 @@ $lang = array
 	'order_id' => array
     (
         'required' => 'Order Id: required.',
-        'length' => 'Order Id: must be 8 characters.',
+        'length' => 'Order Id: must be 16 characters.',
         'msg_duplicate' => 'Order Id: duplicate order id.',
 		'default' => 'Order Id: invalid input.'
     ),
