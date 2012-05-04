@@ -109,9 +109,11 @@ _text_;
 		//set up new checkout record and insert into checkout table 
 		$arr = $this->param['primarymodel']->createBlankRecord($this->param['tb_live'],$this->param['tb_inau']);
 		$arr = (array) $arr;
+		
 		$baseurl = url::base(TRUE,'http');
 		$url = sprintf('%sajaxtodb?option=orderid&controller=deliverynote&prefix=DNL&ctrlid=%s',$baseurl,$arr['id']);
 		$deliverynote_id = Sitehtml_Controller::getHTMLFromUrl($url);
+		
 		$querystr = sprintf('delete from %s where id = "%s"',$this->param['tb_inau'],$arr['id']);
 		if($result = $this->param['primarymodel']->executeNonSelectQuery($querystr))
 		{
