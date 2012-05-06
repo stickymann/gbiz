@@ -5,6 +5,7 @@ $(document).ready(function()
 	{
 		tilltransaction.CreateTransactionID();
 		tilltransaction.CreateTillID();
+		tilltransaction.SetTransactionDate();
 	}
 });
 		
@@ -23,5 +24,11 @@ var tilltransaction = new function()
 		ctrlid = $('#id').val();
 		order_params = "option=orderid&controller=tilltransaction&prefix=TLL&ctrlid=" + ctrlid;
 		siteutils.runQuery(order_params,'transaction_id','val');
+	}
+
+	this.SetTransactionDate = function ()
+	{
+		var current_date = siteutils.currentDate('Y-m-d');
+		$('#transaction_date').val(current_date);
 	}
 }

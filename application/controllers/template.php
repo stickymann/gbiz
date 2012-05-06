@@ -25,18 +25,29 @@ abstract class Template_Controller extends Controller {
 	/**
 	 * Template loading and setup routine.
 	 */
-	public $jquery_js	= 'media/js/jquery-1.7.min';
-	public $easyui_js	= 'media/js/jquery.easyui.min';
-	public $datepick_js	= 'media/js/jquery.datepick';
-	public $easyui_css	= 'media/css/easyui/gray/easyui';
-	public $easyui_icon	= 'media/css/easyui/icon';
-	public $site_css	= 'media/css/site';
-	public $datepick_css= 'media/css/custom.datepick';
+	public $randomstring = ""; 
+	public $jquery_js	= 'media/js/jquery-1.7.min.js';
+	public $easyui_js	= 'media/js/jquery.easyui.min.js';
+	public $datepick_js	= 'media/js/jquery.datepick.js';
+	
+	public $easyui_css	= 'media/css/easyui/gray/easyui.css';
+	public $easyui_icon	= 'media/css/easyui/icon.css';
+	public $site_css	= 'media/css/site.css';
+	public $datepick_css= 'media/css/custom.datepick.css';
 	
 	public function __construct()
 	{
 		parent::__construct();
-
+		/** 
+			Random string injection to prevent javascript caching
+			Added by dunstan.nesbit@gmail.com
+		**/
+		$rs = new Siterandstr_Controller();
+		$this->randomstring	= sprintf('?rash=%s',$rs->getRandomString());
+		$this->jquery_js	= $this->jquery_js.$this->randomstring;
+		$this->easyui_js	= $this->easyui_js.$this->randomstring;
+		$this->datepick_js	= $this->datepick_js.$this->randomstring;
+		
 		// Load the template
 		$this->template = new View($this->template);
 

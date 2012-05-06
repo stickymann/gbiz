@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Tilltransaction_Controller extends Site_Controller
+class Payment_Controller extends Site_Controller
 {
 	public function __construct()
     {
-		parent::__construct('tilltransaction');
+		parent::__construct('payment');
 		$this->param['htmlhead'] .= $this->insertHeadJS();
 	}	
 		
@@ -16,7 +16,7 @@ class Tilltransaction_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/tilltransaction'));
+		return html::script(array( 'media/js/payment.js'.$this->randomstring ));
 	}
 
 	function input_validation()
@@ -27,15 +27,16 @@ class Tilltransaction_Controller extends Site_Controller
 		$validation->pre_filter('trim', TRUE);
 		
 		$validation->add_rules('id','required','numeric');
-		$validation->add_rules('transaction_id','required', 'length[16]', 'standard_text');
+		$validation->add_rules('payment_id','required', 'length[16]', 'standard_text');
+		$validation->add_rules('branch_id','required', 'length[2,50]', 'standard_text');
 		$validation->add_rules('till_id','required', 'length[2,59]', 'standard_text');
+		$validation->add_rules('order_id','required', 'length[16]', 'standard_text');
 		$validation->add_rules('amount','required','numeric');
-		$validation->add_rules('transaction_type','required', 'length[4,11]', 'standard_text');
-		$validation->add_rules('transaction_date', 'length[10]','alpha_dash');
-		$validation->add_rules('movement','required', 'length[2,3]', 'standard_text');
-		$validation->add_rules('reason','required','standard_text');
+		$validation->add_rules('payment_type','required', 'length[4,11]', 'standard_text');
+		$validation->add_rules('payment_date', 'length[10]','alpha_dash');
+		$validation->add_rules('payment_status','required', 'length[5,10]', 'standard_text');
 
-		$validation->add_callbacks('transaction_id', array($this, '_duplicate_altid'));
+		$validation->add_callbacks('payment_id', array($this, '_duplicate_altid'));
 		$validation->add_callbacks('till_id', array($this, '_is_till_ok'));
 
 		//$validation->post_filter('strtoupper', '?????_id');
@@ -47,7 +48,7 @@ class Tilltransaction_Controller extends Site_Controller
 	public function _duplicate_altid(Validation $validation,$field)
     {
 		$id	 = $_POST['id'];
-		$unique_id = $_POST['transaction_id'];
+		$unique_id = $_POST['payment_id'];
 		if (array_key_exists('msg_duplicate', $validation->errors()))
 				return;
 		
@@ -56,7 +57,7 @@ class Tilltransaction_Controller extends Site_Controller
             $validation->add_error($field, 'msg_duplicate');
         }
 	}
-
+	
 	public function _is_till_ok(Validation $validation,$field)
 	{
 		$till_id = $_POST['till_id'];
@@ -84,32 +85,33 @@ class Tilltransaction_Controller extends Site_Controller
 		return false;
 	}
 
-	public function InsertIntoTillTransactionTable($data)
+	public function orderUpdate()
 	{
-		//set up new tilltransaction record and insert into tilltransaction table 
-		$arr = $this->param['primarymodel']->createBlankRecord($this->param['tb_live'],$this->param['tb_inau']);
-		$arr = (array) $arr;
-		
-		$baseurl = url::base(TRUE,'http');
-		$url = sprintf('%sajaxtodb?option=orderid&controller=tilltransaction&prefix=TLL&ctrlid=%s',$baseurl,$arr['id']);
-		$transaction_id = Sitehtml_Controller::getHTMLFromUrl($url);
-		
-		$querystr = sprintf('delete from %s where id = "%s"',$this->param['tb_inau'],$arr['id']);
-		if($result = $this->param['primarymodel']->executeNonSelectQuery($querystr))
+		$order_id = $_POST['order_id'];
+		$order = new Order_Controller();
+
+		$querystr = sprintf('select count(id) as count from %s where order_id = "%s"',"vw_orderbalances",$order_id);
+		$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+		$recs = $result[0];
+		if( $recs->count > 0 )
 		{
-			$arr['transaction_id']		= $transaction_id;
-			$arr['till_id']				= $data['till_id'];
-			$arr['amount']				= $data['initial_balance'];
-			$arr['transaction_type']	= "CASH";
-			$arr['movement']			= "IN";
-			$arr['reason']				= "Initial balance for till ".$data['till_id'];
-			$arr['inputter']			= $data['idname'];
-			$arr['input_date']			= date('Y-m-d H:i:s'); 
-			$arr['authorizer']			= 'SYSAUTH';
-			$arr['auth_date']			= date('Y-m-d H:i:s'); 
-			$arr['record_status']		= "LIVE";
-			$arr['current_no']			= "1";
-			$this->param['primarymodel']->insertRecord($this->param['tb_live'],$arr);
+			$querystr = sprintf('select id,order_id,invoice_date,balance from %s where order_id = "%s"',"vw_orderbalances",$order_id);
+			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+			$orderrec = $result[0];
+			
+			if( $orderrec->balance > 0 ){ $order_status = "INVOICE.PART.PAID"; } else { $order_status = "INVOICE.FULL.PAID"; }
+			$order->UpdateOrderStatus($order->param['tb_live'],$order_id,$order_status,date('Y-m-d')); 
+
+
+			if( $orderrec->invoice_date == "" ||  $orderrec->invoice_date == "0000-00-00" )
+			{
+				$order->UpdateOrderInvoiceDate($order->param['tb_live'],$order_id,date('Y-m-d'));
+			}
 		}
+	}
+	
+	public function authorize_post_insert_new_record()
+	{
+		$this->orderUpdate();
 	}
 }

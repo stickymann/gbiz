@@ -39,6 +39,14 @@ $lang = array
 		'default' => 'Transaction Type: invalid input.'
     ),
 
+	'transaction_date' => array
+    (
+        'required' => 'Transaction Date: required.',
+		'length' => 'Transaction Date: must be 10 characters.',
+        'alpha_dash' => 'Transaction Date: date format is incorrect (YYYY-MM-DD).',
+		'default' => 'Transaction Date: invalid input.'
+    ),
+
 	'movement' => array
     (
         'required' => 'Movement: required.',

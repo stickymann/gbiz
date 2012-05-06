@@ -27,7 +27,7 @@ class Order_Controller extends Site_Controller
 		$validation->pre_filter('trim', TRUE);
 		
 		$validation->add_rules('id','required','numeric');
-		$validation->add_rules('order_id','required', 'length[1,16]', 'standard_text');
+		$validation->add_rules('order_id','required', 'length[16]', 'standard_text');
 		$validation->add_rules('branch_id','required', 'length[2,50]', 'standard_text');
 		$validation->add_rules('customer_id','required', 'length[8]', 'standard_text');
 		$validation->add_rules('order_date', 'length[10]','alpha_dash');
@@ -189,6 +189,18 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 		{
 			$chk->ProcessCheckout($chkout_record);
 		}
+	}
+
+	public function UpdateOrderStatus($table,$order_id,$status,$status_change_date)
+	{
+		$querystr = sprintf('update %s set order_status = "%s", status_change_date = "%s" where order_id = "%s"',$table,$status,$status_change_date,$order_id);
+		$this->param['primarymodel']->executeNonSelectQuery($querystr);
+	}
+
+	public function UpdateOrderInvoiceDate($table,$order_id,$invoice_date)
+	{
+		$querystr = sprintf('update %s set invoice_date = "%s" where order_id = "%s"',$table,$invoice_date,$order_id);
+		$this->param['primarymodel']->executeNonSelectQuery($querystr);
 	}
 	
 	public function authorize_post_update_existing_record()

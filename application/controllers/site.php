@@ -55,9 +55,10 @@ class Site_Controller extends Template_Controller
 		$this->setFormFieldsAndLabels();
 
 		$htmlhead = new Sitehtml_Controller(html::stylesheet(array('media/css/site','media/css/tablesorterblue',$this->easyui_css,$this->easyui_icon,$this->datepick_css),array('screen','screen','screen','screen')));
-		$htmlhead->add(html::script(array($this->jquery_js,$this->easyui_js,$this->datepick_js,'media/js/jquery.tablesorter','media/js/jquery.datevalidate','media/js/siteutils')));
-		$htmlhead->add(html::script(array('media/js/sideinfo','media/js/enquiry','media/js/popoutselector')));
+		$htmlhead->add(html::script(array($this->jquery_js,$this->easyui_js,$this->datepick_js,'media/js/jquery.tablesorter','media/js/jquery.datevalidate')));
+		$htmlhead->add(html::script(array('media/js/siteutils.js'.$this->randomstring,'media/js/sideinfo.js'.$this->randomstring,'media/js/enquiry.js'.$this->randomstring,'media/js/popoutselector.js'.$this->randomstring)));
 		$this->param['htmlhead'] = $htmlhead->getHtml();
+		$this->param['enqhead'] = $htmlhead->getHtml();
 	}
 			
 	public function mergeFormWithAuditFields(&$form,&$label)
@@ -507,16 +508,16 @@ class Site_Controller extends Template_Controller
 							else { $subtable_type = "live"; }
 							
 							$SUBFORM_HTML = $this->viewSubForm($key,$this->form['current_no'],"brown",$subtable_type);
-							$pagebody->add("<td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::hidden($key,$this->form[$key])."<span class='viewtext'>".$SUBFORM_HTML."</span>");
+							$pagebody->add("<td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".sprintf('<input type="hidden" id="%s" name="%s" value="%s"/>',$key,$key,$this->form[$key])."<span class='viewtext'>".$SUBFORM_HTML."</span>");
 						}
 						else if($this->formopts[$key]['inputtype']=='xmltable')
 						{
 							$XMLTABLE_HTML = $this->viewXMLTable($key,$this->form[$key],"brown");
-							$pagebody->add("<td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::hidden($key,$this->form[$key])."<span class='viewtext'>".$XMLTABLE_HTML."</span>");
+							$pagebody->add("<td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".sprintf('<input type="hidden" id="%s" name="%s" value="%s"/>',$key,$key,$this->form[$key])."<span class='viewtext'>".$XMLTABLE_HTML."</span>");
 						}
 						else
 						{
-							$pagebody->add("<td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::hidden($key,$this->form[$key])."<span class='viewtext'>".nl2br(html::specialchars($this->form[$key]))."</span>");
+							$pagebody->add("<td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".sprintf('<input type="hidden" id="%s" name="%s" value="%s"/>',$key,$key,$this->form[$key])."<span class='viewtext'>".nl2br(html::specialchars($this->form[$key]))."</span>");
 						}
 
 						if($this->formopts[$key]['inputtype']=='input')
@@ -632,7 +633,7 @@ class Site_Controller extends Template_Controller
 
 				//removing indexes 'submit and 'func' from array, do not need for update, not database fields
 				unset($_POST['submit']); unset($_POST['func']); unset($_POST['preval']);unset($_POST['recordlockid']);
-				unset($_POST['bttnclicked']); unset($_POST['js_idname']);
+				unset($_POST['bttnclicked']); unset($_POST['js_idname']); unset($_POST['js_tmpvar']);
 				
 				//set audit data
 				$_POST['inputter']=Auth::instance()->get_user()->idname;$_POST['authorizer']='';
@@ -828,6 +829,11 @@ class Site_Controller extends Template_Controller
 			}
 			$html = sprintf('<input type="hidden" id="js_idname" name="js_idname" value="%s"/>',Auth::instance()->get_user()->idname);
 			$pagebody->add($html);
+			
+			#empty js variable for temp values
+			$html = sprintf('<input type="hidden" id="js_tmpvar" name="js_tmpvar" value="%s"/>',"");
+			$pagebody->add($html);
+
 			$pagebody->add(form::close());
 			$pagebody->add($this->popOutSelectorWin());
 			$pagebody->add($this->customDialogWin());
@@ -1411,8 +1417,8 @@ class Site_Controller extends Template_Controller
 		$this->param['primarymodel']->removeRecordLockById($_POST['recordlockid']);
 		//removing indexes 'submit and 'func' from array, do not need for update, not database fields
 		unset($_POST['submit']); unset($_POST['func']); unset($_POST['preval']); unset($_POST['recordlockid']); unset($_POST['bttnclicked']);
-		unset($_POST['js_idname']);
-				
+		unset($_POST['js_idname']); unset($_POST['js_tmpvar']);
+			
 		//set audit data
 		$_POST['inputter']=Auth::instance()->get_user()->idname;$_POST['authorizer']='';
 		$_POST['input_date']=date('Y-m-d H:i:s'); $_POST['auth_date']='';  $_POST['record_status']='IHLD';
@@ -1569,7 +1575,7 @@ _TEXT_;
 		else
 		{
 			$sc = new Sitecontrol_Controller();
-			$pagehead = new Sitehtml_Controller($this->param['htmlhead']);
+			$pagehead = new Sitehtml_Controller($this->param['enqhead']);
 			$pagebody = new Sitehtml_Controller($sc->showTabs($this->param['controller']));
 			$this->setPageContent($pagehead->getHtml(),$pagebody->getHtml());
 		}

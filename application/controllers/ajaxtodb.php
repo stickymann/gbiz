@@ -35,20 +35,24 @@ class Ajaxtodb_Controller extends Controller
 				{	
 					case 'dobtoage':
 						$AGE = $this->getAge($parameter);
-					print $this->formatinfo($AGE);
+						print $this->formatinfo($AGE);
 					break;
 
 					case 'minstohrs':
 						$HRS = $this->getHours($parameter);
-					print $this->formatinfo($HRS);
+						print $this->formatinfo($HRS);
 					break;
 
 					case 'datestoperiodstr':
 						$STR = $this->getPeriodString($parameter);
-					print $this->formatinfo($STR);
+						print $this->formatinfo($STR);
+					break;
+									
+					case 'orderbalance':
+						$BAL = $this->getOrderBalanceInfo($parameter);
+						print $this->formatinfo($BAL);
 					break;
 				}
-
 			break;
 			
 			case 'jsubrecs':
@@ -395,6 +399,26 @@ class Ajaxtodb_Controller extends Controller
 			case 'orderstatus':
 				$fldval = $_REQUEST['fldval'];
 				$this->printOrderStatusForm($fldval);
+			break;
+				
+			case 'ordertotal';
+				$order_id	 = $_REQUEST['order_id'];
+				$order_total = $this->getOrderTotal($order_id);
+				print number_format($order_total, 2, '.', '');
+			break;
+
+			case 'orderpaymenttotal';
+				$order_id		= $_REQUEST['order_id'];
+				$payment_total	= $this->getOrderPaymentTotal($order_id);
+				print number_format($payment_total, 2, '.', '');
+			break;
+
+			case 'orderbalance';
+				$order_id	= $_REQUEST['order_id'];
+				$order_total = $this->getOrderTotal($order_id);
+				$payment_total	= $this->getOrderPaymentTotal($order_id);
+				$balance = $order_total - $payment_total;
+				print number_format($balance, 2, '.', '');
 			break;
 
 			case 'userrolechkbox':
@@ -1086,5 +1110,39 @@ _HTML_;
 		}
 	}
 
-}
+	function getOrderBalanceInfo()
+	{
+		$param		= preg_split('/,/',$_REQUEST['parameter']);
+		$payment_id	= $param[0]; 
+		$order_id	= $param[1]; 
+		$amount		= $param[2]; 
+		
+		// order/invoice total
+		$order_total = $this->getOrderTotal($order_id);					
 
+		// total previous payments excluding current record
+		$querystr	= sprintf('select sum(amount) as payment_total from payments where order_id ="%s" and payment_id != "%s" and payment_status = "VALID" ',$order_id,$payment_id);
+		$result		= $this->sitedb->executeSelectQuery($querystr);
+		$payment_total = $result[0]->payment_total;
+
+		$balance		= number_format($order_total - $amount - $payment_total,2);	
+		$order_total	= number_format($order_total,2);
+		$payment_total	= number_format($payment_total,2);
+		$info_str		= sprintf("ORDER TOTAL: %s, OTHER PAYMENTS: %s, BALANCE: %s",$order_total,$payment_total,$balance);
+		return $info_str;
+	}
+
+	function getOrderTotal($order_id)
+	{
+		$querystr	= sprintf('select sum(func_OrderDetailSubTotal(qty,unit_price,discount_amount,tax_percentage,discount_type)) as order_total from orderdetails where order_id ="%s"',$order_id);
+		$result		= $this->sitedb->executeSelectQuery($querystr);
+		return $result[0]->order_total;
+	}
+
+	function getOrderPaymentTotal($order_id)
+	{
+		$querystr	= sprintf('select sum(amount) as payment_total from payments where order_id ="%s" and payment_status = "VALID"',$order_id);
+		$result		= $this->sitedb->executeSelectQuery($querystr);
+		return $result[0]->payment_total;
+	}
+}

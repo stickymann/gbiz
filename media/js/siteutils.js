@@ -52,17 +52,22 @@ var siteutils = new function()
 		if(type=="html")
 		{
 			$.get(this.getAjaxURL() + qstr, function(data) 
-				{ $('#'+id).html(data);} );
+				{ $('#'+id).html(data); });
 		}
 		else if (type=="val")
 		{
 			$.get(this.getAjaxURL() + qstr, function(data) 
-				{ $('#'+id).val(data);} );
+				{ $('#'+id).val(data); });
 		}
 		else if (type=="text")
 		{
 			$.get(this.getAjaxURL() + qstr, function(data) 
-				{ $('#'+id).text(data);} );
+				{ $('#'+id).text(data); });
+		}
+		else if (type=="var")
+		{
+			$.get(this.getAjaxURL() + qstr, function(data) 
+				{ $('#js_tmpvar').val(data); });
 		}
 	}
 
