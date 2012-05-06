@@ -74,7 +74,7 @@ class Tilltransaction_Controller extends Site_Controller
 		//if till item exist
 		$datestr = date('Y-m-d');
 		$timestr = date('H:i:s');
-		$querystr = sprintf('select count(id) as count from %s where till_id = "%s" && till_user = "%s" && expiry_date >= "%s" && expiry_time > "%s"',$till->param['tb_live'],$till_id,$idname,$datestr,$timestr);
+		$querystr = sprintf('select count(id) as count from %s where till_id = "%s" && till_user = "%s" && expiry_date >= "%s" && expiry_time > "%s" && status="OPEN"',$till->param['tb_live'],$till_id,$idname,$datestr,$timestr);
 		$result = $this->param['primarymodel']->executeSelectQuery($querystr);
 		$recs = $result[0];
 		if( $recs->count > 0 )
