@@ -16,8 +16,8 @@ class Roleadmin_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		$head_js_files =  html::stylesheet(array('media/css/jquery.treeview','media/css/screen'),array('screen','screen'));
-		$head_js_files .= html::script(array('media/js/jquery.cookie','media/js/jquery.treeview','media/js/roleadmin'));
+		$head_js_files =  html::stylesheet( array('media/css/jquery.treeview','media/css/screen'),array('screen','screen'));
+		$head_js_files .= html::script( array('media/js/jquery.cookie','media/js/jquery.treeview','media/js/roleadmin.js'.$this->randomstring ));
 		return $head_js_files;
 	}
 

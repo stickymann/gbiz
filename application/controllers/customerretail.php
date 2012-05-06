@@ -14,9 +14,9 @@ class Customerretail_Controller extends Site_Controller
 		$this->processIndex();
 	}
 	
-	function insertHeadJS($controller="")
+	function insertHeadJS()
 	{
-		return html::script(array('media/js/customer'));
+		return html::script( array('media/js/customer.js'.$this->randomstring ));
 	}
 	
 	function input_validation()

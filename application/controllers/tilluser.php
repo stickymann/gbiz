@@ -16,7 +16,7 @@ class Tilluser_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/tilluser'));
+		return html::script( array('media/js/tilluser.js'.$this->randomstring ));
 	}
 
 	function input_validation()

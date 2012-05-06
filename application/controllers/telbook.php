@@ -16,7 +16,7 @@ class Telbook_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/telbook'));
+		return html::script( array('media/js/telbook.js'.$this->randomstring ));
 	}
 		
 	function input_validation()

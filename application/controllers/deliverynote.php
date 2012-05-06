@@ -16,7 +16,7 @@ class Deliverynote_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/deliverynote'));
+		return html::script( array('media/js/deliverynote.js'.$this->randomstring ));
 	}
 
 	function input_validation()

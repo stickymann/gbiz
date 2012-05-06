@@ -16,7 +16,7 @@ class Tableresetconfig_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/tableresetconfig'));
+		return html::script( array('media/js/tableresetconfig.js'.$this->randomstring ));
 	}
 	
 	function input_validation()

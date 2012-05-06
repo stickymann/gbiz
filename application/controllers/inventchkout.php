@@ -16,7 +16,7 @@ class Inventchkout_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/inventchkout'));
+		return html::script( array('media/js/inventchkout.js'.$this->randomstring ));
 	}
 
 	function input_validation()

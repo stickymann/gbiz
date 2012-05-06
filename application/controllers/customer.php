@@ -16,7 +16,7 @@ class Customer_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/customer'));
+		return html::script( array('media/js/customer.js'.$this->randomstring ));
 	}
 	
 	function input_validation()

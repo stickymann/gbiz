@@ -6,7 +6,7 @@ class Userpasswdreset_Controller extends Site_Controller
 	public function __construct()
     {
 		parent::__construct('userpasswdreset');
-		$this->param['htmlhead'] .= $this->insertHeadJS($this->param['controller']);
+		$this->param['htmlhead'] .= $this->insertHeadJS();
 	}	
 		
 	public function index($opt="")

@@ -16,7 +16,7 @@ class Fixedselection_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/fixselection'));
+		return html::script(array( 'media/js/fixselection.js'.$this->randomstring ));
 	}
 
 	function input_validation()

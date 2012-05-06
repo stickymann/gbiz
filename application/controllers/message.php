@@ -17,7 +17,7 @@ class Message_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/message'));
+		return html::script( array('media/js/message.js'.$this->randomstring ));
 	}
 
 	function input_validation()

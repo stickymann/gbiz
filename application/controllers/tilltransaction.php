@@ -16,7 +16,7 @@ class Tilltransaction_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/tilltransaction'));
+		return html::script( array('media/js/tilltransaction.js'.$this->randomstring ));
 	}
 
 	function input_validation()

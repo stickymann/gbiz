@@ -16,7 +16,7 @@ class Paymentcancel_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array( 'media/js/paymentcancel.js'.$this->randomstring ));
+		return html::script( array('media/js/paymentcancel.js'.$this->randomstring ));
 	}
 
 	function input_validation()

@@ -16,7 +16,7 @@ class Device_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/device'));
+		return html::script( array('media/js/device.js'.$this->randomstring ));
 	}
 
 	function input_validation()

@@ -16,7 +16,7 @@ class Tillmanage_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/tillmanage'));
+		return html::script( array('media/js/tillmanage.js'.$this->randomstring ));
 	}
 
 	function input_validation()

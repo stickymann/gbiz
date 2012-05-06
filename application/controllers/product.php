@@ -16,7 +16,7 @@ class Product_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/product'));
+		return html::script( array('media/js/product.js'.$this->randomstring ));
 	}
 
 	function input_validation()

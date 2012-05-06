@@ -16,7 +16,7 @@ class Inventory_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/inventory'));
+		return html::script( array('media/js/inventory.js'.$this->randomstring ));
 	}
 
 	function input_validation()

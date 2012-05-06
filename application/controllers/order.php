@@ -16,7 +16,7 @@ class Order_Controller extends Site_Controller
 
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/order'));
+		return html::script( array('media/js/order.js'.$this->randomstring ));
 	}
 
 	function input_validation()

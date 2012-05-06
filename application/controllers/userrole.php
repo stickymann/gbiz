@@ -16,7 +16,7 @@ class Userrole_Controller extends Site_Controller
 	
 	function insertHeadJS()
 	{
-		return html::script(array('media/js/userrole'));
+		return html::script( array('media/js/userrole.js'.$this->randomstring ));
 	}
 
 	function insertRolesUsers()
