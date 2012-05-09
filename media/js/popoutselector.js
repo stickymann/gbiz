@@ -1,5 +1,6 @@
 var po_return_id = "";
 var po_lkparam =  "";
+var nonselect = false;
 	
 var popout = new function()
 {
@@ -22,10 +23,20 @@ var popout = new function()
 
 	this.SelectorOpenDefault = function (fields,table,idfield)
 	{
-		var po_params = ""; //po_lkparam = "";
+		var po_params = ""; 
+		//po_lkparam = "";
 		po_params = "option=popout&" + "fields=" + fields + "&" + "table=" + table + "&" + "idfield=" + idfield;
 		po_lkparam = "option=pofilter&" + "fields=" + fields + "&" + "table=" + table + "&" + "idfield=" + idfield;
 		window.siteutils.runQuery(po_params,"poresult","html");
+	}
+
+	this.NonSelectorOpenDefault = function (fields,table,idfield)
+	{
+		var po_params = ""; 
+		//po_lkparam = "";
+		po_params = "option=poplist&" + "fields=" + fields + "&" + "table=" + table + "&" + "idfield=" + idfield;
+		po_lkparam = "option=polistfilter&" + "fields=" + fields + "&" + "table=" + table + "&" + "idfield=" + idfield;
+		window.siteutils.runQuery(po_params,"polistresult","html");
 	}
 	
 	this.SelectorClose = function ()
@@ -67,6 +78,13 @@ var popout = new function()
 		po_params = po_lkparam + "&lkvals=" + po_LKFLDS;
 		//replace last occurrence of comma
 		po_params = po_params.substring(0,po_params.lastIndexOf(","));
-		window.siteutils.runQuery(po_params,"poresult","html");
+		if(nonselect)
+		{
+			window.siteutils.runQuery(po_params,"polistresult","html");
+		}
+		else
+		{
+			window.siteutils.runQuery(po_params,"poresult","html");
+		}
 	}
 }

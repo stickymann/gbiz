@@ -187,6 +187,17 @@ class Ajaxtodb_Controller extends Controller
 				$result = $this->sitedb->executeSelectQuery($querystr);
 				$this->printPopOutResult($result);
 			break;
+
+			case 'poplist':
+				$fields		= $_REQUEST['fields'];
+				$table		= $_REQUEST['table'];
+				$idfield	= $_REQUEST['idfield'];
+				$querystr = sprintf('select %s from %s order by %s asc %s;',$fields,$table,$idfield,$limit);
+				//$stmt = $appdb->query($querystr);
+				//$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$result = $this->sitedb->executeSelectQuery($querystr);
+				$this->printPopListResult($result);
+			break;
 		
 			case 'pofilter':
 				$fields		= $_REQUEST['fields'];
@@ -214,6 +225,33 @@ class Ajaxtodb_Controller extends Controller
 				//$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				$result =  $this->sitedb->executeSelectQuery($querystr);
 				$this->printPopOutResult($result);
+			break;
+
+			case 'polistfilter':
+				$fields		= $_REQUEST['fields'];
+				$table		= $_REQUEST['table'];
+				$lkvals		= $_REQUEST['lkvals'];
+				$idfield	= $_REQUEST['idfield'];
+				$like = "";
+				$lkarr = array_combine(preg_split('/,/',$fields),preg_split('/,/',$lkvals));
+				foreach($lkarr as $key => $value)
+				{
+					if(strpos($value,':::'))
+					{
+						$range = preg_split('/:::/',$value);
+						$like .= sprintf('(%s >= "%s" AND %s <= "%s") AND ',$key,$range[0],$key,$range[1]);
+					}
+					else
+					{
+						$like .= sprintf('%s LIKE "%s%s" AND ',$key,$value,"%");
+					}
+				}
+				$like = substr_replace($like, '', -5);
+				$querystr = sprintf('select %s from %s where %s order by %s asc %s;',$fields,$table,$like,$idfield,$limit);
+				//$stmt = $appdb->query($querystr);
+				//$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$result =  $this->sitedb->executeSelectQuery($querystr);
+				$this->printPopListResult($result);
 			break;
 
 			case 'enquiry':
@@ -537,7 +575,51 @@ class Ajaxtodb_Controller extends Controller
 _TEXT_;
 		print $RESULT;
 	}
-		
+	
+	function printPopListResult($result)
+	{
+		$idfield = $_REQUEST['idfield'];
+		$RESULT = '<table id="potable" class="tablesorter" border="0" cellpadding="0" cellspacing="1" >'."\n";
+		$firstpass = true;
+		//$lbl=$this->label;
+		foreach($result as $row => $linerec)
+		{	
+			$linerec = (array)$linerec;
+			$header = ''; $data = '';
+			foreach ($linerec as $key => $value)
+			{
+				if($firstpass)
+				{
+					$headtxt = Site_Controller::strtotitlecase(str_replace("_"," ",$key));
+					$header .= '<th>'.$headtxt.'</th>'; 
+				}
+				$data .= '<td>'.html::specialchars($value).'</td>'; 
+			
+			}
+			if($firstpass)
+			{
+				$header = "\n".'<thead>'."\n".'<tr>'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
+				$RESULT .=$header;
+			}
+			$data = '<tr>'.$data.'</tr>'."\n"; 
+			$RESULT .= $data;
+			$firstpass = false;
+		}
+		$RESULT .='</tbody>'."\n".'</table>'."\n";
+		$RESULT .= <<<_TEXT_
+		<script>
+			$(
+				function()
+				{	 
+					$("#potable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});
+					$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
+				}
+			);
+		</script>
+_TEXT_;
+		print $RESULT;
+	}
+
 	function printCustomPopOutResult($result)
 	{
 		$idfield = $_REQUEST['idfield'];

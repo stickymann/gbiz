@@ -662,7 +662,7 @@ class Site_Controller extends Template_Controller
 	
 	public function input_form($_func)
 	{
-		$content = new View('default_input');
+		$content = new View($this->param['inputview']);
 		
 		//add page/form header
 		$content->pageheader = $this->param['pageheader'];
