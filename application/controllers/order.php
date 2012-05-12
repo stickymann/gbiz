@@ -137,28 +137,31 @@ class Order_Controller extends Site_Controller
 				foreach ($rows->row as $row) 
 				{ 
 					$pid = sprintf('%s',$row->product_id);
-					$qty = sprintf('%s',$row->qty);
-					$desc = sprintf('%s',$row->description);
-					$result = $this->param['primarymodel']->getRecordByIdVal($table,$unique_id ,$pid,$fields);
-					if($result->type == "STOCK")
+					if($pid != "MISC")
 					{
+						$qty = sprintf('%s',$row->qty);
+						$desc = sprintf('%s',$row->description);
+						$result = $this->param['primarymodel']->getRecordByIdVal($table,$unique_id ,$pid,$fields);
+						if($result->type == "STOCK")
+						{
 $xmlrows .=sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$pid,$desc,$qty,"0",$qty,"NONE")."\n";
 						$rowcount++;
-					}
-					else if($result->type == "PACKAGE")
-					{
-						$packages = preg_split('/,/',$result->package_items);
-						foreach($packages as $idx => $packagestr)
+						}
+						else if($result->type == "PACKAGE")
 						{
-							$arr = preg_split('/:/',$packagestr);
-							$pck_pid = $arr[0];
-							$pck_qty = $arr[1] * $qty;
-							$pck_result = $this->param['primarymodel']->getRecordByIdVal($table,$unique_id ,$pck_pid,$fields);
-							$pck_desc = $pck_result->product_description;
-							if($pck_result->type == "STOCK")
+							$packages = preg_split('/,/',$result->package_items);
+							foreach($packages as $idx => $packagestr)
 							{
+								$arr = preg_split('/:/',$packagestr);
+								$pck_pid = $arr[0];
+								$pck_qty = $arr[1] * $qty;
+								$pck_result = $this->param['primarymodel']->getRecordByIdVal($table,$unique_id ,$pck_pid,$fields);
+								$pck_desc = $pck_result->product_description;
+								if($pck_result->type == "STOCK")
+								{
 $xmlrows .=sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$pck_pid,$pck_desc,$pck_qty,"0",$pck_qty,"NONE")."\n";
-								$rowcount++;
+									$rowcount++;
+								}
 							}
 						}
 					}

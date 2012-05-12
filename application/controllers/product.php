@@ -36,7 +36,7 @@ class Product_Controller extends Site_Controller
 		$validation->add_rules('id','required','numeric');
 		$validation->add_rules('product_id','required', 'length[2,50]', 'standard_text');
 		$validation->add_rules('type','required', 'length[2,7]', 'standard_text');
-		$validation->add_rules('product_description','required', 'length[2,255]', 'standard_text');
+		$validation->add_rules('product_description','required', 'length[2,255]');
 		$validation->add_rules('category','required', 'length[2,20]', 'standard_text');
 		$validation->add_rules('sub_category','required', 'length[2,20]', 'standard_text');
 		$validation->add_rules('unit_price','required','numeric');

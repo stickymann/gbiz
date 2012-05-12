@@ -167,7 +167,10 @@ _text_;
 							else if( $val['status'] == "COMPLETED" ) { $chk_c++;}
 							else if( $val['status'] == "ERROR" ) { $chk_e++;}
 							$xmlrows .= $val['xmlrow'];
-							$dnoterows .= $val['dnoterow'];
+							if( $val['filled_qty'] > 0 )
+							{
+								$dnoterows .= $val['dnoterow'];
+							}
 						}
 						else
 						{
@@ -175,6 +178,7 @@ _text_;
 						}
 						
 					}
+					
 					$xmlrows = "<rows>".$xmlrows."</rows>";
 					$replacement_xml = "<?xml version='1.0' standalone='yes'?><formfields>";
 					$replacement_xml .= htmlspecialchars_decode( $formfields->header->asXML() );

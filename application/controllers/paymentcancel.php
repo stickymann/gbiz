@@ -4,19 +4,13 @@ class Paymentcancel_Controller extends Site_Controller
 {
 	public function __construct()
     {
-		parent::__construct('paymentcancel');
-		$this->param['htmlhead'] .= $this->insertHeadJS();
+		parent::__construct('payment');
 	}	
 		
 	public function index($opt="")
 	{
 		$this->param['indexfieldvalue'] = strtoupper($opt);
 		$this->processIndex();
-	}
-	
-	function insertHeadJS()
-	{
-		return html::script( array('media/js/paymentcancel.js'.$this->randomstring ));
 	}
 
 	function input_validation()
@@ -27,11 +21,9 @@ class Paymentcancel_Controller extends Site_Controller
 		$validation->pre_filter('trim', TRUE);
 		
 		$validation->add_rules('id','required','numeric');
-		$validation->add_rules('payment_id','required', 'length[16]', 'standard_text');
-		$validation->add_rules('amount','required','numeric');
-		$validation->add_rules('payment_status','required', 'length[5,10]', 'standard_text');
-
-		$validation->add_callbacks('payment_id', array($this, '_duplicate_altid'));
+		//$validation->add_rules('?????_id','required', 'length[1,11]', 'standard_text');
+		
+		//$validation->add_callbacks('?????_id', array($this, '_duplicate_altid'));
 		
 		//$validation->post_filter('strtoupper', '?????_id');
 		$this->param['isinputvalid'] = $validation->validate();
@@ -42,7 +34,7 @@ class Paymentcancel_Controller extends Site_Controller
 	public function _duplicate_altid(Validation $validation,$field)
     {
 		$id	 = $_POST['id'];
-		$unique_id = $_POST['payment_id'];
+		$unique_id = $_POST['????_id'];
 		if (array_key_exists('msg_duplicate', $validation->errors()))
 				return;
 		
