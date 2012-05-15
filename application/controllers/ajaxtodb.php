@@ -1021,16 +1021,18 @@ _HTML_;
 	
 	function printPopOutCheckBoxes($querystr,$fields,$table,$idfield,$limit,$items,$inpfld=false)
 	{
-		$selection = ''; $selected_ids='';
-//print 	$querystr."<hr>";	
+		$selection = ''; $selected_ids=''; $checklist = array();
 		$result = $this->sitedb->executeSelectQuery($querystr);
 		$arr = (array) $result;
-		$tmplist = preg_split('/,/',$items);
-	
-		foreach($tmplist as $key => $row)
+		
+		if($items !="" )
 		{
-			$plist = preg_split('/:/',$row);
-			$checklist[$plist[0]] = $plist[1];
+			$tmplist = preg_split('/,/',$items);
+			foreach($tmplist as $key => $row)
+			{
+				$plist = preg_split('/:/',$row);
+				$checklist[$plist[0]] = $plist[1];
+			}
 		}
 	
 		$selection = "\n<td><table cellspacing=2>\n";

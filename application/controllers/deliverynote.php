@@ -111,7 +111,7 @@ _text_;
 		$arr = (array) $arr;
 		
 		$baseurl = url::base(TRUE,'http');
-		$url = sprintf('%sajaxtodb?option=orderid&controller=deliverynote&prefix=DNL&ctrlid=%s',$baseurl,$arr['id']);
+		$url = sprintf('%sajaxtodb?option=orderid&controller=deliverynote&prefix=DNT&ctrlid=%s',$baseurl,$arr['id']);
 		$deliverynote_id = Sitehtml_Controller::getHTMLFromUrl($url);
 		
 		$querystr = sprintf('delete from %s where id = "%s"',$this->param['tb_inau'],$arr['id']);

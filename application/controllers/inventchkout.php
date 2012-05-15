@@ -138,7 +138,7 @@ _text_;
 
 	public function ProcessCheckout($data)
 	{
-		$chk_c = 0; $chk_p = 0; $chk_n = 0;  $chk_e = 0; 
+		$chk_c = 0; $chk_p = 0; $chk_n = 0;  $chk_e = 0; $pre_filled_count = 0; $post_filled_count = 0;
 		if( $data['run'] == "Y" )
 		{
 			$order = new Order_Controller();
@@ -159,6 +159,8 @@ _text_;
 						$val['filled_qty'] = sprintf('%s',$row->filled_qty);
 						$val['checkout_qty'] = sprintf('%s',$row->checkout_qty);
 						$val['status'] = sprintf('%s',$row->status);						
+						$pre_filled_count =  $pre_filled_count + $val['filled_qty'];
+						
 						if($val['order_qty'] > $val['filled_qty'])
 						{
 							$val = $this->ProcessRow($val);
@@ -169,6 +171,7 @@ _text_;
 							$xmlrows .= $val['xmlrow'];
 							if( $val['filled_qty'] > 0 )
 							{
+								$post_filled_count =  $post_filled_count + $val['filled_qty'];
 								$dnoterows .= $val['dnoterow'];
 							}
 						}
@@ -197,7 +200,10 @@ _text_;
 					$dnotedata['order_id']	= $data['order_id'];
 					$dnotedata['details']	= $dnote_xml;
 					$dnotedata['idname']	= Auth::instance()->get_user()->idname;
-					$this->CreateDeliveryNote($dnotedata);
+					if($post_filled_count > $pre_filled_count)
+					{
+						$this->CreateDeliveryNote($dnotedata);
+					}
 				}
 			}
 			
@@ -221,6 +227,9 @@ _text_;
 			$querystr = sprintf('select id,qty_instock,current_no from %s where product_id = "%s" && branch_id = "%s"',$inventory->param['tb_live'],$val['product_id'],$val['branch_id']);
 			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
 			$qty_instock = $result[0]->qty_instock;
+			
+			$pre_filled = $val['filled_qty'];
+			$post_filled = $val['filled_qty'];
 			if($qty_instock != 0)
 			{
 				if($qty_instock >= $val['checkout_qty'])
@@ -241,7 +250,8 @@ _text_;
 				if($val['order_qty'] == $val['filled_qty']) { $val['status'] = "COMPLETED"; }
 				else if($val['order_qty'] > $val['filled_qty']) { $val['status'] = "PARTIAL"; }
 				else  { $val['status'] = "ERROR"; }
-				
+				$post_filled =  $val['filled_qty'];
+
 				//update inventory
 				$iid = $result[0]->id;
 				$current_no = $result[0]->current_no;
@@ -261,9 +271,15 @@ _text_;
 			}
 		}
 		$xmlrow = sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status']);
-		$dnoterow = sprintf('<row><product_id>%s</product_id><description>%s</description><filled_qty>%s</filled_qty></row>',$val['product_id'],$val['description'],$val['filled_qty']);
 		$val['xmlrow'] = $xmlrow;
-		$val['dnoterow'] = $dnoterow;
+		
+		$val['dnoterow'] = "";
+		$delivery_qty = $post_filled - $pre_filled;
+		if($delivery_qty > 0)
+		{
+			$dnoterow = sprintf('<row><product_id>%s</product_id><description>%s</description><filled_qty>%s</filled_qty></row>',$val['product_id'],$val['description'],$delivery_qty);
+			$val['dnoterow'] = $dnoterow;
+		}
 		return $val;
 	}
 	

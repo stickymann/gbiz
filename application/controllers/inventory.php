@@ -31,7 +31,7 @@ class Inventory_Controller extends Site_Controller
 		$validation->add_rules('branch_id','required', 'length[2,50]', 'standard_text');
 		$validation->add_rules('qty_instock','required','numeric');
 		$validation->add_rules('reorder_level','required','numeric');
-		$validation->add_rules('last_update_type','required', 'length[3,11]', 'standard_text');
+		$validation->add_rules('last_update_type','required', 'length[3,50]', 'standard_text');
 
 		$validation->add_callbacks('product_id', array($this, '_duplicate_composite_id'));
 		$this->param['isinputvalid'] = $validation->validate();

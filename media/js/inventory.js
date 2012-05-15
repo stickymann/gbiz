@@ -17,6 +17,7 @@ var inventory = new function()
 		{
 			$('#chkresult').html( this.AdjustForm() );
 			$('#qty').keyup(function(){ this.SetChangeInputs() });
+			$('#qty').change(function(){ this.SetChangeInputs() });
 			$('#qty_add').change(function(){ this.SetChangeInputs() });
 			$('#qty_minus').change(function(){ this.SetChangeInputs() });
 			firstload = false;
@@ -54,7 +55,7 @@ var inventory = new function()
 		qty = $('#qty_instock').val();
 		var html = "";
 		html += "<table>";
-		html += "<tr><td>Quantity :</td><td><input type='text' id='qty' name='qty' size='12' value='"+ qty +"'/> <input type='submit' id='reset' name='reset' value='Reset' onclick='window.inventory.QtyReset();'/></td></tr>";
+		html += "<tr><td>Quantity :</td><td><input type='text' id='qty' name='qty' size='12' value='"+ qty +"' onkeyup='window.inventory.QtyGet();' onchange='window.inventory.QtyGet();'/> <input type='submit' id='reset' name='reset' value='Reset' onclick='window.inventory.QtyReset();'/></td></tr>";
 		html += "<tr><td>Adjust :</td><td>";
 		html += "<input type='text' id='qty_minus' name='qty_minus' size='12' value='1'/> <input type='submit' id='qty_minus' name='qty_minus' value='- ' onclick='window.inventory.QtyMinus();'/></td></tr>";
 		html += "<tr><td>&nbsp</td><td>";
@@ -91,5 +92,11 @@ var inventory = new function()
 		$('#qty').val(initqty);
 		$('#qty_instock').val( $('#qty').val() );
 		tmpqty = $('#qty').val();
+	}
+
+	this.QtyGet = function()
+	{
+		$('#qty_instock').val( $('#qty').val() );
+		this.SetChangeInputs(); 
 	}
 }

@@ -12,9 +12,17 @@ $(document).ready(function()
 			
 	pi_params = "option=productpopoutchkbox&pitems=" + package_items + "&idfield="+ p_idfield + "&table=" + p_table + "&fields=" + p_fields;
 		$('#type').change(function() { $('#package_items').val(last_package_items); product.SetPackageItems();});
-	if( $('#type').val() == 'PACKAGE' ) { $('#package_items').click( function() {product.SetPackageItems(); } ); } 
-});
 		
+		if( $('#type').val() == 'PACKAGE' ) 
+		{ 
+			$('#package_items').click( function() 
+			{ 
+				product.SetPackageItems();
+			});
+		}
+
+});
+
 var product = new function()
 {
 	this.SetPackageItems = function()
