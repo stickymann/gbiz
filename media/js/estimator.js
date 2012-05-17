@@ -28,7 +28,7 @@ function DefaultColumns(tt)
 				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left'},
 				{field:'subform_order_details_unit_price',title:'<b>Unit Price</b>',width:70,align:'right'},
 				{field:'subform_order_details_unit_total',title:'<b>Unit Total</b>',width:70,align:'right'},
-				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true}}},
+				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true,precision:2}}},
 				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
 				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
 				{field:'subform_order_details_extended',title:'<b>Extended</b>',width:70,align:'right'},
