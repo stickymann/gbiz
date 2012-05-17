@@ -54,7 +54,7 @@ function DefaultColumns(tt)
 				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left'},
 				{field:'subform_order_details_unit_price',title:'<b>Unit Price</b>',width:70,align:'right'},
 				{field:'subform_order_details_unit_total',title:'<b>Unit Total</b>',width:70,align:'right'},
-				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true}}},
+				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true,precision:2}}},
 				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
 				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
 				{field:'subform_order_details_extended',title:'<b>Extended</b>',width:70,align:'right'},
@@ -74,7 +74,7 @@ function MiscColumns(tt)
 	colArr = [[
 				{field:'subform_order_details_product_id',title:'<b>Product Id</b>',width:120,align:'left'},			
 				{field:'subform_order_details_qty',title:'<b>Qty</b>',width:30,align:'center',editor:{type:'numberbox',options:{required:true}}}, 
-				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left',editor:{type:'validatebox',options:{required:true}}},
+				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left',editor:{type:'validatebox',options:{required:true,precision:2}}},
 				{field:'subform_order_details_unit_price',title:'<b>Unit Price</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true}}},
 				{field:'subform_order_details_unit_total',title:'<b>Unit Total</b>',width:70,align:'right'},
 				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',align:'right',width:70},
@@ -219,7 +219,7 @@ function order_UpdateDetails()
 			discount_amount =  rows[i].subform_order_details_discount_amount;
 		}
 			
-		subtotal		+= parseFloat((rows[i].subform_order_details_qty*rows[i].subform_order_details_unit_price)) - parseFloat(discount_amount);
+		subtotal		+= parseFloat((rows[i].subform_order_details_qty*rows[i].subform_order_details_unit_price))-parseFloat(discount_amount);
 		tax_total		+= parseFloat(rows[i].subform_order_details_tax_amount);
 		grandtotal		+= parseFloat(rows[i].subform_order_details_extended);
 	}  
