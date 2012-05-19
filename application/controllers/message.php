@@ -31,7 +31,7 @@ class Message_Controller extends Site_Controller
 		$validation->add_rules('recipient','required', 'length[1,50]', 'standard_text');
 		$validation->add_rules('sender','required', 'length[1,50]', 'standard_text');	
 		$validation->add_rules('subject','required', 'length[1,255]','standard_text');
-		$validation->add_rules('body','required', 'length[1,8192]','standard_text');
+		$validation->add_rules('body','required', 'length[1,8192]');
 
 		$this->param['isinputvalid'] = $validation->validate();
 		$this->param['validatedpost'] = $validation->as_array();
