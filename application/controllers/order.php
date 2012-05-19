@@ -34,7 +34,7 @@ class Order_Controller extends Site_Controller
 		$validation->add_rules('status_change_date', 'length[10]','alpha_dash');
 		$validation->add_rules('order_details','required');
 		$validation->add_rules('inventory_checkout_type','required', 'length[4,6]', 'standard_text');
-		$validation->add_rules('inventory_checkout_status','required', 'length[4,8]', 'standard_text');	
+		$validation->add_rules('inventory_checkout_status','required', 'length[4,10]', 'standard_text');	
 		$validation->add_callbacks('order_id', array($this, '_duplicate_altid'));
 		$validation->add_callbacks('order_status', array($this, '_order_status_ok'));
 		$validation->add_callbacks('order_details',array($this,'_order_details_exist'));
