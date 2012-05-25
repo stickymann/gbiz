@@ -259,6 +259,7 @@ _text_;
 				{
 					$arr['id'] = $iid;
 					$arr['qty_instock']		 = $val['adjust_qty'];
+					$arr['qty_diff']		 = $val['adjust_qty'] - $qty_instock;
 					$arr['last_update_type'] = "SALE";
 					$arr['inputter']		 = Auth::instance()->get_user()->idname;
 					$arr['input_date']		 = date('Y-m-d H:i:s'); 
