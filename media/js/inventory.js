@@ -4,6 +4,8 @@ $(document).ready(function()
 {
 	initqty = $('#qty_instock').val();
 	tmpqty = $('#qty_instock').val();
+	$('#last_update_type').focus(function(){ inventory.StockCheckUpdate() });
+	$('#last_update_type').change(function(){ inventory.StockCheckUpdate() });
 });
 	
 var inventory = new function() 
@@ -71,6 +73,7 @@ var inventory = new function()
 		$('#qty').val( sum.toFixed(2) );
 		$('#qty_instock').val( $('#qty').val() );
 		tmpqty = $('#qty').val();
+		this.StockCheckUpdate();
 	}
 		
 	this.QtyMinus = function()
@@ -85,6 +88,7 @@ var inventory = new function()
 			
 		$('#qty_instock').val( $('#qty').val() );
 		tmpqty = $('#qty').val();
+		this.StockCheckUpdate();
 	}
 		
 	this.QtyReset = function()
@@ -92,11 +96,26 @@ var inventory = new function()
 		$('#qty').val(initqty);
 		$('#qty_instock').val( $('#qty').val() );
 		tmpqty = $('#qty').val();
+		this.StockCheckUpdate();
 	}
 
 	this.QtyGet = function()
 	{
 		$('#qty_instock').val( $('#qty').val() );
 		this.SetChangeInputs(); 
+		this.StockCheckUpdate();
 	}
+
+	this.StockCheckUpdate = function()
+	{
+		if( $('#last_update_type').val() == "STOCK.CHECK" )
+		{
+			$('#qty_diff').val("0.00");
+		}
+		else
+		{
+			$('#qty_diff').val( $('#qty_instock').val() - initqty );
+		}
+	}
+
 }
