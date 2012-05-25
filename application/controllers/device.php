@@ -41,7 +41,7 @@ class Device_Controller extends Site_Controller
 		$validation->add_rules('phone_textback2','length[7]','numeric');
 		$validation->add_rules('gpsgate_user','length[2,50]','standard_text');
 		$validation->add_rules('gpsgate_pass','length[2,255]','standard_text');
-		$validation->add_rules('order_id','numeric');
+		$validation->add_rules('order_id','standard_text');
 		
 		$validation->add_callbacks('device_id', array($this, '_duplicate_altid'));
 		
