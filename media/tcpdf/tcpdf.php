@@ -8193,13 +8193,13 @@ class TCPDF {
 			case 'I': {
 				// Send PDF to the standard output
 				if (ob_get_contents()) {
-					$this->Error('Some data has already been output, can\'t send PDF file');
+					$this->Error('I - Some data has already been output, can\'t send PDF file');
 				}
 				if (php_sapi_name() != 'cli') {
 					//We send to a browser
 					header('Content-Type: application/pdf');
 					if (headers_sent()) {
-						$this->Error('Some data has already been output to browser, can\'t send PDF file');
+						$this->Error('IH - Some data has already been output to browser, can\'t send PDF file');
 					}
 					header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
 					header('Pragma: public');
@@ -8214,11 +8214,11 @@ class TCPDF {
 			case 'D': {
 				// Download PDF as file
 				if (ob_get_contents()) {
-					$this->Error('Some data has already been output, can\'t send PDF file');
+					$this->Error('D - Some data has already been output, can\'t send PDF file');
 				}
 				header('Content-Description: File Transfer');
 				if (headers_sent()) {
-					$this->Error('Some data has already been output to browser, can\'t send PDF file');
+					$this->Error('DH - Some data has already been output to browser, can\'t send PDF file');
 				}
 				header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
 				header('Pragma: public');

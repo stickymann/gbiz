@@ -695,6 +695,9 @@ _TEXT_;
 			$header = ''; $data = '';
 			foreach ($linerec as $key => $value)
 			{
+				if(strstr($value, '<?xml', true) === FALSE)
+				{
+				
 				if($firstpass)
 				{
 					if($fn){$header .= '<th>'.$key.'</th>';}else {$header .= '<th>'.$label[$key].'</th>';} 
@@ -737,6 +740,7 @@ _TEXT_;
 				else
 				{
 					$data .= '<td>'.html::specialchars($value).'</td>'; 
+				}
 				}
 			}
 			if($firstpass)
@@ -1218,7 +1222,7 @@ _HTML_;
 
 	function getOrderTotal($order_id)
 	{
-		$querystr	= sprintf('select sum(func_OrderDetailSubTotal(qty,unit_price,discount_amount,tax_percentage,discount_type)) as order_total from orderdetails where order_id ="%s"',$order_id);
+		$querystr	= sprintf('select sum(func_OrderDetailExtendedTotal(qty,unit_price,discount_amount,tax_percentage,taxable,discount_type)) as order_total from orderdetails where order_id ="%s"',$order_id);
 		$result		= $this->sitedb->executeSelectQuery($querystr);
 		return $result[0]->order_total;
 	}

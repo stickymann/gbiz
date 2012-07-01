@@ -142,7 +142,7 @@ _text_;
 		if( $data['run'] == "Y" )
 		{
 			$order = new Order_Controller();
-			$querystr = sprintf('select branch_id from %s where order_id = "%s"',$order->param['tb_live'],$data['order_id']);
+			$querystr = sprintf('select branch_id,inventory_update_type from %s where order_id = "%s"',$order->param['tb_live'],$data['order_id']);
 			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
 			if($result)
 			{
@@ -153,6 +153,7 @@ _text_;
 					foreach ($formfields->rows->row as $row) 
 					{ 
 						$val['branch_id'] = $result[0]->branch_id;
+						$val['inventory_update_type'] = $result[0]->inventory_update_type;
 						$val['product_id'] = sprintf('%s',$row->product_id);
 						$val['description'] = sprintf('%s',$row->description);
 						$val['order_qty'] = sprintf('%s',$row->order_qty);
@@ -260,7 +261,7 @@ _text_;
 					$arr['id'] = $iid;
 					$arr['qty_instock']		 = $val['adjust_qty'];
 					$arr['qty_diff']		 = $val['adjust_qty'] - $qty_instock;
-					$arr['last_update_type'] = "SALE";
+					$arr['last_update_type'] = $val['inventory_update_type'];
 					$arr['inputter']		 = Auth::instance()->get_user()->idname;
 					$arr['input_date']		 = date('Y-m-d H:i:s'); 
 					$arr['authorizer']		 = 'SYSAUTH';

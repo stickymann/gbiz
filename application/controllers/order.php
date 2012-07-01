@@ -100,7 +100,7 @@ class Order_Controller extends Site_Controller
 			
 			$subtotal		+= ($row['qty']*$row['unit_price']) - $discount_amount;
 			$tax_total		+= $row['tax_amount'];
-			$grandtotal		+= $row['extended'];
+			$grandtotal		+= $row['total'];
 		}  
 		
 		$summaryhtml = '<table class="viewtext" width="30%">';

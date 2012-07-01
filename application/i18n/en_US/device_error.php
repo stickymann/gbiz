@@ -94,7 +94,7 @@ $lang = array
 
 	'order_id' => array
     (
-        'numeric' => 'Order Id: must be numeric.',
+        'required' => 'Order Id: required.',
         'default' => 'Order Id:  invalid input.'
     )
 );

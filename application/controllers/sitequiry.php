@@ -67,7 +67,7 @@ class Sitequiry_Controller extends Template_Controller
 			$url =  sprintf('index.php/%s/page/1?op=%s&controller=%s&fields=%s&lkvals=%s',$controller,$op,$controller,$idfield,$value);
 		
 			$pagebody = new Sitehtml_Controller();
-			$pagebody->add('<div id="display">');
+			$pagebody->add('<div id="enq_display">');
 			$pagebody->add('<iframe src="'.$url.'" frameborder=0 width="98%" height=600px scrolling="auto"></iframe>');
 
 			$pagebody->add('</div>');
@@ -94,17 +94,24 @@ class Sitequiry_Controller extends Template_Controller
 		{
 			$field = $this->enqparam['fieldnames']; $label = $this->enqparam['labels'];
 			$html  = "<form><table>\n";
+			$count = 1;
 			foreach($this->enqparam['filterfields'] as $key => $value)
 			{
 				$labels .= sprintf('<td>%s</td>',$label[$key]);
 				$fields .= sprintf('<td><input type="text" id="%s" size="10"></td>',$field[$key]);
+				if(($count % 7) == 0)
+				{
+					$html .= "<tr>".$labels."</tr>\n<tr>".$fields."</tr>";
+					$labels = ""; $fields = "";
+				}
+				$count++;
 			}
 			$html .= "<tr>".$labels."</tr>\n<tr>".$fields."</tr></table>\n";
 			$html .= sprintf('<input type="hidden" id="controller" value="%s">',$this->controller);
 			$pagebody->add($html);
 			$pagebody->add('</form>');
 		}
-		$pagebody->add('<div id="display"></div>');
+		$pagebody->add('<div id="enq_display"></div>');
 		$this->content->pagebody = $pagebody->getHtml();
 		$this->setPageContent($this->htmlhead->getHtml(),$this->content);
 	}
@@ -137,7 +144,7 @@ $HTML=<<<_HTML_
 			var url =  ctrlr + "/page/1?op=like&controller=" + ctrlr + "&fields=" + fields + "&lkvals=" + lkvals;
 			//alert(url);
 			var iframe = '<iframe src="'+ url +'" frameborder=0 width="98%" height=600px scrolling="auto"></iframe>';
-			$('#display').html(iframe);
+			$('#enq_display').html(iframe);
 		}
 		</script>
 _HTML_;

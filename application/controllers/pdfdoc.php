@@ -62,9 +62,9 @@ class Pdfdoc_Controller extends Controller
 
 	public function index($pdf_id)
     {
-		$querystr = sprintf('select html from pdfs_is where pdf_id = "%s"',$pdf_id);
+		$querystr = sprintf('select data from pdfs_is where pdf_id = "%s"',$pdf_id);
 		$arr = $this->db->executeSelectQuery($querystr);
-		$HTML = $arr[0]->html;
+		$HTML = $arr[0]->data;
 		$HTML = str_replace("'",'"', $HTML);
 		// Set some content to print
 		// Print text using writeHTMLCell()

@@ -103,6 +103,7 @@ display:block;  white-space: nowrap;}
 #enqtot {border: red solid 0px; width:10%; color: #000000; background-color: #ffffff; position: relative; margin:0px 0px 0px 0px;  padding: 10px 0px 10px 2px; text-align: left; float: left;}
 #enqpag {border: red solid 0px; width: 45%; float: left; margin: 0px 0px 0px 0px;  padding: 0px 0px 0px 2px; text-align: left;}
 #enqprt {border: red solid 0px; width:15%; color: #000000; background-color: #ffffff; position: relative; margin:0px 0px 0px 0px;  padding: 10px 0px 10px 2px; text-align: left; float: left;}
+#enq_display {border: red solid 0px;}
 
 #resultlive {border: #000066 solid 0px; color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; margin: 1px 1px 1px 1px;  padding: 0px 0px 3px 0px; text-align: left; position: relative;  overflow: scroll; height:70%;}
 #resultinau {border: #000066 solid 0px; color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; margin: 1px 1px 1px 1px;  padding: 0px 0px 0px 0px; text-align: left; position: relative;  overflow: scroll; height:70%;}
@@ -113,7 +114,7 @@ display:block;  white-space: nowrap;}
 .bttn:focus {background-color:#ffffff;}
 .tbls {font-size: 10pt; border: solid black 0px; border-collapse: collapse;}
 .nobrd{color: #4f4f4f ;background-color: #ffffff; border: solid black 0px;}
-.input-c {border:1px solid #000000; color: #4f4f4f;	font-family:  Arial, Helvetica, sans-serif, Verdana, Geneva, Lucida, \"Lucida Grande\";	font-size: 10pt; font-weight: normal; background-color: #FFFFFF;}
+.input-c {border:1px solid #000000; color: #4f4f4f;	font-family:  Arial, Helvetica, sans-serif, Verdana; font-size: 10pt; font-weight: normal; background-color: #FFFFFF;}
 .dlgbg  {background-color:#ebf2f9; display:none;}
 .dateicon {margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;}
 
@@ -129,6 +130,11 @@ table.subform {width:70%; height:250px; 	border-width: 1px;
 #subformview th {border: 1px solid white;  font-weight: normal; padding: 2px; background: brown; color: #ffffff; }
 #subformview td {border: 1px solid brown; font-weight: normal; padding: 2px; background: transparent; color: brown; }
 #subformview tr:hover td { background: #ebf2f9; color: brown;}
+
+/*#e6e6e6*/
+#order_enq_details { border: 1px solid white; font-family: verdana, arial, helvetica, sans-serif; font-size: 1em; text-align: left; border-collapse: collapse; }
+#order_enq_details th {border: 1px solid white;  font-weight: normal; padding: 2px; background: silver; color: #000000; }
+#order_enq_details td {border: 1px solid silver; font-weight: normal; padding: 2px; background: transparent; color: silver;; }
 
 input.error { border: 1px solid red; }
 label.error {padding-left: 16px; margin-left: .3em;}

@@ -50,14 +50,15 @@ function DefaultColumns(tt)
 	var colArr =new Array();
 	colArr = [[
 				{field:'subform_order_details_product_id',title:'<b>Product Id</b>',width:120,align:'left',editor:{type:'combobox',options:{valueField:'product_id',textField:'product_id', url:url_products,onSelect:order_GetProductData, mode:'remote',required:true}}},
-				{field:'subform_order_details_qty',title:'<b>Qty</b>',width:30,align:'center',editor:{type:'numberbox',options:{required:true}}},
 				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left'},
+				{field:'subform_order_details_qty',title:'<b>Qty</b>',width:30,align:'center',editor:{type:'numberbox',options:{required:true}}},
 				{field:'subform_order_details_unit_price',title:'<b>Unit Price</b>',width:70,align:'right'},
 				{field:'subform_order_details_unit_total',title:'<b>Unit Total</b>',width:70,align:'right'},
 				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true,precision:2}}},
-				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
-				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
 				{field:'subform_order_details_extended',title:'<b>Extended</b>',width:70,align:'right'},
+				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
+				{field:'subform_order_details_total',title:'<b>Total</b>',width:70,align:'right'},
+				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
 				{field:'subform_order_details_taxable',title:'<b>Taxable</b>',width:50,align:'center'},
 				{field:'subform_order_details_discount_type',title:'<b>DiscountType</b>',width:50,align:'left',editor:{type:'checkbox',options:{on:'DOLLAR',off:'PERCENT'}}},
 				{field:'subform_order_details_description_type',title:'<b>DescriptionType</b>',width:100,align:'left',editor:{type:'checkbox',options:{on:'EXTENDED',off:'STANDARD'}}},
@@ -73,14 +74,15 @@ function MiscColumns(tt)
 	var colArr = new Array();
 	colArr = [[
 				{field:'subform_order_details_product_id',title:'<b>Product Id</b>',width:120,align:'left'},			
-				{field:'subform_order_details_qty',title:'<b>Qty</b>',width:30,align:'center',editor:{type:'numberbox',options:{required:true}}}, 
 				{field:'subform_order_details_description',title:'<b>Description</b>',width:200,align:'left',editor:{type:'validatebox',options:{required:true,precision:2}}},
+				{field:'subform_order_details_qty',title:'<b>Qty</b>',width:30,align:'center',editor:{type:'numberbox',options:{required:true}}}, 
 				{field:'subform_order_details_unit_price',title:'<b>Unit Price</b>',width:70,align:'right',editor:{type:'numberbox',options:{required:true}}},
 				{field:'subform_order_details_unit_total',title:'<b>Unit Total</b>',width:70,align:'right'},
 				{field:'subform_order_details_discount_amount',title:'<b>Discount</b>',align:'right',width:70},
-				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
-				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
 				{field:'subform_order_details_extended',title:'<b>Extended</b>',align:'right',width:70},
+				{field:'subform_order_details_tax_amount',title:'<b>Tax Amt</b>',width:50,align:'right'},
+				{field:'subform_order_details_total',title:'<b>Total</b>',align:'right',width:70},
+				{field:'subform_order_details_tax_percentage',title:'<b>Tax(%)</b>',width:50,align:'right'},
 				{field:'subform_order_details_taxable',title:'<b>Taxable</b>',width:50,align:'center',editor:{type:'checkbox',options:{on:'Y',off:'N'}}},
 				{field:'subform_order_details_discount_type',title:'<b>DiscountType</b>',width:50,align:'left'},
 				{field:'subform_order_details_description_type',title:'<b>DescriptionType</b>',width:100,align:'left'},
@@ -172,7 +174,8 @@ function doAcceptChanges()
 			}
 			row.subform_order_details_tax_amount ="0.00";
 		}
-		row.subform_order_details_extended = siteutils.formatCurrency(parseFloat((row.subform_order_details_qty*row.subform_order_details_unit_price)) - parseFloat(discount_amount) + parseFloat(row.subform_order_details_tax_amount));
+		row.subform_order_details_extended = siteutils.formatCurrency(parseFloat((row.subform_order_details_qty*row.subform_order_details_unit_price)) - parseFloat(discount_amount));
+		row.subform_order_details_total = siteutils.formatCurrency(parseFloat((row.subform_order_details_qty*row.subform_order_details_unit_price)) - parseFloat(discount_amount) + parseFloat(row.subform_order_details_tax_amount));
 		row.subform_order_details_discount_amount = siteutils.formatCurrency(row.subform_order_details_discount_amount);
 		row.subform_order_details_unit_total = siteutils.formatCurrency(parseFloat(row.subform_order_details_qty*row.subform_order_details_unit_price));
 		row.subform_order_details_unit_price = siteutils.formatCurrency(row.subform_order_details_unit_price);
@@ -204,6 +207,7 @@ function order_UpdateDetails()
 		tax_percentage  = "<tax_percentage>" + getCellsValue(rows[i].subform_order_details_tax_percentage) + "</tax_percentage>";
 		tax_amount		= "<tax_amount>" + getCellsValue(rows[i].subform_order_details_tax_amount) + "</tax_amount>";
 		extended		= "<extended>" + getCellsValue(rows[i].subform_order_details_extended) + "</extended>";
+		total			= "<total>" + getCellsValue(rows[i].subform_order_details_total) + "</total>";
 		discount_type   = "<discount_type>" + getCellsValue(rows[i].subform_order_details_discount_type) + "</discount_type>";
 		discount_amount = "<discount_amount>" + getCellsValue(rows[i].subform_order_details_discount_amount) + "</discount_amount>";
 		description		= "<description>" + getCellsValue(rows[i].subform_order_details_description) + "</description>";
@@ -221,7 +225,7 @@ function order_UpdateDetails()
 			
 		subtotal		+= parseFloat((rows[i].subform_order_details_qty*rows[i].subform_order_details_unit_price))-parseFloat(discount_amount);
 		tax_total		+= parseFloat(rows[i].subform_order_details_tax_amount);
-		grandtotal		+= parseFloat(rows[i].subform_order_details_extended);
+		grandtotal		+= parseFloat(rows[i].subform_order_details_total);
 	}  
 	
 	//xmlrowcount = "<rowcount>" + rowlength + "</rowcount>" + "\\n";
@@ -324,6 +328,11 @@ function order_GetUserBranch()
 function order_ToggleCheckoutType()
 {
 	if($('#inventory_checkout_type').val() == "AUTO") { $('#inventory_checkout_type').val("MANUAL"); } else { $('#inventory_checkout_type').val("AUTO"); }
+}
+
+function order_ToggleUpdateType()
+{
+	if($('#inventory_update_type').val() == "SALE") { $('#inventory_update_type').val("LOAN"); } else { $('#inventory_update_type').val("SALE"); }
 }
 
 function subform_InitDataGridReadOnly(tt)

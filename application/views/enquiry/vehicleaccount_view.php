@@ -204,9 +204,16 @@ _HTML_;
 		//necessary to do str_replace to ensure database inserts work
 		$pdf_html = str_replace('class=enqshd','class=\"enqshd\"',$pdf_html);
 		$pdf_html = str_replace('class=enqhdr','class=\"enqhdr\"',$pdf_html);
+		
 		$pdf = new Pdf_Controller();
-		$pdf->InsertIntoPDFTable($pdf_id,$pdf_html,$config['controller'],$config['idname'],$config['type']);
-		//print $pdf_html;
+		$arr['pdf_id']			= $pdf_id;
+		$arr['pdf_template']	= "GBIZ_VEHICLE_SUMMARY";
+		$arr['controller']		= $config['controller'];
+		$arr['type']			= $config['type'];
+		$arr['data']			= $pdf_html;
+		$arr['datatype']		= "html";
+		$arr['idname']			= $config['idname'];
+		$pdf->InsertIntoPDFTable($arr);
 	}
 }
 ?>
