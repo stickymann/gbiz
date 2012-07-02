@@ -1222,7 +1222,7 @@ _HTML_;
 
 	function getOrderTotal($order_id)
 	{
-		$querystr	= sprintf('select sum(func_OrderDetailExtendedTotal(qty,unit_price,discount_amount,tax_percentage,taxable,discount_type)) as order_total from orderdetails where order_id ="%s"',$order_id);
+		$querystr	= sprintf('select sum(func_OrderDetailOrderTotal(qty,unit_price,discount_amount,tax_percentage,taxable,discount_type)) as order_total from orderdetails where order_id ="%s"',$order_id);
 		$result		= $this->sitedb->executeSelectQuery($querystr);
 		return $result[0]->order_total;
 	}

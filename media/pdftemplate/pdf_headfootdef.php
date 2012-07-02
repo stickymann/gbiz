@@ -11,7 +11,7 @@ class SITEPDF extends TCPDF {
 		$this->SetFont('helvetica', '', 10);
 		$html = '<span style="font-size: 20pt; font-weight: bold;">GPS Rescue Ltd.</span><br>55 Maloney Street, Petit Bourg <br>Trinidad, W.I.<br>Tel: 675-8000, 222-5888, 685-4477';
 		$this->writeHTMLCell(60, 15, 55, 13, $html, 0, 0, 0, true, 'L', true);
-		$html = ' <br>Email: gpsrescue@gmail.com<br>Website: www.gpsrescuett.com<br>Facebook: www.facebook.com/gpsrescue<br>VAT Registration No.: 184075';
+		$html = ' <br>Email: gpsrescue@gmail.com<br>Website: www.gpsrescuett.com<br>Facebook: www.facebook.com/gpsrescue<br>VAT Registration No.: 179127';
 		$this->writeHTMLCell(0, 15, 130, 13, $html, 0, 1, 0, true, 'L', true);
 		$html = '<hr style="border: black solid 0px;">';
 		$this->writeHTMLCell(0, 20, 12, 35, $html, 0, 0, 0, true, 'L', true);
