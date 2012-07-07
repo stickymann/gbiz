@@ -79,6 +79,7 @@ class Pdf_Controller extends Site_Controller
 	{
 		$arr_inau['pdf_id'] = $pdfdata['pdf_id'];
 		//clean up files in tmp directory
+		
 		$querystr = sprintf('select pdf_id from %s where inputter = "%s" and authorizer = "%s" and record_status="HLD" and current_no="0"',$this->param['tb_inau'],$pdfdata['idname'],$pdfdata['idname']);
 		if($delarr = $this->param['primarymodel']->executeSelectQuery($querystr))
 		{	
@@ -94,6 +95,12 @@ class Pdf_Controller extends Site_Controller
 			return $result;
 		}
 		return false;
+		
+		/*
+		$querystr = sprintf('delete from %s where inputter = "%s" and authorizer = "%s" and record_status="HLD" and current_no="0"',$this->param['tb_inau'],$pdfdata['idname'],$pdfdata['idname']);
+		$result = $this->param['primarymodel']->executeNonSelectQuery($querystr);
+		return $result;
+		*/
 	}
 
 	public function InsertIntoPDFTableNoDelete($pdfdata)
