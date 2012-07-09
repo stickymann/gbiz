@@ -186,7 +186,7 @@ function order_UpdateDetails()
 		discount_amount = "<discount_amount>" + getCellsValue(rows[i].subform_order_details_discount_amount) + "</discount_amount>";
 		description		= "<description>" + getCellsValue(rows[i].subform_order_details_description) + "</description>";
 		user_text		= "<user_text>" + getCellsValue(rows[i].subform_order_details_user_text) + "</user_text>";
-		xmltxt			+= "<row>" + id + order_id + product_id + qty + unit_price + unit_total +taxable + tax_percentage + tax_amount + extended + total + discount_type + discount_amount + description + user_text + "</row>";
+		xmltxt			+= "<row>" + id + order_id + product_id + qty + unit_price + unit_total +taxable + tax_percentage + tax_amount + extended + discount_type + discount_amount + description + user_text + "</row>";
 			
 		if(rows[i].subform_order_details_discount_type=="PERCENT")
 		{
