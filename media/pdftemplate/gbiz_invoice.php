@@ -14,7 +14,7 @@ $page_config['invoice_info_cellheight'] = 15;
 $page_config['invoice_info_posx_l'] = $pdf_margin_left;
 $page_config['invoice_info_posx_r'] = 108;
 $page_config['invoice_info_posy'] = $pdf_margin_top+10;
-$page_config['invoice_info_borderheight'] = 22;
+$page_config['invoice_info_borderheight'] = 29; //22
 $page_config['invoice_info_borderposx'] = $pdf_margin_left;
 $page_config['invoice_info_borderposy'] = $pdf_margin_top+9;
 
@@ -28,11 +28,11 @@ $page_config['summary_posx_r'] = 124;
 $page_config['summary_posy'] = $pdf_margin_top+182;
 
 $page_config['leftshift'] = 0;
-$page_config['onepage_height'] = 140;
+$page_config['onepage_height'] = 133; //140
 $page_config['fullpage_height'] = 226;
-$page_config['firstpage_height'] = 184;
+$page_config['firstpage_height'] = 177; //184
 $page_config['lastpage_height'] = 182;
-$page_config['firstpage_offset'] = 35;
+$page_config['firstpage_offset'] = 42; //35
 $page_config['fullpage_offset'] = 0;
 $page_config['pagetype'] = "onepage";
 $page_config['details_headerheight'] = 7;

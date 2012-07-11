@@ -362,6 +362,7 @@ _HTML_;
 		$pdf_data = "<?xml version='1.0' standalone='yes'?>"."\n"."<formfields>"."\n";
 		$pdf_data .= $pdf_xml."\n".$pdf_audit;
 		$pdf_data .= "</formfields>"."\n";
+		$pdf_data = str_replace('&','and',$pdf_data); 
 
 		$pdf = new Pdf_Controller();
 		$arr['pdf_id']			= $invoice_id;
