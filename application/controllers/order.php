@@ -186,11 +186,11 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 				//update checkout status for nonstock order
 				$chk->UpdateOrderCheckOutStatus($this->param['tb_live'],$_POST['order_id'],"COMPLETED");
 			}
-		}
-		
-		if( $_POST['inventory_checkout_type'] == "AUTO"  && !($_POST['inventory_checkout_status'] == "COMPLETED") && $rowcount > 0)
-		{
-			$chk->ProcessCheckout($chkout_record);
+				
+			if( $_POST['inventory_checkout_type'] == "AUTO"  && !($_POST['inventory_checkout_status'] == "COMPLETED") && $rowcount > 0)
+			{
+				$chk->ProcessCheckout($chkout_record);
+			}
 		}
 	}
 
