@@ -375,11 +375,13 @@ _HTML_;
 		
 		if( $pdf->DeleteFromPDFTable($arr) )
 		{
-			$pdf->InsertIntoPDFTableNoDelete($arr);
-			$arr['pdf_id']			= $quotation_id;
-			$arr['pdf_template']	= "GBIZ_QUOTATION";
-			$pdf->InsertIntoPDFTableNoDelete($arr);
+			//wait for deletions
 		}
+		
+		$pdf->InsertIntoPDFTableNoDelete($arr);
+		$arr['pdf_id']			= $quotation_id;
+		$arr['pdf_template']	= "GBIZ_QUOTATION";
+		$pdf->InsertIntoPDFTableNoDelete($arr);
 	}
 }
 ?>

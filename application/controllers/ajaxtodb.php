@@ -108,10 +108,20 @@ class Ajaxtodb_Controller extends Controller
 			break;
 
 			case 'jdata':
-				$controller = $_REQUEST['controller'];
+				if(isset($_REQUEST['controller']))
+				{
+					$controller = $_REQUEST['controller'];
+					if(isset($_REQUEST['tabletype'])){$table_type = $_REQUEST['tabletype'];} else {$table_type = "live";}
+					$param  = $this->sitedb->getControllerParams($controller);
+					if($table_type == "live"){ $table = $param['tb_live']; }else if($table_type == "inau"){ $table = $param['tb_inau'];}else if($table_type == "hist"){ $table = $param['tb_hist'];}
+ 				}
+				else
+				{
+					$table = $_REQUEST['dbtable'];
+				}
+								
 				$fields = $_REQUEST['fields'];
 				$prefix = $_REQUEST['prefix'];
-				if(isset($_REQUEST['tabletype'])){$table_type = $_REQUEST['tabletype'];} else {$table_type = "live";}
 				$where = "";
 				if(isset($_REQUEST['wfields']))
 				{
@@ -131,23 +141,29 @@ class Ajaxtodb_Controller extends Controller
 				{ 
 					$orderby = "ORDER BY ".$_REQUEST['orderby']; 
 				}
-				$param  = $this->sitedb->getControllerParams($controller);
-				if($table_type == "live"){ $table = $param['tb_live']; }else if($table_type == "inau"){ $table = $param['tb_inau'];}else if($table_type == "hist"){ $table = $param['tb_hist'];}
+				
 				$fields = explode(",", $fields);
 				$result = $this->sitedb->getAllRecsByFields($table,$fields,$prefix,$where,$orderby);
 				print json_encode($result);
 			break;
 
 			case 'jdatabyid':
-				$controller = $_REQUEST['controller'];
+				if(isset($_REQUEST['controller']))
+				{
+					$controller = $_REQUEST['controller'];
+					if(isset($_REQUEST['tabletype'])){$table_type = $_REQUEST['tabletype'];} else {$table_type = "live";}
+					$param  = $this->sitedb->getControllerParams($controller);
+					if($table_type == "live"){ $table = $param['tb_live']; }else if($table_type == "inau"){ $table = $param['tb_inau'];}else if($table_type == "hist"){ $table = $param['tb_hist'];}
+				}
+				else
+				{
+					$table = $_REQUEST['dbtable'];
+				}
+				
 				$fields = $_REQUEST['fields'];
 				$idfield = $_REQUEST['idfield'];
 				$idval  = $_REQUEST['idval'];
-				if(isset($_REQUEST['tabletype'])){$table_type = $_REQUEST['tabletype'];} else {$table_type = "live";}
-
-				$param  = $this->sitedb->getControllerParams($controller);
-				if($table_type == "live"){ $table = $param['tb_live']; }else if($table_type == "inau"){ $table = $param['tb_inau'];}else if($table_type == "hist"){ $table = $param['tb_hist'];}
-
+				
 				$fields = explode(",", $fields);	
 				$idvals = preg_split('/,/',$idval);
 				foreach($idvals as $key => $val)

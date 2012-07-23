@@ -434,7 +434,7 @@ CREATE TABLE `customers_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2588 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2594 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -856,6 +856,166 @@ CREATE TABLE `enquirydefs_is` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_controller` (`controller`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `eominvoicedetails`
+--
+
+DROP TABLE IF EXISTS `eominvoicedetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eominvoicedetails` (
+  `id` int(11) unsigned NOT NULL,
+  `batch_id` varchar(16) NOT NULL,
+  `invoice_id` int(11) unsigned NOT NULL,
+  `alt_invoice_id` int(11) unsigned NOT NULL,
+  `order_id` varchar(16) NOT NULL,
+  `order_date` date NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `payment_total` float(16,2) NOT NULL,
+  `payment_type` varchar(255) NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `eominvoicedetails_hs`
+--
+
+DROP TABLE IF EXISTS `eominvoicedetails_hs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eominvoicedetails_hs` (
+  `id` int(11) unsigned NOT NULL,
+  `batch_id` varchar(16) NOT NULL,
+  `invoice_id` int(11) unsigned NOT NULL,
+  `alt_invoice_id` int(11) unsigned NOT NULL,
+  `order_id` varchar(16) NOT NULL,
+  `order_date` date NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `payment_total` float(16,2) NOT NULL,
+  `payment_type` varchar(255) NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`current_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `eominvoicedetails_is`
+--
+
+DROP TABLE IF EXISTS `eominvoicedetails_is`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eominvoicedetails_is` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `batch_id` varchar(16) DEFAULT NULL,
+  `invoice_id` int(11) unsigned DEFAULT NULL,
+  `alt_invoice_id` int(11) unsigned DEFAULT NULL,
+  `order_id` varchar(16) DEFAULT NULL,
+  `order_date` date DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `payment_total` float(16,2) DEFAULT NULL,
+  `payment_type` varchar(255) DEFAULT NULL,
+  `inputter` varchar(50) DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `authorizer` varchar(50) DEFAULT NULL,
+  `auth_date` datetime DEFAULT NULL,
+  `record_status` char(4) DEFAULT NULL,
+  `current_no` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `eominvoices`
+--
+
+DROP TABLE IF EXISTS `eominvoices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eominvoices` (
+  `id` int(11) unsigned NOT NULL,
+  `batch_id` varchar(16) NOT NULL,
+  `batch_date` date NOT NULL,
+  `batch_description` varchar(255) NOT NULL,
+  `batch_details` text NOT NULL,
+  `comments` text NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_batch_id` (`batch_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `eominvoices_hs`
+--
+
+DROP TABLE IF EXISTS `eominvoices_hs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eominvoices_hs` (
+  `id` int(11) unsigned NOT NULL,
+  `batch_id` varchar(16) NOT NULL,
+  `batch_date` date NOT NULL,
+  `batch_description` varchar(255) NOT NULL,
+  `batch_details` text NOT NULL,
+  `comments` text NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`current_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `eominvoices_is`
+--
+
+DROP TABLE IF EXISTS `eominvoices_is`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eominvoices_is` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `batch_id` varchar(16) DEFAULT NULL,
+  `batch_date` date DEFAULT NULL,
+  `batch_description` varchar(255) DEFAULT NULL,
+  `batch_details` text,
+  `comments` text,
+  `inputter` varchar(50) DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `authorizer` varchar(50) DEFAULT NULL,
+  `auth_date` datetime DEFAULT NULL,
+  `record_status` char(4) DEFAULT NULL,
+  `current_no` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_batch_id` (`batch_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1008 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1549,7 +1709,7 @@ CREATE TABLE `orderdetails_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1202 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1110 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1647,7 +1807,7 @@ CREATE TABLE `orders_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13618 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13569 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1932,7 +2092,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30890 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30925 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2154,7 +2314,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7573 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7626 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2288,6 +2448,89 @@ CREATE TABLE `regions_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reportdefs`
+--
+
+DROP TABLE IF EXISTS `reportdefs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reportdefs` (
+  `id` int(11) unsigned NOT NULL,
+  `controller` varchar(255) NOT NULL,
+  `formfields` text,
+  `model` varchar(255) NOT NULL,
+  `view` varchar(255) NOT NULL,
+  `rptheader` varchar(255) NOT NULL,
+  `showfilter` tinyint(1) NOT NULL,
+  `printuser` tinyint(1) NOT NULL,
+  `printdatetime` tinyint(1) NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_controller` (`controller`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reportdefs_hs`
+--
+
+DROP TABLE IF EXISTS `reportdefs_hs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reportdefs_hs` (
+  `id` int(11) unsigned NOT NULL,
+  `controller` varchar(255) NOT NULL,
+  `formfields` text,
+  `model` varchar(255) NOT NULL,
+  `view` varchar(255) NOT NULL,
+  `rptheader` varchar(255) NOT NULL,
+  `showfilter` tinyint(1) NOT NULL,
+  `printuser` tinyint(1) NOT NULL,
+  `printdatetime` tinyint(1) NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`current_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reportdefs_is`
+--
+
+DROP TABLE IF EXISTS `reportdefs_is`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reportdefs_is` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `controller` varchar(255) DEFAULT NULL,
+  `formfields` text,
+  `model` varchar(255) DEFAULT NULL,
+  `view` varchar(255) DEFAULT NULL,
+  `rptheader` varchar(255) DEFAULT NULL,
+  `showfilter` tinyint(1) DEFAULT NULL,
+  `printuser` tinyint(1) DEFAULT NULL,
+  `printdatetime` tinyint(1) DEFAULT NULL,
+  `inputter` varchar(50) DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `authorizer` varchar(50) DEFAULT NULL,
+  `auth_date` datetime DEFAULT NULL,
+  `record_status` char(4) DEFAULT NULL,
+  `current_no` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_controller` (`controller`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3315,6 +3558,25 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary table structure for view `vw_eomorders`
+--
+
+DROP TABLE IF EXISTS `vw_eomorders`;
+/*!50001 DROP VIEW IF EXISTS `vw_eomorders`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `vw_eomorders` (
+  `invoice_id` int(11) unsigned,
+  `order_id` varchar(20),
+  `order_date` date,
+  `first_name` varchar(255),
+  `last_name` varchar(255),
+  `payment_total` double(19,2),
+  `payment_type` varchar(341)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary table structure for view `vw_estimator_products`
 --
 
@@ -3423,6 +3685,7 @@ SET character_set_client = utf8;
   `phone_home` int(7),
   `phone_work` int(7),
   `order_details` varchar(341),
+  `payment_type` varchar(341),
   `order_date` date,
   `quotation_date` date,
   `invoice_date` date,
@@ -4307,6 +4570,25 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_eomorders`
+--
+
+/*!50001 DROP TABLE IF EXISTS `vw_eomorders`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_eomorders`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_eomorders` AS (select `vw_orderbalances`.`id` AS `invoice_id`,`vw_orderbalances`.`order_id` AS `order_id`,`vw_orderbalances`.`order_date` AS `order_date`,`vw_orderbalances`.`first_name` AS `first_name`,`vw_orderbalances`.`last_name` AS `last_name`,`vw_orderbalances`.`payment_total` AS `payment_total`,`vw_orderbalances`.`payment_type` AS `payment_type` from `vw_orderbalances` where ((not((`vw_orderbalances`.`payment_type` like '%CASH%'))) and (`vw_orderbalances`.`customer_type` = 'INDIVIDUAL') and (`vw_orderbalances`.`order_status` = 'INVOICE.FULL.PAID') and (not(`vw_orderbalances`.`order_id` in (select `eominvoicedetails`.`order_id` from `eominvoicedetails`))))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_estimator_products`
 --
 
@@ -4396,7 +4678,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_orderbalances` AS (select `orders`.`id` AS `id`,`orders`.`order_id` AS `order_id`,`orders`.`branch_id` AS `branch_id`,`orders`.`customer_id` AS `customer_id`,`customers`.`first_name` AS `first_name`,`customers`.`last_name` AS `last_name`,`customers`.`customer_type` AS `customer_type`,`customers`.`address1` AS `address1`,`customers`.`address2` AS `address2`,`customers`.`city` AS `city`,`customers`.`phone_mobile1` AS `phone_mobile1`,`customers`.`phone_home` AS `phone_home`,`customers`.`phone_work` AS `phone_work`,(select group_concat(`orderdetails`.`product_id`,':',`orderdetails`.`qty` separator ',') AS `aa` from `orderdetails` where (`orders`.`order_id` = `orderdetails`.`order_id`)) AS `order_details`,`orders`.`order_date` AS `order_date`,`orders`.`quotation_date` AS `quotation_date`,`orders`.`invoice_date` AS `invoice_date`,`orders`.`order_status` AS `order_status`,`orders`.`inventory_checkout_status` AS `inventory_checkout_status`,`orders`.`inventory_update_type` AS `inventory_update_type`,`orders`.`inputter` AS `inputter`,`orders`.`input_date` AS `input_date`,`orders`.`comments` AS `comments`,`orders`.`current_no` AS `current_no`,(select coalesce(sum(`func_OrderDetailUnitTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`)),0) AS `ab` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `unit_total`,(select coalesce(sum(`func_OrderDetailDiscountTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`discount_type`)),0) AS `ac` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `discount_total`,(select coalesce(sum(`func_OrderDetailSubTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`discount_type`)),0) AS `ad` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `extended_total`,(select coalesce(sum(`func_OrderDetailTaxTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`tax_percentage`,`orderdetails`.`taxable`,`orderdetails`.`discount_type`)),0) AS `ae` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `tax_total`,(select coalesce(sum(`func_OrderDetailOrderTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`tax_percentage`,`orderdetails`.`taxable`,`orderdetails`.`discount_type`)),0) AS `af` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `order_total`,(select coalesce(sum(`payments`.`amount`),0) AS `ag` from `payments` where ((`payments`.`order_id` = `orders`.`order_id`) and (`payments`.`payment_status` = 'VALID'))) AS `payment_total`,((select coalesce(sum(`func_OrderDetailOrderTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`tax_percentage`,`orderdetails`.`taxable`,`orderdetails`.`discount_type`)),0) AS `ah` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) - (select coalesce(sum(`payments`.`amount`),0) AS `ai` from `payments` where ((`payments`.`order_id` = `orders`.`order_id`) and (`payments`.`payment_status` = 'VALID')))) AS `balance` from (`orders` join `customers` on((`orders`.`customer_id` = `customers`.`customer_id`)))) */;
+/*!50001 VIEW `vw_orderbalances` AS (select `orders`.`id` AS `id`,`orders`.`order_id` AS `order_id`,`orders`.`branch_id` AS `branch_id`,`orders`.`customer_id` AS `customer_id`,`customers`.`first_name` AS `first_name`,`customers`.`last_name` AS `last_name`,`customers`.`customer_type` AS `customer_type`,`customers`.`address1` AS `address1`,`customers`.`address2` AS `address2`,`customers`.`city` AS `city`,`customers`.`phone_mobile1` AS `phone_mobile1`,`customers`.`phone_home` AS `phone_home`,`customers`.`phone_work` AS `phone_work`,(select group_concat(`orderdetails`.`product_id`,'(',`orderdetails`.`qty`,')' separator ';') AS `aa` from `orderdetails` where (`orders`.`order_id` = `orderdetails`.`order_id`)) AS `order_details`,(select group_concat(`payments`.`payment_type`,'(',`payments`.`amount`,')' separator ';') AS `ba` from `payments` where ((`orders`.`order_id` = `payments`.`order_id`) and (`payments`.`payment_status` = 'VALID'))) AS `payment_type`,`orders`.`order_date` AS `order_date`,`orders`.`quotation_date` AS `quotation_date`,`orders`.`invoice_date` AS `invoice_date`,`orders`.`order_status` AS `order_status`,`orders`.`inventory_checkout_status` AS `inventory_checkout_status`,`orders`.`inventory_update_type` AS `inventory_update_type`,`orders`.`inputter` AS `inputter`,`orders`.`input_date` AS `input_date`,`orders`.`comments` AS `comments`,`orders`.`current_no` AS `current_no`,(select coalesce(sum(`func_OrderDetailUnitTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`)),0) AS `ab` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `unit_total`,(select coalesce(sum(`func_OrderDetailDiscountTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`discount_type`)),0) AS `ac` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `discount_total`,(select coalesce(sum(`func_OrderDetailSubTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`discount_type`)),0) AS `ad` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `extended_total`,(select coalesce(sum(`func_OrderDetailTaxTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`tax_percentage`,`orderdetails`.`taxable`,`orderdetails`.`discount_type`)),0) AS `ae` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `tax_total`,(select coalesce(sum(`func_OrderDetailOrderTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`tax_percentage`,`orderdetails`.`taxable`,`orderdetails`.`discount_type`)),0) AS `af` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) AS `order_total`,(select coalesce(sum(`payments`.`amount`),0) AS `ag` from `payments` where ((`payments`.`order_id` = `orders`.`order_id`) and (`payments`.`payment_status` = 'VALID'))) AS `payment_total`,((select coalesce(sum(`func_OrderDetailOrderTotal`(`orderdetails`.`qty`,`orderdetails`.`unit_price`,`orderdetails`.`discount_amount`,`orderdetails`.`tax_percentage`,`orderdetails`.`taxable`,`orderdetails`.`discount_type`)),0) AS `ah` from `orderdetails` where (`orderdetails`.`order_id` = `orders`.`order_id`)) - (select coalesce(sum(`payments`.`amount`),0) AS `ai` from `payments` where ((`payments`.`order_id` = `orders`.`order_id`) and (`payments`.`payment_status` = 'VALID')))) AS `balance` from (`orders` join `customers` on((`orders`.`customer_id` = `customers`.`customer_id`)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -4415,7 +4697,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_orderbalances_nonzero` AS (select `vw_orderbalances`.`order_id` AS `order_id`,`vw_orderbalances`.`branch_id` AS `branch_id`,`vw_orderbalances`.`customer_id` AS `customer_id`,`vw_orderbalances`.`first_name` AS `first_name`,`vw_orderbalances`.`last_name` AS `last_name`,`vw_orderbalances`.`order_date` AS `order_date`,`vw_orderbalances`.`order_status` AS `order_status`,`vw_orderbalances`.`order_total` AS `order_total`,`vw_orderbalances`.`payment_total` AS `payment_total`,`vw_orderbalances`.`balance` AS `balance` from `vw_orderbalances` where (`vw_orderbalances`.`balance` > 0)) */;
+/*!50001 VIEW `vw_orderbalances_nonzero` AS (select `vw_orderbalances`.`order_id` AS `order_id`,`vw_orderbalances`.`branch_id` AS `branch_id`,`vw_orderbalances`.`customer_id` AS `customer_id`,`vw_orderbalances`.`first_name` AS `first_name`,`vw_orderbalances`.`last_name` AS `last_name`,`vw_orderbalances`.`order_date` AS `order_date`,`vw_orderbalances`.`order_status` AS `order_status`,`vw_orderbalances`.`order_total` AS `order_total`,`vw_orderbalances`.`payment_total` AS `payment_total`,`vw_orderbalances`.`balance` AS `balance` from `vw_orderbalances` where ((`vw_orderbalances`.`balance` > 0) and (`vw_orderbalances`.`order_status` <> 'ORDER.CANCELLED'))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -4581,4 +4863,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-12 14:26:11
+-- Dump completed on 2012-07-23  9:57:45

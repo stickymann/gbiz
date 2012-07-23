@@ -59,6 +59,8 @@ img {border-style: none;}
 */
 .input-i
 {border:solid 1px #0000ad; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #ffffff; -moz-border-radius:3px; -webkit-border-radius:3px; margin:0 0 0 0px; padding:1px; white-space: nowrap; }
+.input-r
+{border:solid 1px #000000; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 9pt; background-color: #ffffff; margin:0 0 0 0px; padding:1px; white-space: nowrap; }
 
 /*#tmpval {display: none;}*/ 
 /*
@@ -131,10 +133,14 @@ table.subform {width:70%; height:250px; 	border-width: 1px;
 #subformview td {border: 1px solid brown; font-weight: normal; padding: 2px; background: transparent; color: brown; }
 #subformview tr:hover td { background: #ebf2f9; color: brown;}
 
+#rpttbl { border: 1px solid white; font-family: verdana, arial, helvetica, sans-serif; font-size: 1em; text-align: left; border-collapse: collapse; }
+#rpttbl th {border: 1px solid white;  font-weight: normal; padding: 2px; background: silver; color: #000000; }
+#rpttbl td {border: 1px solid silver; font-weight: normal; padding: 2px; background: transparent; color:#000000 ; }
+
 /*#e6e6e6*/
 #order_enq_details { border: 1px solid white; font-family: verdana, arial, helvetica, sans-serif; font-size: 1em; text-align: left; border-collapse: collapse; }
 #order_enq_details th {border: 1px solid white;  font-weight: normal; padding: 2px; background: silver; color: #000000; }
-#order_enq_details td {border: 1px solid silver; font-weight: normal; padding: 2px; background: transparent; color: silver;; }
+#order_enq_details td {border: 1px solid silver; font-weight: normal; padding: 2px; background: transparent; color: silver; }
 
 input.error { border: 1px solid red; }
 label.error {padding-left: 16px; margin-left: .3em;}
