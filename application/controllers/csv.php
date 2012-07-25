@@ -62,7 +62,14 @@ class Csv_Controller extends Site_Controller
 			$arr['csv_id']			= $csv_id;
 			$arr['controller']		= $controller;
 			$arr['type']			= $type;
-			$arr['csv']				= $csv_tmp_path.$csv_id.".csv";
+			if($type == "default") 
+			{
+				$arr['csv']	= $csv_tmp_path.$csv_id.".csv";
+			}
+			else
+			{
+				$arr['csv']	= $csv_tmp_path.$csv_id.".".$type;
+			}
 			$arr['inputter']		= $idname;
 			$arr['input_date']		= date('Y-m-d H:i:s'); 
 			$arr['authorizer']		= $idname;
@@ -82,7 +89,7 @@ class Csv_Controller extends Site_Controller
 		foreach($delarr as $row)
 		{
 			//delete file
-			unlink($row->csv);
+			if(file_exists($row->csv)){ unlink($row->csv); }
 		}
 	}
 }

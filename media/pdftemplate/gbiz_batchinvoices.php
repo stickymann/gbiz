@@ -1,8 +1,17 @@
 <?php
-$formfields = new SimpleXMLElement($data);
+//get xml file
+$file = "/tmp/".$pdf_id.'.xml';
+$formfields = simplexml_load_file($file); 
+//$formfields = new SimpleXMLElement($xmldata);
+$pggroup = 0; $startpage = 0; $endpage = 0;
+$pageGroup[0] = array('start'=>$startpage,'end'=>$endpage);
+foreach ($formfields->fields as $fields)
+{	 
+$this->pdf->startPageGroup();
 $this->pdf->AddPage();
+$pggroup++;
 
-$page_config['formfields'] = $formfields;
+$page_config['formfields'] = $fields;
 $page_config['pdf_margin_left'] = $pdf_margin_left; 
 $page_config['pdf_margin_right'] = $pdf_margin_right; 
 $page_config['pdf_margin_top'] = $pdf_margin_top; 
@@ -49,7 +58,12 @@ invoice_info($this->pdf, $page_config);
 invoice_info_border($this->pdf, $page_config);
 invoice_details($this->pdf,$page_config);
 
-$numpages = $this->pdf->getNumPages();
+$startpage = $endpage + 1;
+$endpage = $this->pdf->getPage();
+$pageGroup[$pggroup] = $pageGroup[0] = array('start'=>$startpage,'end'=>$endpage);
+
+$page_r = $pageGroup[$pggroup];
+$numpages = $page_r['end'] - $page_r['start'] + 1;
 for($pagenum=1; $pagenum < $numpages+1; $pagenum++)
 {
 	if( $pagenum == 1 && $numpages == 1)
@@ -68,13 +82,14 @@ for($pagenum=1; $pagenum < $numpages+1; $pagenum++)
 	{
 		$page_config['pagetype'] = "fullpage";
 	}
-	$this->pdf->setPage($pagenum, false);
+	$this->pdf->setPage($page_r['start'], false);
 	invoice_details_border($this->pdf,$page_config);
+	
 }
-
 invoice_summary($this->pdf, $page_config);
 invoice_summary_border($this->pdf, $page_config);
 
+}
 //############## invoice ends here ############## 
 
 function invoice_details(&$pdf,$page_config)
@@ -83,8 +98,7 @@ function invoice_details(&$pdf,$page_config)
 	$table = $od->param['tb_live'];
 	$fields = $od->model->getFormFields("orderdetail");
 	$prefix = "";
-	$formfields = $page_config['formfields'];
-	$item = $formfields->fields;
+	$item = $page_config['formfields'];
 	$order_id = $item->order_id->value;
 
 	$where = sprintf('where order_id = "%s"',$order_id);
@@ -95,12 +109,7 @@ function invoice_details(&$pdf,$page_config)
 		$html = '<table border="0" cellspacing="3" cellpadding="2" >'; 
 		foreach($result as $index => $row)
 		{
-			if($row->user_text !="?") 
-			{
-				$row->user_text = str_replace("^","<br>",$row->user_text);
-				$description = $row->description."<br>".nl2br($row->user_text); 
-			} else { $description = $row->description; }
-			
+			if($row->user_text !="?") {$description = $row->description."<br>".nl2br($row->user_text); }else { $description = $row->description; }
 			if($row->discount_type=="PERCENT")
 			{
 				$discount = (($row->qty*$row->unit_price) * $row->discount_amount / 100);
@@ -146,8 +155,7 @@ function page_title(&$pdf,$page_config)
 function invoice_info(&$pdf, $page_config)
 {
 	//customer name  and address
-	$formfields = $page_config['formfields'] ;
-	$item = $formfields->fields;
+	$item = $page_config['formfields'] ;
 	
 	if($item->customer_type->value == 'COMPANY'){$fullname = $item->last_name->value;}else{$fullname = $item->first_name->value.' '.$item->last_name->value;}
 	
@@ -304,8 +312,7 @@ function invoice_details_border(&$pdf,$page_config)
 function invoice_summary(&$pdf, $page_config)
 {
 	//customer name  and address
-	$formfields = $page_config['formfields'] ;
-	$item = $formfields->fields;
+	$item = $page_config['formfields'] ;
 	$sub_total		= "$ ".number_format(sprintf('%s',$item->sub_total->value), 2, '.', ',');
 	$tax_total		= "$ ".number_format(sprintf('%s',$item->tax_total->value), 2, '.', ',');
 	$order_total	= "$ ".number_format(sprintf('%s',$item->order_total->value), 2, '.', ',');

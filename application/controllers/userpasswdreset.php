@@ -15,7 +15,7 @@ class Userpasswdreset_Controller extends Site_Controller
 		$this->processIndex();
 	}
 
-	function insertHeadJS($controller)
+	function insertHeadJS()
 	{
 		$TEXT=<<<_text_
 		<script type="text/javascript">

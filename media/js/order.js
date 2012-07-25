@@ -267,11 +267,11 @@ function order_GetProductData()
 
 		url = siteutils.getAjaxURL() + "option=jdatabyid&controller=product&fields=product_id,product_description,unit_price,taxable,tax_percentage&idfield=product_id&idval=" + lookupval;
 		$.getJSON(url, function(data){
-		row.subform_order_details_description = data.product_description;
-		row.subform_order_details_unit_price = data.unit_price;
+			row.subform_order_details_description = data.product_description;
+			row.subform_order_details_unit_price = data.unit_price;
 				
-				row.subform_order_details_taxable = data.taxable;
-				row.subform_order_details_tax_percentage = data.tax_percentage;
+			row.subform_order_details_taxable = data.taxable;
+			row.subform_order_details_tax_percentage = data.tax_percentage;
 		});
 	}
 }

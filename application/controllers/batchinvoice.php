@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Eominvoice_Controller extends Site_Controller
+class Batchinvoice_Controller extends Site_Controller
 {
 	public function __construct()
     {
-		parent::__construct('eominvoice');
+		parent::__construct('batchinvoice');
 		$this->param['htmlhead'] .= $this->insertHeadJS();
 	}	
 		

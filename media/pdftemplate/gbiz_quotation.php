@@ -7,7 +7,7 @@ $page_config['pdf_margin_left'] = $pdf_margin_left;
 $page_config['pdf_margin_right'] = $pdf_margin_right; 
 $page_config['pdf_margin_top'] = $pdf_margin_top; 
 $page_config['pdf_margin_bottom'] = $pdf_margin_bottom; 
-$page_config['title'] = "INVOICE";
+$page_config['title'] = "QUOTATION";
 $page_config['title_height'] = 7;
 $page_config['invoice_info_cellwidth'] = 96;
 $page_config['invoice_info_cellheight'] = 15;
@@ -37,12 +37,11 @@ $page_config['fullpage_offset'] = 0;
 $page_config['pagetype'] = "onepage";
 $page_config['details_headerheight'] = 7;
 $page_config['col1_width'] = 30;
-$page_config['col2_width'] = 68;
+$page_config['col2_width'] = 88;
 $page_config['col3_width'] = 12;  
 $page_config['col4_width'] = 12;
 $page_config['col5_width'] = 25;
-$page_config['col6_width'] = 20;	
-$page_config['col7_width'] = 25;
+$page_config['col6_width'] = 25;
 
 page_title($this->pdf, $page_config);
 invoice_info($this->pdf, $page_config);
@@ -95,11 +94,18 @@ function invoice_details(&$pdf,$page_config)
 		$html = '<table border="0" cellspacing="3" cellpadding="2" >'; 
 		foreach($result as $index => $row)
 		{
+			$table = 'products';
+			$querystr = sprintf('select extended_description from %s where product_id = "%s"', $table,$row->product_id);
+			$desc = $od->model->executeSelectQuery($querystr);
+			$extended_description = $desc[0]->extended_description;
+		
 			if($row->user_text !="?") 
 			{
 				$row->user_text = str_replace("^","<br>",$row->user_text);
 				$description = $row->description."<br>".nl2br($row->user_text); 
 			} else { $description = $row->description; }
+			
+			if($extended_description != "") { $description .= "<br>".nl2br($extended_description); }
 			
 			if($row->discount_type=="PERCENT")
 			{
@@ -113,14 +119,14 @@ function invoice_details(&$pdf,$page_config)
 			if($row->taxable == "Y"){ $tax_amount = (($row->qty*$row->unit_price)-$discount) * ($row->tax_percentage/ 100); }
 			else { $tax_amount ="0.00"; }
 			$extended = ($row->qty*$row->unit_price) - $discount;
-
+			$unitprice =  ($extended/$row->qty); 
+			
 			$html .= '<tr>';
 			$html .= sprintf('<td width="78">%s</td>',$row->product_id);
-			$html .= sprintf('<td width="190" >%s<br></td>',$description);
+			$html .= sprintf('<td width="245" >%s<br></td>',$description);
 			$html .= sprintf('<td width="30" align="center">%s</td>',$row->taxable);
 			$html .= sprintf('<td width="31" align="center">%s</td>',$row->qty);
-			$html .= sprintf('<td width="68" align="right">%s</td>',number_format($row->unit_price, 2, '.', ','));
-			$html .= sprintf('<td width="55" align="right">%s</td>',number_format($discount, 2, '.', ','));
+			$html .= sprintf('<td width="68" align="right">%s</td>',number_format($unitprice, 2, '.', ','));
 			$html .= sprintf('<td width="68" align="right">%s</td>',number_format($extended, 2, '.', ','));
 			$html .= '</tr>';
 		}
@@ -169,14 +175,14 @@ function invoice_info(&$pdf, $page_config)
 _HTML_;
 	$pdf->writeHTMLCell($page_config['invoice_info_cellwidth'], $page_config['invoice_info_cellheight'], $page_config['invoice_info_posx_l'], $page_config['invoice_info_posy'], $HTML_HDR_L, 0, 0, 0, true, 'L', true);
 
-	$id = $item->id->value;				$invoice_date = $item->invoice_date->value;		
+	$id = $item->id->value;				$quotation_date = $item->quotation_date->value;		
 	$order_id = $item->order_id->value;	$inputter = $item->inputter->value;
 	//bgcolor="red"
 	$HTML_HDR_R=<<<_HTML_
 	<table width="400" border=0 cellspacing=0 cellpadding=2 >
-		<tr valign=top><td width="65"><b>Invoice No. :</b> </td><td>$id</td></tr>
+		<tr valign=top><td width="65"><b>Quot. No. :</b> </td><td>$id</td></tr>
 		<tr valign=top><td><b>Order Id :</b> </td><td>$order_id</td></tr>
-		<tr valign=top><td><b>Invoice Date :</b> </td><td>$invoice_date</td></tr>
+		<tr valign=top><td><b>Quot. Date :</b> </td><td>$quotation_date</td></tr>
 		<tr valign=top><td><b>Agent :</b> </td><td>$inputter</td></tr>
 	</table>
 _HTML_;
@@ -280,18 +286,6 @@ function invoice_details_border(&$pdf,$page_config)
 	$leftshift=$leftshift+$cellwidth; $cellwidth=$page_config['col6_width']; 
 	if($page_config['pagetype'] == "firstpage" || $page_config['pagetype'] == "onepage")
 	{
-		$html = '<table cellpadding="4"><tr valign="top"><td>Discount</td></tr></table>';
-		$pdf->writeHTMLCell($cellwidth, $headerheight, $pdf_margin_left+$leftshift, $pdf_margin_top+$offset, $html, 1, 1, 0, true, 'C', true);
-		$pdf->writeHTMLCell($cellwidth, $detailheight, $pdf_margin_left+$leftshift, $pdf_margin_top+$offset+$headerheight, "", 1, 1, 0, true, 'C', true);
-	}
-	else
-	{
-		$pdf->writeHTMLCell($cellwidth, $detailheight, $pdf_margin_left+$leftshift, $pdf_margin_top+$offset, "", 1, 1, 0, true, 'C', true);
-	}
-	
-	$leftshift=$leftshift+$cellwidth; $cellwidth=$page_config['col7_width']; 
-	if($page_config['pagetype'] == "firstpage" || $page_config['pagetype'] == "onepage")
-	{
 		$html = '<table cellpadding="4"><tr valign="top"><td>Extended</td></tr></table>';
 		$pdf->writeHTMLCell($cellwidth, $headerheight, $pdf_margin_left+$leftshift, $pdf_margin_top+$offset, $html, 1, 1, 0, true, 'C', true);
 		$pdf->writeHTMLCell($cellwidth, $detailheight, $pdf_margin_left+$leftshift, $pdf_margin_top+$offset+$headerheight, "", 1, 1, 0, true, 'C', true);
@@ -314,16 +308,16 @@ function invoice_summary(&$pdf, $page_config)
 	$balance		= "$ ".number_format(sprintf('%s',$item->balance->value), 2, '.', ',');
 	$HTML_HDR_L=<<<_HTML_
 <div>
-<b>SALE OF GOODS AGREEMENT</b><br>
-I agree to the terms and conditions as set out on overleaf<br>
-(Please read carefully before signing)<br>
+<b>REMARKS</b><br>
+Valid for 60 days from the date of this quote.<br>
+Please feel free to contact us if you have any questions about our quote.<br>
 <br>
 <table width="400" border="0" cellspacing="0" cellpadding="2" >
 <tr>
-	<td td width="100">Customer Signature<br></td><td>___________________________________</td>
+	<td td width="100">Authorized Signature<br></td><td>___________________________________</td>
 </tr>
 <tr>
-	<td>Customer Name</td><td>___________________________________<br>(Print)</td>
+	<td>Name (Print)</td><td>___________________________________<br></td>
 </tr>
 </table>
 </div>
@@ -339,12 +333,6 @@ _HTML_;
 		<tr valign=bottom><td style="font-size: 12pt; font-weight: bold;">Grand Total :</td><td style="font-size: 11pt; text-align:right; font-weight: bold;">$order_total</td></tr>
 	</table>
 	<hr>
-	<table width="220" border="0" cellspacing="0" cellpadding="1" >
-		<tr valign=bottom><td width="100" style="font-size: 10pt;">Discount Total :</td><td style="font-size: 10pt; text-align:right;">$discount_total</td></tr>
-		<tr valign=bottom><td style="font-size: 10pt;">Payment Total :</td><td style="font-size: 10pt; text-align:right;">$payment_total</td></tr>
-		<tr valign=bottom><td style="font-size: 10pt;">Balance : </td><td style="font-size: 10pt; text-align:right;">$balance</td></tr>
-	</table>
-	</div>
 _HTML_;
 	$pdf->writeHTMLCell(0, $page_config['summary_cellheight'], $page_config['summary_posx_r'], $page_config['summary_posy'], "", 0, 1, 0, true, 'L', true);
 	$pdf->writeHTMLCell(0, $page_config['summary_cellheight']-4, $page_config['summary_posx_r']+2, $page_config['summary_posy']+2, $HTML_HDR_R, 0, 1, 0, true, 'L', true);

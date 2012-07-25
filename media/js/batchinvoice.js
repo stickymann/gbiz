@@ -2,8 +2,15 @@ var lastIndex = 0;
 var order_status = "";
 var edittype = "DEFAULT";
 var subtable = "subform_table_batch_details";
-var url_orders = siteutils.getAjaxURL() + "option=jdata&dbtable=vw_eomorders&fields=order_id&prefix=&orderby=order_id";
-		
+if( js_controller  == "eominvoice" )
+{
+	var url_orders = siteutils.getAjaxURL() + "option=jdata&dbtable=vw_eomorders_lookup&fields=order_id&prefix=&orderby=order_id";
+}
+else
+{
+	var url_orders = siteutils.getAjaxURL() + "option=jdata&dbtable=vw_batchorders_lookup&fields=order_id&prefix=&orderby=order_id";
+}
+
 $(document).ready(function()	
 {
 	subform_InitDataGridReadWrite(subtable); 
@@ -25,7 +32,12 @@ function DefaultColumns(tt)
 				{field:'subform_batch_details_order_date',title:'<b>Order Date</b>',width:80,align:'left'},
 				{field:'subform_batch_details_first_name',title:'<b>First Name</b>',width:80,align:'left'},
 				{field:'subform_batch_details_last_name',title:'<b>Last Name</b>',width:80,align:'left'},
-				{field:'subform_batch_details_payment_total',title:'<b>Total</b>',width:50,align:'right'},
+				{field:'subform_batch_details_order_details',title:'<b>Order Details</b>',width:140,align:'left'},
+				{field:'subform_batch_details_extended_total',title:'<b>Extended</b>',width:50,align:'right'},
+				{field:'subform_batch_details_tax_total',title:'<b>Tax</b>',width:50,align:'right'},
+				{field:'subform_batch_details_order_total',title:'<b>Total</b>',width:50,align:'right'},
+				{field:'subform_batch_details_payment_total',title:'<b>Payments</b>',width:50,align:'right'},
+				{field:'subform_batch_details_balance',title:'<b>Balance</b>',width:50,align:'right'},
 				{field:'subform_batch_details_payment_type',title:'<b>Payment Type</b>',width:140,align:'left'},
 				{field:'subform_batch_details_batch_id',title:'<b>Batch Id</b>',width:140,align:'left'},
 				{field:'subform_batch_details_id',title:'<b>Id</b>',width:50,align:'left'}
@@ -91,9 +103,14 @@ function eominvoice_UpdateDetails()
 		order_date		= "<order_date>" + getCellsValue(rows[i].subform_batch_details_order_date) + "</order_date>";
 		first_name		= "<first_name>" + getCellsValue(rows[i].subform_batch_details_first_name) + "</first_name>";
 		last_name		= "<last_name>" + getCellsValue(rows[i].subform_batch_details_last_name) + "</last_name>";
+		order_details	= "<order_details>" + getCellsValue(rows[i].subform_batch_details_order_details) + "</order_details>";
+		extended_total	= "<extended_total>" + getCellsValue(rows[i].subform_batch_details_extended_total) + "</extended_total>";
+		tax_total		= "<tax_total>" + getCellsValue(rows[i].subform_batch_details_tax_total) + "</tax_total>";
+		order_total		= "<order_total>" + getCellsValue(rows[i].subform_batch_details_order_total) + "</order_total>";
 		payment_total	= "<payment_total>" + getCellsValue(rows[i].subform_batch_details_payment_total) + "</payment_total>";
+		balance			= "<balance>" + getCellsValue(rows[i].subform_batch_details_balance) + "</balance>";
 		payment_type	= "<payment_type>" + getCellsValue(rows[i].subform_batch_details_payment_type) + "</payment_type>";
-		xmltxt			+= "<row>"+ id + batch_id + order_id + invoice_id + alt_invoice_id + order_date +  first_name + last_name + payment_total + payment_type + "</row>";
+		xmltxt			+= "<row>"+ id + batch_id + order_id + invoice_id + alt_invoice_id + order_date + first_name + last_name + order_details + extended_total + tax_total + order_total + payment_total + balance + payment_type + "</row>";
 	}  
 	xmltxt = xmlhr + xmltxt + xmlft;
 	$('#batch_details').val(xmltxt);
@@ -124,14 +141,19 @@ function eominvoice_GetOrderData()
 		});
 		lookupval = lookupval.substr(0,lookupval.length-1);
 
-		url = siteutils.getAjaxURL() + "option=jdatabyid&dbtable=vw_orderbalances&fields=id,order_date,first_name,last_name,payment_total,payment_type&idfield=order_id&idval=" + lookupval;
+		url = siteutils.getAjaxURL() + "option=jdatabyid&dbtable=vw_orderbalances&fields=id,order_date,first_name,last_name,order_details,extended_total,tax_total,order_total,payment_total,balance,payment_type&idfield=order_id&idval=" + lookupval;
 		$.getJSON(url, function(data)
 		{
 			row.subform_batch_details_invoice_id = data.id;
 			row.subform_batch_details_order_date = data.order_date;
 			row.subform_batch_details_first_name = data.first_name;
 			row.subform_batch_details_last_name = data.last_name;
+			row.subform_batch_details_order_details = data.order_details;
+			row.subform_batch_details_extended_total = data.extended_total;
+			row.subform_batch_details_tax_total = data.tax_total;
+			row.subform_batch_details_order_total = data.order_total;
 			row.subform_batch_details_payment_total = data.payment_total;
+			row.subform_batch_details_balance = data.balance;
 			row.subform_batch_details_payment_type = data.payment_type;
 		});
 	}
@@ -140,7 +162,14 @@ function eominvoice_GetOrderData()
 function eominvoice_CreateID()
 {
 	ctrlid = $('#id').val();
-	order_params = "option=orderid&controller=eominvoice&prefix=EOM&ctrlid=" + ctrlid;
+	if( js_controller == "eominvoice" ) 
+	{
+		order_params = "option=orderid&controller=eominvoice&prefix=EOM&ctrlid=" + ctrlid;
+	}
+	else
+	{
+		order_params = "option=orderid&controller=batchinvoice&prefix=BCH&ctrlid=" + ctrlid;
+	}
 	siteutils.runQuery(order_params,'batch_id','val');
 }
 		

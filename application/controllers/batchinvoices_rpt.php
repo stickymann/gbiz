@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Eominvoices_rpt_Controller extends Sitereport_Controller
+class Batchinvoices_rpt_Controller extends Sitereport_Controller
 {
 
 	public function __construct()
     {
-		parent::__construct('eominvoices_rpt');
+		parent::__construct('batchinvoices_rpt');
 	}	
 		
 	public function index()
@@ -16,31 +16,55 @@ class Eominvoices_rpt_Controller extends Sitereport_Controller
 	public function report_run()
 	{
 		$batch_id = $_POST['batch_id'];
-		
 		$table = 'batchinvoices';
 		$querystr = sprintf('select batch_description from %s where batch_id = "%s"', $table,$batch_id);
 		$desc = $this->sitemodel->executeSelectQuery($querystr);
 		$batch_description = $desc[0]->batch_description;
-		
+	
 		$table = 'batchinvoicedetails';
-		$fields = array('invoice_id','alt_invoice_id','order_id','order_date','first_name','last_name','payment_type','extended_total','tax_total','payment_total');
+		$fields = array('id','order_id','invoice_id','alt_invoice_id');
 		$querystr = sprintf('select %s from %s where batch_id = "%s"', join(',',$fields),$table,$batch_id);
-		$result = $this->sitemodel->executeSelectQuery($querystr);
-		
+		$batch_res = $this->sitemodel->executeSelectQuery($querystr);
+		foreach($batch_res as $row => $linerec)
+		{
+			$linerec = (array)$linerec;
+			$table = 'vw_orderbalances';
+			$order_id = $linerec['order_id'];
+			$fields = array
+			(
+				'order_id','branch_id','inputter','first_name','last_name','customer_type','address1','address2','city',
+				'phone_mobile1','phone_home','phone_work','current_no','order_date','invoice_date','quotation_date',
+				'order_total','extended_total','tax_total','payment_total','balance','discount_total','order_details','payment_type'
+			);
+			$querystr = sprintf('select %s from %s where order_id = "%s"', join(',',$fields),$table,$order_id);
+			$order_res = $this->sitemodel->executeSelectQuery($querystr);
+			$item = (array) $order_res[0];
+			$merge_r = array_merge($linerec,$item);
+			$batch_res[$row] = $merge_r;
+			$result[$row] = array
+			(
+				'invoice_id'=>$merge_r['invoice_id'], 'alt_invoice_id'=>$merge_r['alt_invoice_id'], 'order_id'=>$merge_r['order_id'],
+				'order_date'=>$merge_r['order_date'], 'first_name'=>$merge_r['first_name'], 'last_name'=>$merge_r['last_name'],
+				'order_details'=>$merge_r['order_details'], 'extended_total'=>$merge_r['extended_total'], 'tax_total'=>$merge_r['tax_total'],
+				'order_total'=>$merge_r['order_total'], 'payment_total'=>$merge_r['payment_total'], 'balance'=>$merge_r['balance'],
+				'payment_type'=>$merge_r['payment_type']
+			);
+		}
+			
 		$num = rand(0,999999);
 		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
-		$invoices	  = 'EOMI'.date("YmdHis").$num;
-		$payments = 'EOMP'.date("YmdHis").$num;
+		$invoices	  = 'BCHI'.date("YmdHis").$num;
+		$payments = 'BCHP'.date("YmdHis").$num;
 		$pdfurl = ""; 
 		if($this->printable)
 		{
-			$pdfurl = sprintf('<div id=enqprt>[ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Payments</a> ] ',url::base(),$payments)."\n";
+			$pdfurl = sprintf('<div id=enqprt>[ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Payments</a> ] ',url::base(),$payments);
 			$pdfurl .= sprintf(' [ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Invoices</a> ] </div>',url::base(),$invoices)."\n";
 		}
 		
-		$RESULT = '<div id="e" style="padding:5px 5px 5px 5px;">';
+		$RESULT = '<div id="e" style="padding:5px 5px 5px 5px; overflow:auto;">';
 		$RESULT .= sprintf('<div>Batch Id : %s<br>Batch Description : %s</div> %s',$batch_id, $batch_description, $pdfurl);
-		$RESULT .= '<table id="rpttbl" width="95%">'."\n";
+		$RESULT .= '<table id="rpttbl" width="98%">'."\n";
 		$firstpass = true;
 		foreach($result as $row => $linerec)
 		{	
@@ -73,6 +97,7 @@ class Eominvoices_rpt_Controller extends Sitereport_Controller
 		$config['batch_id']	= $batch_id;
 		$config['invoices']	= $invoices;
 		$config['payments']	= $payments;
+		$config['results']  = $batch_res;
 		$config['idname']		= Auth::instance()->get_user()->idname;
 		$config['controller']	= $this->controller;
 		$config['type']		= "report";
@@ -86,29 +111,18 @@ class Eominvoices_rpt_Controller extends Sitereport_Controller
 		$enqdb->getEnqFormFields($controller,$enqparam['fieldnames'],$enqparam['labels'],$enqparam['filterfields']);
 		$label = $enqparam['labels'];
 		
-		$table = 'vw_orderbalances';
-		$order_id = $data['order_id'];
-		$fields = array
-		(
-			'order_id','branch_id','inputter','first_name','last_name','customer_type','address1','address2','city',
-			'phone_mobile1','phone_home','phone_work','current_no','invoice_date','quotation_date',
-			'order_total','extended_total','tax_total','payment_total','balance','discount_total'
-		);
-		$querystr = sprintf('select %s from %s where order_id = "%s"', join(',',$fields),$table,$order_id);
-		$result = $this->sitemodel->executeSelectQuery($querystr);
-		$item = $result[0];
-		
-		$id = $data['alt_invoice_id'];			$order_id = $item->order_id;
-		$branch_id = $item->branch_id;			$inputter = $item->inputter;
-		$first_name = $item->first_name;		$last_name = $item->last_name;
-		$customer_type = $item->customer_type;	$city = $item->city;
-		$address1 = $item->address1;			$address2 = $item->address2;
-		$phone_mobile1 = $item->phone_mobile1;	$phone_home = $item->phone_home;		
-		$phone_work = $item->phone_work;		$current_no = $item->current_no;
-		$invoice_date = $item->invoice_date;	$quotation_date = $item->quotation_date;
-		$order_total = $item->order_total;		$payment_total = $item->payment_total; 
-		$balance = $item->balance;				$sub_total = $item->extended_total;
-		$tax_total = $item->tax_total;			$discount_total = $item->discount_total;
+		$item = $data['item'];
+		$id = $item['alt_invoice_id'];			$order_id = $item['order_id'];
+		$branch_id = $item['branch_id'];			$inputter = $item['inputter'];
+		$first_name = $item['first_name'];		$last_name = $item['last_name'];
+		$customer_type = $item['customer_type'];	$city = $item['city'];
+		$address1 = $item['address1'];			$address2 = $item['address2'];
+		$phone_mobile1 = $item['phone_mobile1'];	$phone_home = $item['phone_home'];		
+		$phone_work = $item['phone_work'];		$current_no = $item['current_no'];
+		$invoice_date = $item['invoice_date'];	$quotation_date = $item['quotation_date'];
+		$order_total = $item['order_total'];		$payment_total = $item['payment_total']; 
+		$balance = $item['balance'];				$sub_total = $item['extended_total'];
+		$tax_total = $item['tax_total'];			$discount_total = $item['discount_total'];
 
 		$label_id = $label['id'];							$label_order_id = $label['order_id'];
 		$label_branch_id = $label['branch_id'];				$label_inputter = $label['inputter'];
@@ -154,22 +168,24 @@ _XML_;
 	public function createInvoices($data,$arr)
 	{
 		$arr['pdf_template'] = "GBIZ_BATCHINVOICES";
+		
 		$batch_id = $data['batch_id'];
 		$table = 'batchinvoicedetails';
 		$fields = array('id','order_id','alt_invoice_id');
 		$querystr = sprintf('select %s from %s where batch_id = "%s"', join(',',$fields),$table,$batch_id);
-		$result = $this->sitemodel->executeSelectQuery($querystr);
+		
+		$result = $data['results'];
 	
 		if($result)
 		{
 			$xmldata = "";
 			foreach($result as $key => $row)
 			{
-				$data['order_id'] = $row->order_id;
-				$data['alt_invoice_id'] = $row->alt_invoice_id;
+				//$data['order_id'] = $row['order_id'];
+				//$data['alt_invoice_id'] = $row['alt_invoice_id'];
+				$data['item'] = $row;
 				$xmldata .= $this->makePDFXML($data)."\n";
 			}
-		
 			$pdf_xml = "<?xml version='1.0' standalone='yes'?>"."\n"."<formfields>"."\n";
 			$pdf_xml .= $xmldata;
 			$pdf_xml .= "</formfields>"."\n";
@@ -199,7 +215,7 @@ _XML_;
 		$pdf = new Pdf_Controller();
 		$data['pdf'] = $pdf;
 		$arr['pdf_id']			= $data['payments'];
-		$arr['pdf_template']	= "EOMP_SUMMARY";
+		$arr['pdf_template']	= "GBIZ_BATCHINVOICESUMMARY";
 		$arr['controller']		= $data['controller'];
 		$arr['type']			= $data['type'];
 		$arr['data']			= $pdf_data;
