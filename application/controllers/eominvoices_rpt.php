@@ -20,63 +20,70 @@ class Eominvoices_rpt_Controller extends Sitereport_Controller
 		$table = 'batchinvoices';
 		$querystr = sprintf('select batch_description from %s where batch_id = "%s"', $table,$batch_id);
 		$desc = $this->sitemodel->executeSelectQuery($querystr);
-		$batch_description = $desc[0]->batch_description;
 		
-		$table = 'batchinvoicedetails';
-		$fields = array('invoice_id','alt_invoice_id','order_id','order_date','first_name','last_name','payment_type','extended_total','tax_total','payment_total');
-		$querystr = sprintf('select %s from %s where batch_id = "%s"', join(',',$fields),$table,$batch_id);
-		$result = $this->sitemodel->executeSelectQuery($querystr);
-		
-		$num = rand(0,999999);
-		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
-		$invoices	  = 'EOMI'.date("YmdHis").$num;
-		$payments = 'EOMP'.date("YmdHis").$num;
-		$pdfurl = ""; 
-		if($this->printable)
+		if($desc)
 		{
-			$pdfurl = sprintf('<div id=enqprt>[ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Payments</a> ] ',url::base(),$payments)."\n";
-			$pdfurl .= sprintf(' [ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Invoices</a> ] </div>',url::base(),$invoices)."\n";
-		}
+			$batch_description = $desc[0]->batch_description;
+			$table = 'batchinvoicedetails';
+			$fields = array('invoice_id','alt_invoice_id','order_id','order_date','first_name','last_name','payment_type','extended_total','tax_total','payment_total');
+			$querystr = sprintf('select %s from %s where batch_id = "%s"', join(',',$fields),$table,$batch_id);
+			$result = $this->sitemodel->executeSelectQuery($querystr);
 		
-		$RESULT = '<div id="e" style="padding:5px 5px 5px 5px;">';
-		$RESULT .= sprintf('<div>Batch Id : %s<br>Batch Description : %s</div> %s',$batch_id, $batch_description, $pdfurl);
-		$RESULT .= '<table id="rpttbl" width="95%">'."\n";
-		$firstpass = true;
-		foreach($result as $row => $linerec)
-		{	
-			$linerec = (array)$linerec;
-			$header = ''; $data = '';
-			foreach ($linerec as $key => $value)
+			$num = rand(0,999999);
+			$num = str_pad($num, 6, "0", STR_PAD_LEFT);
+			$invoices	  = 'EOMI'.date("YmdHis").$num;
+			$payments = 'EOMP'.date("YmdHis").$num;
+			$pdfurl = ""; 
+			if($this->printable)
 			{
+				$pdfurl = sprintf('<div id=enqprt>[ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Payments</a> ] ',url::base(),$payments)."\n";
+				$pdfurl .= sprintf(' [ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Invoices</a> ] </div>',url::base(),$invoices)."\n";
+			}
+		
+			$RESULT = '<div id="e" style="padding:5px 5px 5px 5px;">';
+			$RESULT .= sprintf('<div>Batch Id : %s<br>Batch Description : %s</div> %s',$batch_id, $batch_description, $pdfurl);
+			$RESULT .= '<table id="rpttbl" width="95%">'."\n";
+			$firstpass = true;
+			foreach($result as $row => $linerec)
+			{	
+				$linerec = (array)$linerec;
+				$header = ''; $data = '';
+				foreach ($linerec as $key => $value)
+				{
+					if($firstpass)
+					{
+						$headtxt = Site_Controller::strtotitlecase(str_replace("_"," ",$key));
+						$header .= '<th>'.$headtxt.'</th>'; 
+					}
+					$data .= '<td>'.html::specialchars($value).'</td>'; 
+				}
+			
 				if($firstpass)
 				{
-					$headtxt = Site_Controller::strtotitlecase(str_replace("_"," ",$key));
-					$header .= '<th>'.$headtxt.'</th>'; 
+					$header = "\n".'<thead>'."\n".'<tr>'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
+					$RESULT .=$header;
 				}
-				$data .= '<td>'.html::specialchars($value).'</td>'; 
-			}
 			
-			if($firstpass)
-			{
-				$header = "\n".'<thead>'."\n".'<tr>'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
-				$RESULT .=$header;
+				$data = '<tr>'.$data.'</tr>'."\n"; 
+				$RESULT .= $data;
+				$firstpass = false;
 			}
-			
-			$data = '<tr>'.$data.'</tr>'."\n"; 
-			$RESULT .= $data;
-			$firstpass = false;
-		}
-		$RESULT .='</tbody>'."\n".'</table>'."\n";
-		$RESULT .= '</div>';
-		$this->content->pagebody = $RESULT;
+			$RESULT .='</tbody>'."\n".'</table>'."\n";
+			$RESULT .= '</div>';
+			$this->content->pagebody = $RESULT;
 		
-		$config['batch_id']	= $batch_id;
-		$config['invoices']	= $invoices;
-		$config['payments']	= $payments;
-		$config['idname']		= Auth::instance()->get_user()->idname;
-		$config['controller']	= $this->controller;
-		$config['type']		= "report";
-		$this->createPDF($config);
+			$config['batch_id']	= $batch_id;
+			$config['invoices']	= $invoices;
+			$config['payments']	= $payments;
+			$config['idname']		= Auth::instance()->get_user()->idname;
+			$config['controller']	= $this->controller;
+			$config['type']		= "report";
+			$this->createPDF($config);
+		}
+		else
+		{
+			$this->content->pagebody = '<div id="i"><div class="frmmsg">No Result.</div></div>';		
+		}
 	}
 	
 	function makePDFXML($data)
@@ -173,6 +180,8 @@ _XML_;
 			$pdf_xml = "<?xml version='1.0' standalone='yes'?>"."\n"."<formfields>"."\n";
 			$pdf_xml .= $xmldata;
 			$pdf_xml .= "</formfields>"."\n";
+			$pdf_xml = str_replace('&','and',$pdf_xml); 
+
 			$data['pdf']->InsertIntoPDFTableNoDelete($arr);
 			$pdftxt = new Csv_Controller();
 			$pdftxt->InsertIntoCSVTable($arr['pdf_id'],$pdf_xml,$this->controller,$arr['idname'],"xml");

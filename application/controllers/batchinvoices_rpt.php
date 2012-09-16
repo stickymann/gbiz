@@ -19,89 +19,96 @@ class Batchinvoices_rpt_Controller extends Sitereport_Controller
 		$table = 'batchinvoices';
 		$querystr = sprintf('select batch_description from %s where batch_id = "%s"', $table,$batch_id);
 		$desc = $this->sitemodel->executeSelectQuery($querystr);
-		$batch_description = $desc[0]->batch_description;
-	
-		$table = 'batchinvoicedetails';
-		$fields = array('id','order_id','invoice_id','alt_invoice_id');
-		$querystr = sprintf('select %s from %s where batch_id = "%s"', join(',',$fields),$table,$batch_id);
-		$batch_res = $this->sitemodel->executeSelectQuery($querystr);
-		foreach($batch_res as $row => $linerec)
-		{
-			$linerec = (array)$linerec;
-			$table = 'vw_orderbalances';
-			$order_id = $linerec['order_id'];
-			$fields = array
-			(
-				'order_id','branch_id','inputter','first_name','last_name','customer_type','address1','address2','city',
-				'phone_mobile1','phone_home','phone_work','current_no','order_date','invoice_date','quotation_date',
-				'order_total','extended_total','tax_total','payment_total','balance','discount_total','order_details','payment_type'
-			);
-			$querystr = sprintf('select %s from %s where order_id = "%s"', join(',',$fields),$table,$order_id);
-			$order_res = $this->sitemodel->executeSelectQuery($querystr);
-			$item = (array) $order_res[0];
-			$merge_r = array_merge($linerec,$item);
-			$batch_res[$row] = $merge_r;
-			$result[$row] = array
-			(
-				'invoice_id'=>$merge_r['invoice_id'], 'alt_invoice_id'=>$merge_r['alt_invoice_id'], 'order_id'=>$merge_r['order_id'],
-				'order_date'=>$merge_r['order_date'], 'first_name'=>$merge_r['first_name'], 'last_name'=>$merge_r['last_name'],
-				'order_details'=>$merge_r['order_details'], 'extended_total'=>$merge_r['extended_total'], 'tax_total'=>$merge_r['tax_total'],
-				'order_total'=>$merge_r['order_total'], 'payment_total'=>$merge_r['payment_total'], 'balance'=>$merge_r['balance'],
-				'payment_type'=>$merge_r['payment_type']
-			);
-		}
-			
-		$num = rand(0,999999);
-		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
-		$invoices	  = 'BCHI'.date("YmdHis").$num;
-		$payments = 'BCHP'.date("YmdHis").$num;
-		$pdfurl = ""; 
-		if($this->printable)
-		{
-			$pdfurl = sprintf('<div id=enqprt>[ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Payments</a> ] ',url::base(),$payments);
-			$pdfurl .= sprintf(' [ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Invoices</a> ] </div>',url::base(),$invoices)."\n";
-		}
 		
-		$RESULT = '<div id="e" style="padding:5px 5px 5px 5px; overflow:auto;">';
-		$RESULT .= sprintf('<div>Batch Id : %s<br>Batch Description : %s</div> %s',$batch_id, $batch_description, $pdfurl);
-		$RESULT .= '<table id="rpttbl" width="98%">'."\n";
-		$firstpass = true;
-		foreach($result as $row => $linerec)
-		{	
-			$linerec = (array)$linerec;
-			$header = ''; $data = '';
-			foreach ($linerec as $key => $value)
+		if($desc)
+		{
+			$batch_description = $desc[0]->batch_description;
+			$table = 'batchinvoicedetails';
+			$fields = array('id','order_id','invoice_id','alt_invoice_id');
+			$querystr = sprintf('select %s from %s where batch_id = "%s"', join(',',$fields),$table,$batch_id);
+			$batch_res = $this->sitemodel->executeSelectQuery($querystr);
+			foreach($batch_res as $row => $linerec)
 			{
+				$linerec = (array)$linerec;
+				$table = 'vw_orderbalances';
+				$order_id = $linerec['order_id'];
+				$fields = array
+				(
+					'order_id','branch_id','inputter','first_name','last_name','customer_type','address1','address2','city',
+					'phone_mobile1','phone_home','phone_work','current_no','order_date','invoice_date','quotation_date',
+					'order_total','extended_total','tax_total','payment_total','balance','discount_total','order_details','payment_type'
+				);
+				$querystr = sprintf('select %s from %s where order_id = "%s"', join(',',$fields),$table,$order_id);
+				$order_res = $this->sitemodel->executeSelectQuery($querystr);
+				$item = (array) $order_res[0];
+				$merge_r = array_merge($linerec,$item);
+				$batch_res[$row] = $merge_r;
+				$result[$row] = array
+				(
+					'invoice_id'=>$merge_r['invoice_id'], 'alt_invoice_id'=>$merge_r['alt_invoice_id'], 'order_id'=>$merge_r['order_id'],
+					'order_date'=>$merge_r['order_date'], 'first_name'=>$merge_r['first_name'], 'last_name'=>$merge_r['last_name'],
+					'order_details'=>$merge_r['order_details'], 'extended_total'=>$merge_r['extended_total'], 'tax_total'=>$merge_r['tax_total'],
+					'order_total'=>$merge_r['order_total'], 'payment_total'=>$merge_r['payment_total'], 'balance'=>$merge_r['balance'],
+					'payment_type'=>$merge_r['payment_type']
+				);
+			}	
+			
+			$num = rand(0,999999);
+			$num = str_pad($num, 6, "0", STR_PAD_LEFT);
+			$invoices	  = 'BCHI'.date("YmdHis").$num;
+			$payments = 'BCHP'.date("YmdHis").$num;
+			$pdfurl = ""; 
+			if($this->printable)
+			{
+				$pdfurl = sprintf('<div id=enqprt>[ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Payments</a> ] ',url::base(),$payments);
+				$pdfurl .= sprintf(' [ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Invoices</a> ] </div>',url::base(),$invoices)."\n";
+			}
+		
+			$RESULT = '<div id="e" style="padding:5px 5px 5px 5px; overflow:auto;">';
+			$RESULT .= sprintf('<div>Batch Id : %s<br>Batch Description : %s</div> %s',$batch_id, $batch_description, $pdfurl);
+			$RESULT .= '<table id="rpttbl" width="98%">'."\n";
+			$firstpass = true;
+			foreach($result as $row => $linerec)
+			{	
+				$linerec = (array)$linerec;
+				$header = ''; $data = '';
+				foreach ($linerec as $key => $value)
+				{
+					if($firstpass)
+					{
+						$headtxt = Site_Controller::strtotitlecase(str_replace("_"," ",$key));
+						$header .= '<th>'.$headtxt.'</th>'; 
+					}
+					$data .= '<td>'.html::specialchars($value).'</td>'; 
+				}
+			
 				if($firstpass)
 				{
-					$headtxt = Site_Controller::strtotitlecase(str_replace("_"," ",$key));
-					$header .= '<th>'.$headtxt.'</th>'; 
+					$header = "\n".'<thead>'."\n".'<tr>'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
+					$RESULT .=$header;
 				}
-				$data .= '<td>'.html::specialchars($value).'</td>'; 
-			}
 			
-			if($firstpass)
-			{
-				$header = "\n".'<thead>'."\n".'<tr>'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
-				$RESULT .=$header;
+				$data = '<tr>'.$data.'</tr>'."\n"; 
+				$RESULT .= $data;
+				$firstpass = false;
 			}
-			
-			$data = '<tr>'.$data.'</tr>'."\n"; 
-			$RESULT .= $data;
-			$firstpass = false;
-		}
-		$RESULT .='</tbody>'."\n".'</table>'."\n";
-		$RESULT .= '</div>';
-		$this->content->pagebody = $RESULT;
+			$RESULT .='</tbody>'."\n".'</table>'."\n";
+			$RESULT .= '</div>';
+			$this->content->pagebody = $RESULT;
 		
-		$config['batch_id']	= $batch_id;
-		$config['invoices']	= $invoices;
-		$config['payments']	= $payments;
-		$config['results']  = $batch_res;
-		$config['idname']		= Auth::instance()->get_user()->idname;
-		$config['controller']	= $this->controller;
-		$config['type']		= "report";
-		$this->createPDF($config);
+			$config['batch_id']	= $batch_id;
+			$config['invoices']	= $invoices;
+			$config['payments']	= $payments;
+			$config['results']  = $batch_res;
+			$config['idname']		= Auth::instance()->get_user()->idname;
+			$config['controller']	= $this->controller;
+			$config['type']		= "report";
+			$this->createPDF($config);
+		}
+		else
+		{
+			$this->content->pagebody = '<div id="i"><div class="frmmsg">No Result.</div></div>';		
+		}
 	}
 	
 	function makePDFXML($data)
@@ -189,6 +196,8 @@ _XML_;
 			$pdf_xml = "<?xml version='1.0' standalone='yes'?>"."\n"."<formfields>"."\n";
 			$pdf_xml .= $xmldata;
 			$pdf_xml .= "</formfields>"."\n";
+			$pdf_xml = str_replace('&','and',$pdf_data); 
+
 			$data['pdf']->InsertIntoPDFTableNoDelete($arr);
 			$pdftxt = new Csv_Controller();
 			$pdftxt->InsertIntoCSVTable($arr['pdf_id'],$pdf_xml,$this->controller,$arr['idname'],"xml");

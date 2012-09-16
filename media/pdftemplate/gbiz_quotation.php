@@ -309,7 +309,7 @@ function invoice_summary(&$pdf, $page_config)
 	$HTML_HDR_L=<<<_HTML_
 <div>
 <b>REMARKS</b><br>
-Valid for 60 days from the date of this quote.<br>
+Valid for 30 days from the date of this quote.<br>
 Please feel free to contact us if you have any questions about our quote.<br>
 <br>
 <table width="400" border="0" cellspacing="0" cellpadding="2" >

@@ -58,7 +58,7 @@ img {border-style: none;}
 {border:solid 0px #0000ad; color: #000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #fff;}
 */
 .input-i
-{border:solid 1px #0000ad; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #ffffff; -moz-border-radius:3px; -webkit-border-radius:3px; margin:0 0 0 0px; padding:1px; white-space: nowrap; }
+{border:solid 1px #0000ad; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #ffffff; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; margin:0 0 0 0px; padding:1px; white-space: nowrap; }
 .input-r
 {border:solid 1px #000000; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 9pt; background-color: #ffffff; margin:0 0 0 0px; padding:1px; white-space: nowrap; }
 
@@ -111,7 +111,7 @@ display:block;  white-space: nowrap;}
 #resultinau {border: #000066 solid 0px; color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; margin: 1px 1px 1px 1px;  padding: 0px 0px 0px 0px; text-align: left; position: relative;  overflow: scroll; height:70%;}
 #resulthist {border: #000066 solid 0px; color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; margin: 1px 1px 1px 1px;  padding: 0px 0px 0px 0px; text-align: left; position: relative;  overflow: scroll; height:70%;}
 
-.bttn {border:1px solid #fff; color:#ffffff; background-color:#000066; -moz-border-radius:5px; -webkit-border-radius:5px; padding:4px 7px; margin:0 5px 0 0; font-weight:bold;}
+.bttn {border:1px solid #fff; color:#ffffff; background-color:#000066; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; padding:4px 7px; margin:0 5px 0 0; font-weight:bold;}
 .bttn:hover, .bttn:focus {border:1px solid #000; cursor:pointer;}
 .bttn:focus {background-color:#ffffff;}
 .tbls {font-size: 10pt; border: solid black 0px; border-collapse: collapse;}
@@ -155,7 +155,7 @@ label.valid {display: block; width: 16px; height: 16px;}
 .white_content {background-color: #ebf2f9; overflow: hidden; font-size: 100%; font-family: verdana, arial, helvetica, sans-serif;}
 #light { overflow:hidden; }
 #pofilter {border: #000066 solid 0px; color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; margin: 0px 0px 0px 0px;  padding: 0px 0px 0px 0px; text-align: left; position: relative; overflow:auto; height:auto;}
-#pofilter  input[type=text], input[type=password] {border:solid 1px #0000ad; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #ffffff; display:block; -moz-border-radius:3px; -webkit-border-radius:3px; margin:0 0 0 0px; padding:1px;}
+#pofilter  input[type=text], input[type=password] {border:solid 1px #0000ad; color: #000000; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt; background-color: #ffffff; display:block; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; margin:0 0 0 0px; padding:1px;}
 #pofilter label {color: #0000ad; background-color: #ebf2f9; font-family:  verdana,arial, helvetica, sans-serif; font-size: 8pt;}
 #poresult {position: relative; background-color: #ebf2f9; height:75%; overflow:auto;}
 #polistresult {position: relative; background-color: #ebf2f9; width: 99%;}

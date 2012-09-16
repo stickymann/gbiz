@@ -1692,7 +1692,8 @@ _HTML_;
 				
 				$this->formopts[$key]['options'] = str_replace("%FUNC%",$func, $this->formopts[$key]['options']); 
 				$this->formopts[$key]['options'] = str_replace("%PARAMFLD%",$idfield, $this->formopts[$key]['options']); 
-				$this->formopts[$key]['options'] = str_replace("%SFFORMAT%",$format, $this->formopts[$key]['options']); 
+				$this->formopts[$key]['options'] = str_replace("%SFFORMAT%",$format, $this->formopts[$key]['options']);
+
 //print_r($this->formopts[$key]['options']); print "<hr>";	
 				$options = $this->formopts[$key]['options'];
 				$baseurl = url::base(TRUE,'http');
@@ -1711,12 +1712,13 @@ _HTML_;
 		$SIDEFUNC_LINK = ""; $linkhtml="";
 		if(($this->formopts[$key]['enable_on_edit'] == "readonly" || $this->formopts[$key]['enable_on_edit'] == "disabled") && $_POST['func']=="i" && $current_no > 0)
 		{
-			return$SIDEFUNC_LINK;
+			return $SIDEFUNC_LINK;
 		}
 		else if(isset($this->sidelink[$key]))
 		{
 			foreach($this->sidelink[$key] as $indx => $linkarr)
 			{
+				$linkarr['attr'] = str_replace("%THISFIELD%",$key, $linkarr['attr']); 
 				if(strstr($linkarr['text'],'%IMG%') !== false)
 				{
 					$baseurl = url::base(TRUE,'http');

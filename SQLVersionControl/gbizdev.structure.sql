@@ -163,7 +163,7 @@ CREATE TABLE `batchinvoicedetails_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1033 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +240,7 @@ CREATE TABLE `batchinvoices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_batch_id` (`batch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1022 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,6 +314,203 @@ CREATE TABLE `branches_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_branch_id` (`branch_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `certofinstallations`
+--
+
+DROP TABLE IF EXISTS `certofinstallations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `certofinstallations` (
+  `id` int(11) unsigned NOT NULL,
+  `certificate_id` varchar(20) NOT NULL,
+  `certificate_status` enum('ACTIVE','RETIRED','EXPIRED') NOT NULL,
+  `vehicle_id` varchar(50) NOT NULL,
+  `chassis_number` varchar(100) NOT NULL,
+  `vehicle_type` varchar(50) NOT NULL,
+  `vehicle_make` varchar(50) NOT NULL,
+  `vehicle_model` varchar(50) NOT NULL,
+  `vehicle_colour` varchar(50) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `address1` varchar(100) NOT NULL,
+  `address2` varchar(100) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `installation_type` varchar(50) NOT NULL,
+  `device_model` varchar(50) NOT NULL,
+  `device_serial_no` varchar(50) NOT NULL,
+  `expiry_date` date NOT NULL,
+  `issue_date` date NOT NULL,
+  `commisioning_fld01` varchar(3) NOT NULL,
+  `commisioning_fld02` varchar(3) NOT NULL,
+  `commisioning_fld03` varchar(3) NOT NULL,
+  `commisioning_fld04` varchar(3) NOT NULL,
+  `commisioning_fld05` varchar(3) NOT NULL,
+  `commisioning_fld06` varchar(3) NOT NULL,
+  `commisioning_fld07` varchar(3) NOT NULL,
+  `commisioning_fld08` varchar(3) NOT NULL,
+  `commisioning_fld09` varchar(3) NOT NULL,
+  `commisioning_fld10` varchar(3) NOT NULL,
+  `commisioning_fld11` varchar(3) NOT NULL,
+  `commisioning_fld12` varchar(3) NOT NULL,
+  `usrinstr_fld01` varchar(3) NOT NULL,
+  `usrinstr_fld02` varchar(3) NOT NULL,
+  `usrinstr_fld03` varchar(3) NOT NULL,
+  `usrinstr_fld04` varchar(3) NOT NULL,
+  `usrinstr_fld05` varchar(3) NOT NULL,
+  `usrinstr_fld06` varchar(3) NOT NULL,
+  `usrinstr_fld07` varchar(3) NOT NULL,
+  `usrinstr_fld08` varchar(3) NOT NULL,
+  `usrinstr_fld09` varchar(3) NOT NULL,
+  `usrinstr_fld10` varchar(3) NOT NULL,
+  `usrinstr_fld11` varchar(3) NOT NULL,
+  `usrinstr_fld12` varchar(3) NOT NULL,
+  `variations` varchar(255) NOT NULL,
+  `validation_period` varchar(50) NOT NULL,
+  `signature_name` varchar(50) NOT NULL,
+  `signature_position` varchar(50) NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `certofinstallations_hs`
+--
+
+DROP TABLE IF EXISTS `certofinstallations_hs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `certofinstallations_hs` (
+  `id` int(11) unsigned NOT NULL,
+  `certificate_id` varchar(20) NOT NULL,
+  `certificate_status` enum('ACTIVE','RETIRED','EXPIRED') NOT NULL,
+  `vehicle_id` varchar(50) NOT NULL,
+  `chassis_number` varchar(100) NOT NULL,
+  `vehicle_type` varchar(50) NOT NULL,
+  `vehicle_make` varchar(50) NOT NULL,
+  `vehicle_model` varchar(50) NOT NULL,
+  `vehicle_colour` varchar(50) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `address1` varchar(100) NOT NULL,
+  `address2` varchar(100) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `installation_type` varchar(50) NOT NULL,
+  `device_model` varchar(50) NOT NULL,
+  `device_serial_no` varchar(50) NOT NULL,
+  `expiry_date` date NOT NULL,
+  `issue_date` date NOT NULL,
+  `commisioning_fld01` varchar(3) NOT NULL,
+  `commisioning_fld02` varchar(3) NOT NULL,
+  `commisioning_fld03` varchar(3) NOT NULL,
+  `commisioning_fld04` varchar(3) NOT NULL,
+  `commisioning_fld05` varchar(3) NOT NULL,
+  `commisioning_fld06` varchar(3) NOT NULL,
+  `commisioning_fld07` varchar(3) NOT NULL,
+  `commisioning_fld08` varchar(3) NOT NULL,
+  `commisioning_fld09` varchar(3) NOT NULL,
+  `commisioning_fld10` varchar(3) NOT NULL,
+  `commisioning_fld11` varchar(3) NOT NULL,
+  `commisioning_fld12` varchar(3) NOT NULL,
+  `usrinstr_fld01` varchar(3) NOT NULL,
+  `usrinstr_fld02` varchar(3) NOT NULL,
+  `usrinstr_fld03` varchar(3) NOT NULL,
+  `usrinstr_fld04` varchar(3) NOT NULL,
+  `usrinstr_fld05` varchar(3) NOT NULL,
+  `usrinstr_fld06` varchar(3) NOT NULL,
+  `usrinstr_fld07` varchar(3) NOT NULL,
+  `usrinstr_fld08` varchar(3) NOT NULL,
+  `usrinstr_fld09` varchar(3) NOT NULL,
+  `usrinstr_fld10` varchar(3) NOT NULL,
+  `usrinstr_fld11` varchar(3) NOT NULL,
+  `usrinstr_fld12` varchar(3) NOT NULL,
+  `variations` varchar(255) NOT NULL,
+  `validation_period` varchar(50) NOT NULL,
+  `signature_name` varchar(50) NOT NULL,
+  `signature_position` varchar(50) NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`current_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `certofinstallations_is`
+--
+
+DROP TABLE IF EXISTS `certofinstallations_is`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `certofinstallations_is` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `certificate_id` varchar(20) DEFAULT NULL,
+  `certificate_status` enum('ACTIVE','RETIRED','EXPIRED') DEFAULT 'ACTIVE',
+  `vehicle_id` varchar(50) DEFAULT NULL,
+  `chassis_number` varchar(100) DEFAULT NULL,
+  `vehicle_type` varchar(50) DEFAULT NULL,
+  `vehicle_make` varchar(50) DEFAULT NULL,
+  `vehicle_model` varchar(50) DEFAULT NULL,
+  `vehicle_colour` varchar(50) DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `address1` varchar(100) DEFAULT NULL,
+  `address2` varchar(100) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
+  `installation_type` varchar(50) DEFAULT 'New',
+  `device_model` varchar(50) DEFAULT NULL,
+  `device_serial_no` varchar(50) DEFAULT NULL,
+  `expiry_date` date DEFAULT NULL,
+  `issue_date` date DEFAULT NULL,
+  `commisioning_fld01` varchar(3) DEFAULT 'yes',
+  `commisioning_fld02` varchar(3) DEFAULT 'yes',
+  `commisioning_fld03` varchar(3) DEFAULT 'yes',
+  `commisioning_fld04` varchar(3) DEFAULT 'yes',
+  `commisioning_fld05` varchar(3) DEFAULT 'yes',
+  `commisioning_fld06` varchar(3) DEFAULT 'yes',
+  `commisioning_fld07` varchar(3) DEFAULT 'yes',
+  `commisioning_fld08` varchar(3) DEFAULT 'yes',
+  `commisioning_fld09` varchar(3) DEFAULT 'yes',
+  `commisioning_fld10` varchar(3) DEFAULT 'n/a',
+  `commisioning_fld11` varchar(3) DEFAULT 'yes',
+  `commisioning_fld12` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld01` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld02` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld03` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld04` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld05` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld06` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld07` varchar(3) DEFAULT 'n/a',
+  `usrinstr_fld08` varchar(3) DEFAULT 'n/a',
+  `usrinstr_fld09` varchar(3) DEFAULT 'n/a',
+  `usrinstr_fld10` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld11` varchar(3) DEFAULT 'yes',
+  `usrinstr_fld12` varchar(3) DEFAULT 'yes',
+  `variations` varchar(255) DEFAULT 'None',
+  `validation_period` varchar(50) DEFAULT 'one(1)',
+  `signature_name` varchar(50) DEFAULT NULL,
+  `signature_position` varchar(50) DEFAULT 'Technician',
+  `inputter` varchar(50) DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `authorizer` varchar(50) DEFAULT NULL,
+  `auth_date` datetime DEFAULT NULL,
+  `record_status` char(4) DEFAULT NULL,
+  `current_no` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -476,7 +673,7 @@ CREATE TABLE `csvs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_csv_id` (`csv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -612,7 +809,7 @@ CREATE TABLE `customers_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2594 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2620 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -944,7 +1141,7 @@ CREATE TABLE `devices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_device_id` (`device_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2834 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1506,7 +1703,7 @@ CREATE TABLE `menudefs_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=523 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1727,7 +1924,7 @@ CREATE TABLE `orderdetails_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1206 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1274 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1825,7 +2022,7 @@ CREATE TABLE `orders_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13624 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13674 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1944,7 +2141,7 @@ CREATE TABLE `params_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=521 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2033,7 +2230,7 @@ CREATE TABLE `payments_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_payment_id` (`payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1067 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1072 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2110,7 +2307,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31160 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35344 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2214,7 +2411,7 @@ CREATE TABLE `pdftemplates_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_template_id` (`template_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=506 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2332,7 +2529,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7722 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8410 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2549,7 +2746,7 @@ CREATE TABLE `reportdefs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=503 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2877,7 +3074,7 @@ CREATE TABLE `telbooks` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_plate` (`plate`),
   UNIQUE KEY `uniq_telno` (`telno`)
-) ENGINE=InnoDB AUTO_INCREMENT=1739 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1785 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2985,7 +3182,7 @@ CREATE TABLE `tills_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_till_id` (`till_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1015 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3068,7 +3265,7 @@ CREATE TABLE `tilltransactions_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_transaction_id` (`transaction_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1017 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3343,7 +3540,7 @@ CREATE TABLE `vehicles_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_vehicle_id` (`vehicle_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2801 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2933 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3526,6 +3723,24 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `vw_biztype` (
   `business_type` varchar(50)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `vw_certificate_accounts`
+--
+
+DROP TABLE IF EXISTS `vw_certificate_accounts`;
+/*!50001 DROP VIEW IF EXISTS `vw_certificate_accounts`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `vw_certificate_accounts` (
+  `vehicle_id` varchar(20),
+  `first_name` varchar(255),
+  `last_name` varchar(255),
+  `device_tag_id` varchar(50),
+  `device_model` varchar(50),
+  `phone_device` int(7) unsigned
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -3905,6 +4120,7 @@ SET character_set_client = utf8;
   `referrer_id` varchar(8),
   `customer_comments` text,
   `device_tag_id` varchar(50),
+  `device_status` enum('ACTIVE','RETIRED'),
   `device_model` varchar(50),
   `warranty_expiry_date` date,
   `passcode` varchar(255),
@@ -4551,6 +4767,25 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_certificate_accounts`
+--
+
+/*!50001 DROP TABLE IF EXISTS `vw_certificate_accounts`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_certificate_accounts`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_certificate_accounts` AS (select `vw_vehicle_accounts`.`vehicle_id` AS `vehicle_id`,`vw_vehicle_accounts`.`first_name` AS `first_name`,`vw_vehicle_accounts`.`last_name` AS `last_name`,`vw_vehicle_accounts`.`device_tag_id` AS `device_tag_id`,`vw_vehicle_accounts`.`device_model` AS `device_model`,`vw_vehicle_accounts`.`phone_device` AS `phone_device` from `vw_vehicle_accounts` where ((`vw_vehicle_accounts`.`device_tag_id` <> 'NO.DEVICE') and (`vw_vehicle_accounts`.`device_status` <> 'RETIRED'))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_core_fixedselections_available`
 --
 
@@ -4678,7 +4913,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_eomorders_lookup` AS (select `vw_orderbalances`.`id` AS `invoice_id`,`vw_orderbalances`.`order_id` AS `order_id`,`vw_orderbalances`.`order_date` AS `order_date`,`vw_orderbalances`.`first_name` AS `first_name`,`vw_orderbalances`.`last_name` AS `last_name`,`vw_orderbalances`.`extended_total` AS `extended_total`,`vw_orderbalances`.`tax_total` AS `tax_total`,`vw_orderbalances`.`payment_total` AS `payment_total`,`vw_orderbalances`.`payment_type` AS `payment_type` from `vw_orderbalances` where ((not((`vw_orderbalances`.`payment_type` like '%CASH%'))) and (`vw_orderbalances`.`customer_type` = 'INDIVIDUAL') and (`vw_orderbalances`.`order_status` = 'INVOICE.FULL.PAID') and (not(`vw_orderbalances`.`order_id` in (select `batchinvoicedetails`.`order_id` from `batchinvoicedetails`))))) */;
+/*!50001 VIEW `vw_eomorders_lookup` AS (select `vw_orderbalances`.`id` AS `invoice_id`,`vw_orderbalances`.`order_id` AS `order_id`,`vw_orderbalances`.`order_date` AS `order_date`,`vw_orderbalances`.`first_name` AS `first_name`,`vw_orderbalances`.`last_name` AS `last_name`,`vw_orderbalances`.`extended_total` AS `extended_total`,`vw_orderbalances`.`tax_total` AS `tax_total`,`vw_orderbalances`.`payment_total` AS `payment_total`,`vw_orderbalances`.`payment_type` AS `payment_type` from `vw_orderbalances` where ((not((`vw_orderbalances`.`payment_type` like '%CASH%'))) and (`vw_orderbalances`.`customer_type` = 'INDIVIDUAL') and (`vw_orderbalances`.`order_status` = 'INVOICE.FULL.PAID') and (not(`vw_orderbalances`.`order_id` in (select `batchinvoicedetails`.`order_id` AS `order_id` from `batchinvoicedetails`))))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -4791,7 +5026,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`dbuser`@`l ocalhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_orderbalances_nonzero` AS (select `vw_orderbalances`.`order_id` AS `order_id`,`vw_orderbalances`.`branch_id` AS `branch_id`,`vw_orderbalances`.`customer_id` AS `customer_id`,`vw_orderbalances`.`first_name` AS `first_name`,`vw_orderbalances`.`last_name` AS `last_name`,`vw_orderbalances`.`order_date` AS `order_date`,`vw_orderbalances`.`order_status` AS `order_status`,`vw_orderbalances`.`order_total` AS `order_total`,`vw_orderbalances`.`payment_total` AS `payment_total`,`vw_orderbalances`.`balance` AS `balance` from `vw_orderbalances` where ((`vw_orderbalances`.`balance` > 0) and (`vw_orderbalances`.`order_status` <> 'ORDER.CANCELLED'))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -4887,7 +5122,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_vehicle_accounts` AS (select `vehicles`.`id` AS `id`,`vehicles`.`vehicle_id` AS `vehicle_id`,`vehicles`.`owner_id` AS `owner_id`,`vehicles`.`device_id` AS `device_id`,`vehicles`.`chassis_number` AS `chassis_number`,`vehicles`.`make` AS `make`,`vehicles`.`model` AS `vehicle_model`,`vehicles`.`color` AS `color`,`vehicles`.`vehicletype_id` AS `vehicletype`,`vehicles`.`vehicleusagetype_id` AS `vehicleusage`,`vehicles`.`installer` AS `installer`,`vehicles`.`location` AS `location`,`vehicles`.`installation_date` AS `installation_date`,`vehicles`.`comments` AS `comments`,`customers`.`customer_type` AS `customer_type`,`customers`.`business_type` AS `business_type`,`customers`.`first_name` AS `first_name`,`customers`.`last_name` AS `last_name`,`customers`.`address1` AS `address1`,`customers`.`address2` AS `address2`,`customers`.`city` AS `city`,`customers`.`region_id` AS `region_id`,`customers`.`country_id` AS `country_id`,`customers`.`date_of_birth` AS `date_of_birth`,`customers`.`gender` AS `gender`,`customers`.`phone_home` AS `phone_home`,`customers`.`phone_work` AS `phone_work`,`customers`.`phone_mobile1` AS `phone_mobile1`,`customers`.`phone_mobile2` AS `phone_mobile2`,`customers`.`email_address` AS `email_address`,`customers`.`driver_permit` AS `driver_permit`,`customers`.`identification_card` AS `identification_card`,`customers`.`passport` AS `passport`,`customers`.`driver_permit_expiry_date` AS `driver_permit_expiry_date`,`customers`.`emergency_contact` AS `emergency_contact`,`customers`.`emergency_contact_phone` AS `emergency_contact_phone`,`customers`.`branch_id` AS `branch_id`,`customers`.`referrer_id` AS `referrer_id`,`customers`.`comments` AS `customer_comments`,`devices`.`device_id` AS `device_tag_id`,`devices`.`model` AS `device_model`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`devices`.`phone_device` AS `phone_device`,`devices`.`phone_textback1` AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments` from ((`vehicles` join `customers` on((`vehicles`.`owner_id` = `customers`.`customer_id`))) join `devices` on((`vehicles`.`device_id` = `devices`.`device_id`)))) */;
+/*!50001 VIEW `vw_vehicle_accounts` AS (select `vehicles`.`id` AS `id`,`vehicles`.`vehicle_id` AS `vehicle_id`,`vehicles`.`owner_id` AS `owner_id`,`vehicles`.`device_id` AS `device_id`,`vehicles`.`chassis_number` AS `chassis_number`,`vehicles`.`make` AS `make`,`vehicles`.`model` AS `vehicle_model`,`vehicles`.`color` AS `color`,`vehicles`.`vehicletype_id` AS `vehicletype`,`vehicles`.`vehicleusagetype_id` AS `vehicleusage`,`vehicles`.`installer` AS `installer`,`vehicles`.`location` AS `location`,`vehicles`.`installation_date` AS `installation_date`,`vehicles`.`comments` AS `comments`,`customers`.`customer_type` AS `customer_type`,`customers`.`business_type` AS `business_type`,`customers`.`first_name` AS `first_name`,`customers`.`last_name` AS `last_name`,`customers`.`address1` AS `address1`,`customers`.`address2` AS `address2`,`customers`.`city` AS `city`,`customers`.`region_id` AS `region_id`,`customers`.`country_id` AS `country_id`,`customers`.`date_of_birth` AS `date_of_birth`,`customers`.`gender` AS `gender`,`customers`.`phone_home` AS `phone_home`,`customers`.`phone_work` AS `phone_work`,`customers`.`phone_mobile1` AS `phone_mobile1`,`customers`.`phone_mobile2` AS `phone_mobile2`,`customers`.`email_address` AS `email_address`,`customers`.`driver_permit` AS `driver_permit`,`customers`.`identification_card` AS `identification_card`,`customers`.`passport` AS `passport`,`customers`.`driver_permit_expiry_date` AS `driver_permit_expiry_date`,`customers`.`emergency_contact` AS `emergency_contact`,`customers`.`emergency_contact_phone` AS `emergency_contact_phone`,`customers`.`branch_id` AS `branch_id`,`customers`.`referrer_id` AS `referrer_id`,`customers`.`comments` AS `customer_comments`,`devices`.`device_id` AS `device_tag_id`,`devices`.`device_status` AS `device_status`,`devices`.`model` AS `device_model`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`devices`.`phone_device` AS `phone_device`,`devices`.`phone_textback1` AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments` from ((`vehicles` join `customers` on((`vehicles`.`owner_id` = `customers`.`customer_id`))) join `devices` on((`vehicles`.`device_id` = `devices`.`device_id`)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -4958,4 +5193,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-25  8:57:33
+-- Dump completed on 2012-09-16  1:25:44

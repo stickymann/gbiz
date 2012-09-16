@@ -36,6 +36,7 @@ $lang = array
     (
         'required' => 'Order Id: required.',
         'length' => 'Order Id: must be 16 characters.',
+		'msg_orderstatus' => 'Order Id: Order Status is QUOTATION, payments not allowed, change to ORDER.CONFIRMED.',
 		'default' => 'Order Id: invalid input.'
     ),
 

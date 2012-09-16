@@ -259,7 +259,11 @@ function order_GetProductData()
 				//alert('name :'+attrib.name+' ,value :'+attrib.value);
 				if(name == "value")
 				{
-					lookupval = lookupval + attrib.value + ",";
+					//if xml string dont't add to lookupval
+					if(attrib.value.search('<?xml') == -1)
+					{
+						lookupval = lookupval + attrib.value + ",";
+					}
 				}
 			});
 		});

@@ -38,6 +38,7 @@ class Payment_Controller extends Site_Controller
 
 		$validation->add_callbacks('payment_id', array($this, '_duplicate_altid'));
 		$validation->add_callbacks('till_id', array($this, '_is_till_ok'));
+		$validation->add_callbacks('order_id', array($this, '_is_orderstatus_ok'));
 
 		//$validation->post_filter('strtoupper', '?????_id');
 		$this->param['isinputvalid'] = $validation->validate();
@@ -69,6 +70,20 @@ class Payment_Controller extends Site_Controller
 		}
 	}
 
+	public function _is_orderstatus_ok(Validation $validation,$field)
+	{
+		$order_id = $_POST['order_id'];
+		$order = new Order_Controller();
+
+		$querystr = sprintf('select count(id) as count from %s where order_id = "%s" and order_status = "QUOTATION"' ,"vw_orderbalances",$order_id);
+		$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+		$recs = $result[0];
+		if( $recs->count > 0 )
+		{
+			$validation->add_error($field, 'msg_orderstatus');	
+		}
+	}
+	
 	public function isUserTill($till_id,$idname)
 	{
 		$till = new Tilluser_Controller();

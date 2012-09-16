@@ -315,11 +315,11 @@ function printToScreen($enquiryrecords,$pagination,$labels,$config)
 	foreach ($enquiryrecords as $item )
 	{
 		$section1 = getSection1($item,$labels);
-		$section2 = getSection2($item,$labels);
-		$section3 = OrderDetailsSubForm($item);
-		$section4 = Payments($item);
-		$section5 = InventoryCheckoutStatus($item);
-		$section6 = DeliveryNote($item);
+		//$section2 = getSection2($item,$labels);
+		//$section3 = OrderDetailsSubForm($item);
+		//$section4 = Payments($item);
+		//$section5 = InventoryCheckoutStatus($item);
+		//$section6 = DeliveryNote($item);
 		$num = rand(0,999999);
 		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
 		$invoice_id	  = 'INV'.date("YmdHis").$num;
@@ -364,6 +364,7 @@ _HTML_;
 		$pdf_data .= "</formfields>"."\n";
 		$pdf_data = str_replace('&','and',$pdf_data); 
 
+		/*
 		$pdf = new Pdf_Controller();
 		$arr['pdf_id']			= $invoice_id;
 		$arr['pdf_template']	= "GBIZ_INVOICE";
@@ -372,16 +373,16 @@ _HTML_;
 		$arr['data']			= $pdf_data;
 		$arr['datatype']		= "xml";
 		$arr['idname']			= $config['idname'];
-		
-		if( $pdf->DeleteFromPDFTable($arr) )
-		{
+		*/
+		//if( $pdf->DeleteFromPDFTable($arr) )
+		//{
 			//wait for deletions
-		}
+		//}
 		
-		$pdf->InsertIntoPDFTableNoDelete($arr);
-		$arr['pdf_id']			= $quotation_id;
-		$arr['pdf_template']	= "GBIZ_QUOTATION";
-		$pdf->InsertIntoPDFTableNoDelete($arr);
+		//$pdf->InsertIntoPDFTableNoDelete($arr);
+		//$arr['pdf_id']			= $quotation_id;
+		//$arr['pdf_template']	= "GBIZ_QUOTATION";
+		//$pdf->InsertIntoPDFTableNoDelete($arr);
 	}
 }
 ?>
