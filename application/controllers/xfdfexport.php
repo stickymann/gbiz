@@ -31,18 +31,29 @@ class Xfdfexport_Controller extends Controller
 			echo $string; 
 		}
 		*/
-		//$filename = "/tmp/".$csv_id.".pdf";
-		$filename = "media/pdftemplate/vtcert_template.pdf";
-		header('Content-Type: application/pdf'); 
-		header('Content-Disposition: inline; filename="'.$filename.'";');
-		print file_get_contents($filename);
+		//files
+		$template = "media/pdftemplate/vtcert_template.pdf";
+		$xfdffile = "/tmp/".$cert_id.".xfdf";
+		$outfile  = "/tmp/".$cert_id.".pdf";
+		$cmd = "/opt/pdflabs/pdftk/bin/pdftk";
 		
+		//external command to execute
+		$cmdstr = sprintf('%s %s fill_form %s output %s',$cmd,$template,$xfdffile,$outfile);
+		exec($cmdstr);
+		
+		//pdf header
+		header('Content-Type: application/pdf'); 
 		//header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
 		//header('Pragma: public');
 		//header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 		//header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-		//header('Content-Length: '.filesize($filename));
+		//header('Content-Length: '.filesize($outfile));
 		//header('Content-Transfer-Encoding: binary');
+		header('Content-Disposition: inline; filename="'.$outfile.'";');
+		print file_get_contents($outfile);
+		
+		//clean up
+		if(file_exists($outfile)){ unlink($outfile); }
 	}
 }
 ?>

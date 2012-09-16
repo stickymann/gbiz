@@ -300,14 +300,14 @@ _HTML_;
 		//add xml data to pdfs_is table
 		$pdf_xml	= makeXFDFXML($item,$labels);
 		$pdf_data	= "<?xml version='1.0'?>"."\n";
-		$pdf_data  .= $pdf_xml;
+		$pdf_data  	.= $pdf_xml;
 		$pdf_data	= str_replace('&','and',$pdf_data); 
-		$controller = $config['controller'];
+		$controller 	= $config['controller'];
 		$idname		= $config['idname'];
 		$type		= "xfdf";
 
 		$csv = new Csv_Controller();
-		$csv->InsertIntoCSVTable($cert_id,$pdf_xml,$controller,$idname,$type);
+		$csv->InsertIntoCSVTable($cert_id,$pdf_data,$controller,$idname,$type);
 	}
 }
 ?>
