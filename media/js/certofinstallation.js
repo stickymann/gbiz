@@ -11,7 +11,6 @@ $(document).ready(function()
 		if( $('#certificate_id').val() == '' )
 		{
 			certofinstallation.CreateCertID();
-
 		}
 	}
 	certofinstallation.RemoveCertficateChangeStatus();
