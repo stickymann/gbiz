@@ -77,7 +77,7 @@ var certofinstallation = new function()
 	this.UpdateFields = function()
 	{
 		var vehicle_id = $('#vehicle_id').val(); 
-		var url = siteutils.getAjaxURL() + "option=jdata&dbtable=vw_vehicle_accounts&fields=chassis_number,vehicletype,make,vehicle_model,color,first_name,last_name,address1,address2,city,device_model,device_tag_id,warranty_expiry_date,installation_date&prefix=&wfields=vehicle_id&wvals=" + vehicle_id;
+		var url = siteutils.getAjaxURL() + "option=jdata&dbtable=vw_vehicle_accounts&fields=chassis_number,vehicletype,make,vehicle_model,color,first_name,last_name,address1,address2,city,device_model,device_tag_id,warranty_expiry_date,installation_date,installer_fullname&prefix=&wfields=vehicle_id&wvals=" + vehicle_id;
 		$.getJSON(url, function(data){
 			$('#chassis_number').val( data[0].chassis_number );
 			$('#vehicle_type').val( data[0].vehicletype );
@@ -91,6 +91,7 @@ var certofinstallation = new function()
 			$('#city').val( data[0].city );
 			$('#device_model').val( data[0].device_model );
 			$('#device_serial_no').val( data[0].device_tag_id );
+			$('#signature_name').val( data[0].installer_fullname );
 			init_expiry_date = data[0].warranty_expiry_date;
 			init_issue_date = data[0].installation_date;
 			certofinstallation.SetInstallationTypeDate();
