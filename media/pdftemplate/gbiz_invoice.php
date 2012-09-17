@@ -312,20 +312,34 @@ function invoice_summary(&$pdf, $page_config)
 	$discount_total = "$ ".number_format(sprintf('%s',$item->discount_total->value), 2, '.', ',');
 	$payment_total	= "$ ".number_format(sprintf('%s',$item->payment_total->value), 2, '.', ',');
 	$balance		= "$ ".number_format(sprintf('%s',$item->balance->value), 2, '.', ',');
+	$invoice_note	= $item->invoice_note->value;
+	$note = "";
+	if($invoice_note != "")
+	{
+	$NOTE=<<<_HTML_
+	<table width="290" border="0" cellspacing="0" cellpadding="0">
+	<tr valign="center">
+		<td style="font-size: 8pt;"><b>NOTE: </b> $invoice_note</td>
+	</tr>
+	</table>
+_HTML_;
+		$note = $NOTE;
+	}
+	
 	$HTML_HDR_L=<<<_HTML_
-<div>
-<b>SALE OF GOODS AGREEMENT</b><br>
-I agree to the terms and conditions as set out on overleaf<br>
-(Please read carefully before signing)<br>
+<div style="font-size: 8pt;">
+<b>SALE OF GOODS AGREEMENT</b> (Please Read carefully before signing)<br>
+I agree to the terms and conditions as set out on overleaf. <br>
 <br>
 <table width="400" border="0" cellspacing="0" cellpadding="2" >
 <tr>
-	<td td width="100">Customer Signature<br></td><td>___________________________________</td>
+	<td width="100" style="font-size: 8pt;">Customer Signature<br></td><td>______________________________________</td>
 </tr>
 <tr>
-	<td>Customer Name</td><td>___________________________________<br>(Print)</td>
+	<td style="font-size: 8pt;">Customer Name (Print)</td><td>______________________________________</td>
 </tr>
 </table>
+$note	
 </div>
 _HTML_;
 	$pdf->writeHTMLCell($page_config['summary_cellwidth'], $page_config['summary_cellheight'], $page_config['summary_posx_l'], $page_config['summary_posy'], "", 1, 0, 0, true, 'L', true);

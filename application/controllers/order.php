@@ -200,6 +200,22 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 		$this->param['primarymodel']->executeNonSelectQuery($querystr);
 	}
 
+	public function SetZeroChargeOrderStatus()
+	{
+		if(!($_POST['order_status'] == "NEW") && !($_POST['order_status'] == "QUOTATION") && !($_POST['order_status'] == "ZERO.CHARGE") && $_POST['current_no'] > 0)
+		{
+			$order_id = $_POST['order_id'];
+			$querystr = sprintf('select order_total from vw_orderbalances where order_id = "%s"',$order_id);
+			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+			$order_total = $result[0]->order_total;
+			if($order_total == 0)
+			{
+				$order_status = "ZERO.CHARGE";
+				$this->UpdateOrderStatus($this->param['tb_live'],$order_id,$order_status,date('Y-m-d')); 
+			}
+		}
+	}
+
 	public function UpdateOrderInvoiceDate($table,$order_id,$invoice_date)
 	{
 		$querystr = sprintf('update %s set invoice_date = "%s" where order_id = "%s"',$table,$invoice_date,$order_id);
@@ -209,10 +225,12 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 	public function authorize_post_update_existing_record()
 	{
 		$this->inventoryCheckout();
+		$this->SetZeroChargeOrderStatus();
 	}
 
 	public function authorize_post_insert_new_record()
 	{
 		$this->inventoryCheckout();
+		$this->SetZeroChargeOrderStatus();
 	}
 }

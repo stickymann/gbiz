@@ -14,6 +14,7 @@ function getSection1($item,$labels)
 	$label_09 = $labels['phone_home'];		$item_09 = $item->phone_home;
 	$label_10 = $labels['phone_work'];		$item_10 = $item->phone_work;
 	$label_13 = $labels['comments'];		$item_13 = $item->comments;
+	$label_14 = $labels['invoice_note'];	$item_14 = $item->invoice_note;
 
 	if($item->customer_type == 'COMPANY'){$fullname = $item->last_name;}else{$fullname = $item->first_name.' '.$item->last_name;}
 	$address = $item->address1.', '.$item->address2.'<br>'.$item->city;
@@ -41,8 +42,12 @@ function getSection1($item,$labels)
 					</table>
 				</td>
 			</tr>
-			<tr><td>$label_13 : </td><td colspan=2>$item_13</td></tr>
 		</table>
+		<table border=0 width='100%' cellspacing=0 cellpadding=2>
+			<tr valign=top><td width='15%'>$label_14 : </td><td>$item_14</td></tr>	
+			<tr valign=top><td>$label_13 : </td><td>$item_13</td></tr>
+		</table>
+
 _HTML_;
 	return $HTML;
 }
@@ -268,6 +273,7 @@ function makePDFXML($item,$label)
 	$order_total = $item->order_total;		$payment_total = $item->payment_total; 
 	$balance = $item->balance;				$sub_total = $item->extended_total;
 	$tax_total = $item->tax_total;			$discount_total = $item->discount_total;
+	$invoice_note = $item->invoice_note;
 
 	$label_id = $label['id'];							$label_order_id = $label['order_id'];
 	$label_branch_id = $label['branch_id'];				$label_inputter = $label['inputter'];
@@ -280,6 +286,7 @@ function makePDFXML($item,$label)
 	$label_order_total = $label['order_total'];			$label_payment_total = $label['payment_total']; 
 	$label_balance = $label['balance'];					$label_sub_total = $label['extended_total'];
 	$label_tax_total = $label['tax_total'];				$label_discount_total = $label['discount_total'];
+	$label_invoice_note = $label['invoice_note'];
 	
 	$XML=<<<_XML_
 <fields>
@@ -305,6 +312,7 @@ function makePDFXML($item,$label)
 	<order_total><label>$label_order_total</label><value>$order_total</value></order_total>
 	<payment_total><label>$label_payment_total</label><value>$payment_total</value></payment_total>
 	<balance><label>$label_balance</label><value>$balance</value></balance>
+	<invoice_note><label>$label_invoice_note</label><value>$invoice_note</value></invoice_note>
 </fields>
 _XML_;
 	return $XML;
@@ -315,11 +323,11 @@ function printToScreen($enquiryrecords,$pagination,$labels,$config)
 	foreach ($enquiryrecords as $item )
 	{
 		$section1 = getSection1($item,$labels);
-		//$section2 = getSection2($item,$labels);
-		//$section3 = OrderDetailsSubForm($item);
-		//$section4 = Payments($item);
-		//$section5 = InventoryCheckoutStatus($item);
-		//$section6 = DeliveryNote($item);
+		$section2 = getSection2($item,$labels);
+		$section3 = OrderDetailsSubForm($item);
+		$section4 = Payments($item);
+		$section5 = InventoryCheckoutStatus($item);
+		$section6 = DeliveryNote($item);
 		$num = rand(0,999999);
 		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
 		$invoice_id	  = 'INV'.date("YmdHis").$num;
@@ -364,7 +372,6 @@ _HTML_;
 		$pdf_data .= "</formfields>"."\n";
 		$pdf_data = str_replace('&','and',$pdf_data); 
 
-		/*
 		$pdf = new Pdf_Controller();
 		$arr['pdf_id']			= $invoice_id;
 		$arr['pdf_template']	= "GBIZ_INVOICE";
@@ -373,16 +380,16 @@ _HTML_;
 		$arr['data']			= $pdf_data;
 		$arr['datatype']		= "xml";
 		$arr['idname']			= $config['idname'];
-		*/
-		//if( $pdf->DeleteFromPDFTable($arr) )
-		//{
-			//wait for deletions
-		//}
 		
-		//$pdf->InsertIntoPDFTableNoDelete($arr);
-		//$arr['pdf_id']			= $quotation_id;
-		//$arr['pdf_template']	= "GBIZ_QUOTATION";
-		//$pdf->InsertIntoPDFTableNoDelete($arr);
+		if( $pdf->DeleteFromPDFTable($arr) )
+		{
+			//wait for deletions
+		}
+		
+		$pdf->InsertIntoPDFTableNoDelete($arr);
+		$arr['pdf_id']			= $quotation_id;
+		$arr['pdf_template']	= "GBIZ_QUOTATION";
+		$pdf->InsertIntoPDFTableNoDelete($arr);
 	}
 }
 ?>
