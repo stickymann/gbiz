@@ -98,17 +98,20 @@ class Certofinstallation_Controller extends Site_Controller
 	public function _active_certificate_exist(Validation $validation,$field)
 	{
 		$vehicle_id	 = $_POST['vehicle_id'];
-		if (array_key_exists('active_cert', $validation->errors()))
+		$certificate_status = $_POST['certificate_status'];
+		if (array_key_exists('active_cert', $validation->errors() ))
 				return;
-		
-		$querystr = sprintf('select count(id) as count from %s where vehicle_id = "%s" and %s = "ACTIVE" ',$this->param['tb_live'],$vehicle_id,$field);
-		$result = $this->param['primarymodel']->executeSelectQuery($querystr);
-		if($result)
+		if($certificate_status == "ACTIVE")
 		{
-			$obj = $result[0];
-			if($obj->count > 0)
+			$querystr = sprintf('select count(id) as count from %s where vehicle_id = "%s" and %s = "ACTIVE" ',$this->param['tb_live'],$vehicle_id,$field);
+			$result = $this->param['primarymodel']->executeSelectQuery($querystr);
+			if($result)
 			{
-				$validation->add_error($field, 'active_cert');
+				$obj = $result[0];
+				if($obj->count > 0)
+				{
+					$validation->add_error($field, 'active_cert');
+				}
 			}
 		}
 	}
