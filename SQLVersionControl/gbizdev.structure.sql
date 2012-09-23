@@ -583,6 +583,72 @@ CREATE TABLE `certs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `certs2`
+--
+
+DROP TABLE IF EXISTS `certs2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `certs2` (
+  `id` int(11) unsigned NOT NULL,
+  `certificate_id` varchar(20) NOT NULL,
+  `certificate_status` enum('ACTIVE','RETIRED','EXPIRED') NOT NULL,
+  `vehicle_id` varchar(50) NOT NULL,
+  `chassis_number` varchar(100) NOT NULL,
+  `vehicle_type` varchar(50) NOT NULL,
+  `vehicle_make` varchar(50) NOT NULL,
+  `vehicle_model` varchar(50) NOT NULL,
+  `vehicle_colour` varchar(50) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `address1` varchar(100) NOT NULL,
+  `address2` varchar(100) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `installation_type` varchar(50) NOT NULL,
+  `device_model` varchar(50) NOT NULL,
+  `device_serial_no` varchar(50) NOT NULL,
+  `expiry_date` date NOT NULL,
+  `issue_date` date NOT NULL,
+  `commisioning_fld01` varchar(3) NOT NULL,
+  `commisioning_fld02` varchar(3) NOT NULL,
+  `commisioning_fld03` varchar(3) NOT NULL,
+  `commisioning_fld04` varchar(3) NOT NULL,
+  `commisioning_fld05` varchar(3) NOT NULL,
+  `commisioning_fld06` varchar(3) NOT NULL,
+  `commisioning_fld07` varchar(3) NOT NULL,
+  `commisioning_fld08` varchar(3) NOT NULL,
+  `commisioning_fld09` varchar(3) NOT NULL,
+  `commisioning_fld10` varchar(3) NOT NULL,
+  `commisioning_fld11` varchar(3) NOT NULL,
+  `commisioning_fld12` varchar(3) NOT NULL,
+  `usrinstr_fld01` varchar(3) NOT NULL,
+  `usrinstr_fld02` varchar(3) NOT NULL,
+  `usrinstr_fld03` varchar(3) NOT NULL,
+  `usrinstr_fld04` varchar(3) NOT NULL,
+  `usrinstr_fld05` varchar(3) NOT NULL,
+  `usrinstr_fld06` varchar(3) NOT NULL,
+  `usrinstr_fld07` varchar(3) NOT NULL,
+  `usrinstr_fld08` varchar(3) NOT NULL,
+  `usrinstr_fld09` varchar(3) NOT NULL,
+  `usrinstr_fld10` varchar(3) NOT NULL,
+  `usrinstr_fld11` varchar(3) NOT NULL,
+  `usrinstr_fld12` varchar(3) NOT NULL,
+  `variations` varchar(255) NOT NULL,
+  `validation_period` varchar(50) NOT NULL,
+  `signature_name` varchar(50) NOT NULL,
+  `signature_position` varchar(50) NOT NULL,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `countrys`
 --
 
@@ -2378,7 +2444,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52298 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5296,4 +5362,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-09-18 15:39:22
+-- Dump completed on 2012-09-23 12:48:13
