@@ -2,10 +2,12 @@ var searchValue = $('#telno').val();
 
 $(document).ready(function()
 {
-	if($('#current_no').val() == '1') //new telbook recor, special case
+	if($('#current_no').val() == '1') //new telbook record, special case
 	{
-		$('#plate').change(function() {telbook.SetTelBook1();});
-		$('#plate').focus(function() {telbook.SetTelBook1();});
+		$('#vehicle_id').change(function() {telbook.SetTelBook1();});
+		$('#vehicle_id').focus(function() {telbook.SetTelBook1();});
+		$('#security_code').change(function() {telbook.plateUpdate();});
+		$('#security_code').keyup(function() {telbook.plateUpdate();});
 	}
 });
 
@@ -13,8 +15,9 @@ var telbook = new function()
 {
 	this.SetTelBook1 = function ()
 	{
-		var plate = $('#plate').val();
+		var plate = $('#vehicle_id').val();
 		var tmpstr = "";			
+		telbook.plateUpdate();
 		telbook_params = 'option=sideinfo&fields=telno,username,mobile&table=vw_telbooks_available&idfield=vehicle_id&idval='+ plate + '&format=*;*;*';
 		siteutils.runQuery(telbook_params,"telno","val");
 		setTimeout(telbook.checkSearchChanged,500);
@@ -40,5 +43,12 @@ var telbook = new function()
 		{
 			setTimeout(telbook.checkSearchChanged,500);
 		}
+	}
+
+	this.plateUpdate = function() 
+	{
+		var str = $('#security_code').val().toUpperCase();
+		$('#security_code').val(str);
+		$('#plate').val(  $('#vehicle_id').val()+$('#security_code').val() );
 	}
 }

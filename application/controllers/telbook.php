@@ -23,6 +23,8 @@ class Telbook_Controller extends Site_Controller
 	{
 		$_POST['username']	= strtoupper($_POST['username']);
 		$_POST['plate']	= strtoupper($_POST['plate']);
+		$_POST['vehicle_id'] = strtoupper($_POST['vehicle_id']);
+		$_POST['security_code']	= strtoupper($_POST['security_code']);
 
 		$post = $_POST;	
 		//validation rules
@@ -31,7 +33,7 @@ class Telbook_Controller extends Site_Controller
 		
 		$validation->add_rules('id','required','numeric');
 		$validation->add_rules('telno','required', 'length[7]','numeric');
-		$validation->add_rules('plate','required', 'length[3,20]', 'standard_text');
+		$validation->add_rules('plate','required', 'length[3,22]', 'standard_text');
 		$validation->add_rules('username','required', 'length[2,50]', 'standard_text');
 		$validation->add_rules('mobile','required', 'length[9,23]', 'standard_text');
 		$validation->add_rules('totalmoney','required','numeric');
@@ -39,6 +41,8 @@ class Telbook_Controller extends Site_Controller
 		$validation->add_rules('hasalarm','required', 'length[1]','numeric');
 		$validation->add_rules('groupid','required','numeric');
 		$validation->add_rules('modemkind','required', 'length[1]','numeric');
+		$validation->add_rules('vehicle_id','required', 'length[3,20]', 'standard_text');
+		$validation->add_rules('security_code', 'length[2]', 'standard_text');
 
 		$validation->add_callbacks('plate', array($this, '_duplicate_altid'));
 		$validation->add_callbacks('telno', array($this, '_duplicate_altid2'));

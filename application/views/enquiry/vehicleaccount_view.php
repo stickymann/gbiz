@@ -7,7 +7,6 @@ function getSection1($item,$labels)
 	$label_02 = $labels['vehicle_id'];		$item_02 = $item->vehicle_id;
 	$label_03 = $labels['owner_id'];		$item_03 = $item->owner_id;
 	$label_04 = $labels['device_id'];		$item_04 = $item->device_id;
-	$label_15 = $labels['chassis_number'];  $item_15 = $item->chassis_number;
 	$label_05 = $labels['make'];			$item_05 = $item->make;
 	$label_06 = $labels['vehicle_model'];	$item_06 = $item->vehicle_model;
 	$label_07 = $labels['color'];			$item_07 = $item->color;
@@ -18,6 +17,10 @@ function getSection1($item,$labels)
 	$label_12 = $labels['installation_date']; $item_12 = $item->installation_date;
 	$label_13 = $labels['comments'];		$item_13 = $item->comments;
 	$label_14 = $labels['device_tag_id'];	$item_14 = $item->device_tag_id;
+	$label_15 = $labels['chassis_number'];  $item_15 = $item->chassis_number;
+	$label_16 = $labels['plate'];			$item_16 = $item->plate;
+	$label_17 = $labels['security_code'];	$item_17 = $item->security_code;
+
 	if($item->customer_type == 'COMPANY'){$fullname = $item->last_name;}else{$fullname = $item->first_name.' '.$item->last_name;}
 	
 	$HTML=<<<_HTML_
@@ -25,7 +28,7 @@ function getSection1($item,$labels)
 			<tr valign=top>
 				<td width='50%'>
 					<table width='100%' border=0 cellspacing=0 cellpadding=1>
-						<tr valign=top><td width='46%'>$label_02 : </td><td>$item_02 [$item_01]</td></tr>
+						<tr valign=top><td width='46%'>$label_02 : </td><td>$item_02($item_17) [$item_01]</td></tr>
 						<tr valign=top><td>$label_03 : </td><td>$item_03</td></tr>
 						<tr valign=top><td>Customer Name : </td><td>$fullname</td></tr>	
 						<tr valign=top><td>$label_04 : </td><td>$item_04</td></tr>
@@ -42,7 +45,8 @@ function getSection1($item,$labels)
 						<tr valign=top><td>$label_10 : </td><td>$item_10</td></tr>
 						<tr valign=top><td>$label_11 : </td><td>$item_11</td></tr>
 						<tr valign=top><td>$label_12 : </td><td>$item_12</td></tr>	
-					</table>
+						<tr valign=top><td>$label_16 : </td><td>$item_16</td></tr>	
+				</table>
 				</td>
 			</tr>
 			<tr><td>$label_13 : </td><td colspan=2>$item_13</td></tr>

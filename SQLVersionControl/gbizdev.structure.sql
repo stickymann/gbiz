@@ -2444,7 +2444,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52298 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52315 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2666,7 +2666,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9476 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9502 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3202,6 +3202,8 @@ CREATE TABLE `telbooks` (
   `hasalarm` decimal(11,0) NOT NULL DEFAULT '0',
   `groupid` decimal(11,0) NOT NULL DEFAULT '0',
   `modemkind` decimal(11,0) NOT NULL DEFAULT '0',
+  `vehicle_id` varchar(50) NOT NULL,
+  `security_code` varchar(2) DEFAULT NULL,
   `inputter` varchar(50) NOT NULL DEFAULT 'TS01',
   `input_date` datetime NOT NULL DEFAULT '2011-01-01 00:00:00',
   `authorizer` varchar(50) NOT NULL DEFAULT 'TS01',
@@ -3209,9 +3211,10 @@ CREATE TABLE `telbooks` (
   `record_status` char(4) NOT NULL DEFAULT 'LIVE',
   `current_no` int(11) NOT NULL DEFAULT '2',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_vehicle_id` (`vehicle_id`),
   UNIQUE KEY `uniq_plate` (`plate`),
   UNIQUE KEY `uniq_telno` (`telno`)
-) ENGINE=InnoDB AUTO_INCREMENT=1881 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1886 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3232,6 +3235,8 @@ CREATE TABLE `telbooks_hs` (
   `hasalarm` int(11) NOT NULL,
   `groupid` int(11) NOT NULL,
   `modemkind` int(11) NOT NULL,
+  `vehicle_id` varchar(50) NOT NULL,
+  `security_code` varchar(2) DEFAULT NULL,
   `inputter` varchar(50) NOT NULL,
   `input_date` datetime NOT NULL,
   `authorizer` varchar(50) NOT NULL,
@@ -4275,7 +4280,9 @@ SET character_set_client = utf8;
   `realtime_password` varchar(50),
   `realtime_appname` varchar(50),
   `order_id` varchar(16),
-  `device_comments` text
+  `device_comments` text,
+  `plate` varchar(50),
+  `security_code` varchar(2)
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -5291,7 +5298,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_vehicle_accounts` AS (select `vehicles`.`id` AS `id`,`vehicles`.`vehicle_id` AS `vehicle_id`,`vehicles`.`owner_id` AS `owner_id`,`vehicles`.`device_id` AS `device_id`,`vehicles`.`chassis_number` AS `chassis_number`,`vehicles`.`make` AS `make`,`vehicles`.`model` AS `vehicle_model`,`vehicles`.`color` AS `color`,`vehicles`.`vehicletype_id` AS `vehicletype`,`vehicles`.`vehicleusagetype_id` AS `vehicleusage`,`vehicles`.`installer` AS `installer`,`users`.`fullname` AS `installer_fullname`,`vehicles`.`location` AS `location`,`vehicles`.`installation_date` AS `installation_date`,`vehicles`.`comments` AS `comments`,`customers`.`customer_type` AS `customer_type`,`customers`.`business_type` AS `business_type`,`customers`.`first_name` AS `first_name`,`customers`.`last_name` AS `last_name`,`customers`.`address1` AS `address1`,`customers`.`address2` AS `address2`,`customers`.`city` AS `city`,`customers`.`region_id` AS `region_id`,`customers`.`country_id` AS `country_id`,`customers`.`date_of_birth` AS `date_of_birth`,`customers`.`gender` AS `gender`,`customers`.`phone_home` AS `phone_home`,`customers`.`phone_work` AS `phone_work`,`customers`.`phone_mobile1` AS `phone_mobile1`,`customers`.`phone_mobile2` AS `phone_mobile2`,`customers`.`email_address` AS `email_address`,`customers`.`driver_permit` AS `driver_permit`,`customers`.`identification_card` AS `identification_card`,`customers`.`passport` AS `passport`,`customers`.`driver_permit_expiry_date` AS `driver_permit_expiry_date`,`customers`.`emergency_contact` AS `emergency_contact`,`customers`.`emergency_contact_phone` AS `emergency_contact_phone`,`customers`.`branch_id` AS `branch_id`,`customers`.`referrer_id` AS `referrer_id`,`customers`.`comments` AS `customer_comments`,`devices`.`device_id` AS `device_tag_id`,`devices`.`device_status` AS `device_status`,`devices`.`model` AS `device_model`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`devices`.`phone_device` AS `phone_device`,`devices`.`phone_textback1` AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments` from (((`vehicles` join `customers` on((`vehicles`.`owner_id` = `customers`.`customer_id`))) join `devices` on((`vehicles`.`device_id` = `devices`.`device_id`))) join `users` on((`vehicles`.`installer` = `users`.`idname`)))) */;
+/*!50001 VIEW `vw_vehicle_accounts` AS (select `vehicles`.`id` AS `id`,`vehicles`.`vehicle_id` AS `vehicle_id`,`vehicles`.`owner_id` AS `owner_id`,`vehicles`.`device_id` AS `device_id`,`vehicles`.`chassis_number` AS `chassis_number`,`vehicles`.`make` AS `make`,`vehicles`.`model` AS `vehicle_model`,`vehicles`.`color` AS `color`,`vehicles`.`vehicletype_id` AS `vehicletype`,`vehicles`.`vehicleusagetype_id` AS `vehicleusage`,`vehicles`.`installer` AS `installer`,`users`.`fullname` AS `installer_fullname`,`vehicles`.`location` AS `location`,`vehicles`.`installation_date` AS `installation_date`,`vehicles`.`comments` AS `comments`,`customers`.`customer_type` AS `customer_type`,`customers`.`business_type` AS `business_type`,`customers`.`first_name` AS `first_name`,`customers`.`last_name` AS `last_name`,`customers`.`address1` AS `address1`,`customers`.`address2` AS `address2`,`customers`.`city` AS `city`,`customers`.`region_id` AS `region_id`,`customers`.`country_id` AS `country_id`,`customers`.`date_of_birth` AS `date_of_birth`,`customers`.`gender` AS `gender`,`customers`.`phone_home` AS `phone_home`,`customers`.`phone_work` AS `phone_work`,`customers`.`phone_mobile1` AS `phone_mobile1`,`customers`.`phone_mobile2` AS `phone_mobile2`,`customers`.`email_address` AS `email_address`,`customers`.`driver_permit` AS `driver_permit`,`customers`.`identification_card` AS `identification_card`,`customers`.`passport` AS `passport`,`customers`.`driver_permit_expiry_date` AS `driver_permit_expiry_date`,`customers`.`emergency_contact` AS `emergency_contact`,`customers`.`emergency_contact_phone` AS `emergency_contact_phone`,`customers`.`branch_id` AS `branch_id`,`customers`.`referrer_id` AS `referrer_id`,`customers`.`comments` AS `customer_comments`,`devices`.`device_id` AS `device_tag_id`,`devices`.`device_status` AS `device_status`,`devices`.`model` AS `device_model`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`devices`.`phone_device` AS `phone_device`,`devices`.`phone_textback1` AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments`,`telbooks`.`plate` AS `plate`,`telbooks`.`security_code` AS `security_code` from ((((`vehicles` join `customers` on((`vehicles`.`owner_id` = `customers`.`customer_id`))) join `devices` on((`vehicles`.`device_id` = `devices`.`device_id`))) join `users` on((`vehicles`.`installer` = `users`.`idname`))) left join `telbooks` on((`vehicles`.`vehicle_id` = `telbooks`.`vehicle_id`)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -5362,4 +5369,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-09-23 12:48:13
+-- Dump completed on 2012-10-04 13:00:31
