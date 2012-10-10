@@ -3,6 +3,7 @@ printToScreen($enquiryrecords,$pagination,$labels,$config);
 
 function getSection1($item,$labels)
 {
+	$baseurl = url::base()."/"."index.php";
 	$label_01 = $labels['id'];					$item_01 = $item->id;
 	$label_02 = $labels['certificate_id'];		$item_02 = $item->certificate_id;
 	$label_03 = $labels['vehicle_id'];			$item_03 = $item->vehicle_id;
@@ -25,7 +26,8 @@ function getSection1($item,$labels)
 			<tr valign=top>
 				<td width='50%'>
 					<table width='100%' border=0 cellspacing=0 cellpadding=1>
-						<tr valign=top><td width='46%'>$label_02 : </td><td>$item_02 [$item_01]</td></tr>	
+						<tr valign=top><td width='46%'>$label_02 : </td>
+						<td><a href='$baseurl/certofinstallation/index/$item_02' target='enquiry' title='Edit Certificate Of Installation'>$item_02</a> [$item_01]</td></tr>	
 						<tr valign=top><td>$label_04 : </td><td>$item_04</td></tr>
 						<tr valign=top><td>$label_12 : </td><td>$item_12</td></tr>
 						<tr valign=top><td>$label_03 : </td><td>$item_03</td></tr>

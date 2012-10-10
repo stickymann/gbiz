@@ -2,13 +2,10 @@ var searchValue = $('#telno').val();
 
 $(document).ready(function()
 {
-	if($('#current_no').val() == '1') //new telbook record, special case
-	{
-		$('#vehicle_id').change(function() {telbook.SetTelBook1();});
-		$('#vehicle_id').focus(function() {telbook.SetTelBook1();});
-		$('#security_code').change(function() {telbook.plateUpdate();});
-		$('#security_code').keyup(function() {telbook.plateUpdate();});
-	}
+	$('#vehicle_id').change(function() {telbook.SetTelBook1();});
+	$('#vehicle_id').focus(function() {telbook.SetTelBook1();});
+	$('#security_code').change(function() {telbook.plateUpdate();});
+	$('#security_code').keyup(function() {telbook.plateUpdate();});
 });
 
 var telbook = new function() 

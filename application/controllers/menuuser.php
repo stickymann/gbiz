@@ -17,7 +17,8 @@ class Menuuser_Controller extends Menufunc_Controller
 		{
 			//select currently assigned roles
 			$query = sprintf('select * from roles_users where user_id = "%s"',Auth::instance()->get_user()->id);
-			$rolearr = $site->executeSelectQuery($query);
+			if($rolearr = $site->executeSelectQuery($query))
+			{
 //print_r($rolearr); print "<br>[END ROLEARR]<hr>";
 
 			foreach($rolearr as $key => $rec)
@@ -74,6 +75,7 @@ class Menuuser_Controller extends Menufunc_Controller
 						$site->insertRecord('menudefs_users',$post);
 					}
 				}
+			}
 			}
 		}
 

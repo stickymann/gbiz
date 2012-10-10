@@ -3,6 +3,7 @@ printToScreen($enquiryrecords,$pagination,$labels,$config);
 
 function getSection1($item,$labels)
 {
+	$baseurl = url::base()."/"."index.php";
 	$label_01 = $labels['id'];				$item_01 = $item->id;
 	$label_02 = $labels['vehicle_id'];		$item_02 = $item->vehicle_id;
 	$label_03 = $labels['owner_id'];		$item_03 = $item->owner_id;
@@ -28,10 +29,14 @@ function getSection1($item,$labels)
 			<tr valign=top>
 				<td width='50%'>
 					<table width='100%' border=0 cellspacing=0 cellpadding=1>
-						<tr valign=top><td width='46%'>$label_02 : </td><td>$item_02($item_17) [$item_01]</td></tr>
-						<tr valign=top><td>$label_03 : </td><td>$item_03</td></tr>
+						<tr valign=top><td width='46%'>$label_02 : </td>
+						<td><a href='$baseurl/vehicle/index/$item_02' target='enquiry' title='Edit Vehicle'>$item_02</a>($item_17) [$item_01]</td>
+						</tr>
+						<tr valign=top><td>$label_03 : </td>
+						<td><a href='$baseurl/customer/index/$item_03' target='enquiry' title='Edit Customer'>$item_03</a></td></tr>
 						<tr valign=top><td>Customer Name : </td><td>$fullname</td></tr>	
-						<tr valign=top><td>$label_04 : </td><td>$item_04</td></tr>
+						<tr valign=top><td>$label_04 : </td>
+						<td><a href='$baseurl/device/index/$item_04' target='enquiry' title='Edit Device'>$item_04</a></td></tr>
 						<tr valign=top><td>$label_05 : </td><td>$item_05</td></tr>
 						<tr valign=top><td>$label_06 : </td><td>$item_06</td></tr>	
 						<tr valign=top><td>$label_15 : </td><td>$item_15</td></tr>	
@@ -45,7 +50,8 @@ function getSection1($item,$labels)
 						<tr valign=top><td>$label_10 : </td><td>$item_10</td></tr>
 						<tr valign=top><td>$label_11 : </td><td>$item_11</td></tr>
 						<tr valign=top><td>$label_12 : </td><td>$item_12</td></tr>	
-						<tr valign=top><td>$label_16 : </td><td>$item_16</td></tr>	
+						<tr valign=top><td>$label_16 : </td>
+						<td><a href='$baseurl/telbook/index/$item_16' target='enquiry' title='Edit SMS User Account'>$item_16</td></tr>	
 				</table>
 				</td>
 			</tr>

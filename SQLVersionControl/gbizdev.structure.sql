@@ -511,7 +511,7 @@ CREATE TABLE `certofinstallations_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1053 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -807,7 +807,7 @@ CREATE TABLE `csvs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_csv_id` (`csv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=372 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -943,7 +943,7 @@ CREATE TABLE `customers_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2680 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2733 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1097,7 +1097,7 @@ CREATE TABLE `deliverynotes_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_deliverynote_id` (`deliverynote_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1267 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1275,7 +1275,7 @@ CREATE TABLE `devices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_device_id` (`device_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3178 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1503,7 +1503,7 @@ CREATE TABLE `inventchkouts_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1306 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1583,7 +1583,7 @@ CREATE TABLE `inventorys_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=517 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2058,7 +2058,7 @@ CREATE TABLE `orderdetails_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1521 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1725 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2159,7 +2159,7 @@ CREATE TABLE `orders_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13799 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13892 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2367,7 +2367,7 @@ CREATE TABLE `payments_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_payment_id` (`payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1223 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1297 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2444,7 +2444,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52315 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59003 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2666,7 +2666,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9502 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10334 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3211,10 +3211,9 @@ CREATE TABLE `telbooks` (
   `record_status` char(4) NOT NULL DEFAULT 'LIVE',
   `current_no` int(11) NOT NULL DEFAULT '2',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_vehicle_id` (`vehicle_id`),
   UNIQUE KEY `uniq_plate` (`plate`),
   UNIQUE KEY `uniq_telno` (`telno`)
-) ENGINE=InnoDB AUTO_INCREMENT=1886 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1948 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3324,7 +3323,7 @@ CREATE TABLE `tills_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_till_id` (`till_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1105 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3407,7 +3406,7 @@ CREATE TABLE `tilltransactions_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_transaction_id` (`transaction_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1107 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3682,7 +3681,7 @@ CREATE TABLE `vehicles_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_vehicle_id` (`vehicle_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3093 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5369,4 +5368,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-04 13:00:31
+-- Dump completed on 2012-10-09 21:06:42
