@@ -196,7 +196,7 @@ _XML_;
 			$pdf_xml = "<?xml version='1.0' standalone='yes'?>"."\n"."<formfields>"."\n";
 			$pdf_xml .= $xmldata;
 			$pdf_xml .= "</formfields>"."\n";
-			$pdf_xml = str_replace('&','and',$pdf_data); 
+			$pdf_xml = str_replace('&','and',$pdf_xml); 
 
 			$data['pdf']->InsertIntoPDFTableNoDelete($arr);
 			$pdftxt = new Csv_Controller();
