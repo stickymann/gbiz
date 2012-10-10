@@ -390,7 +390,7 @@ _HTML_;
 
 		$pdf = new Pdf_Controller();
 		$arr['pdf_id']			= $invoice_id;
-		$arr['pdf_template']	= "GBIZ_INVOICE";
+		$arr['pdf_template']	= "INVOICE";
 		$arr['controller']		= $config['controller'];
 		$arr['type']			= $config['type'];
 		$arr['data']			= $pdf_data;
@@ -404,7 +404,7 @@ _HTML_;
 		
 		$pdf->InsertIntoPDFTableNoDelete($arr);
 		$arr['pdf_id']			= $quotation_id;
-		$arr['pdf_template']	= "GBIZ_QUOTATION";
+		$arr['pdf_template']	= "QUOTATION";
 		$pdf->InsertIntoPDFTableNoDelete($arr);
 	}
 }
