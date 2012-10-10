@@ -1,0 +1,10 @@
+#!/bin/sh
+mysqldump -u dbuser -pdbpass --routines gbiz > SQLVersionControl/gbizdev.full.sql
+mysqldump -u dbuser -pdbpass --routines --no-data=true gbiz > SQLVersionControl/gbizdev.structure.sql
+mysqldump -u dbuser -pdbpass --no-create-info --compact --extended-insert=false gbiz > SQLVersionControl/gbizdev.data.sql
+
+git add SQLVersionControl/gbizdev.full.sql
+git add SQLVersionControl/gbizdev.structure.sql
+git add SQLVersionControl/gbizdev.data.sql
+
+exit 0
