@@ -9,6 +9,7 @@ class Site_Model extends Model
 		//parent::__construct();
 		$this->db = Database::instance();
 		$this->setDBErrMsg();
+		set_time_limit(0);
 		//$this->fields = array('id' => $idField,'parent' => $parentField, 'sort' => $sortField);
 	}
 

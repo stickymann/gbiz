@@ -160,7 +160,7 @@ _XML_;
 
 	public function createInvoices($data,$arr)
 	{
-		$arr['pdf_template'] = "GBIZ_BATCHINVOICES";
+		$arr['pdf_template'] = "BATCHINVOICES";
 		$batch_id = $data['batch_id'];
 		$table = 'batchinvoicedetails';
 		$fields = array('id','order_id','alt_invoice_id');
