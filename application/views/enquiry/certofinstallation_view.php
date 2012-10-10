@@ -277,7 +277,9 @@ function printToScreen($enquiryrecords,$pagination,$labels,$config)
 		$num = rand(0,999999);
 		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
 		$cert_id	  = 'CERT'.date("YmdHis").$num;
-		$enqurl = sprintf('<div id=enqtot>Total : %s</div><div id=enqpag>%s</div>',$config['total_items'],$pagination);
+		$enqurl  = sprintf('<div id=enqtot><a href="%s" title="Refresh Page"><img src="%s" align="middle";></a>',$config['refresh_url'],$config['refresh_icon']);
+		$enqurl .= sprintf(' Total : %s </div>',$config['total_items']);
+		$enqurl .= sprintf('<div id=enqpag>%s</div>',$pagination);
 		$pdfurl = ""; 
 		if($config['printable'] && $item->certificate_status=="ACTIVE")
 		{

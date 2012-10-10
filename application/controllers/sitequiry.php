@@ -20,7 +20,11 @@ class Sitequiry_Controller extends Template_Controller
 		$this->printable = false;
 		$this->template->head = '';
 		$this->template->userbttns = '';
-		
+		$this->refresh_url = '';
+		$this->refresh_icon = '';
+		$baseurl = url::base(false,'http');
+		$this->refresh_icon = $baseurl."media/img/site/refresh020.png";
+
 		//$this->template->menutitle = $this->param['enquiry_header']; 
 		$this->template->menutitle = '';
 		$this->template->content = '';
@@ -64,14 +68,15 @@ class Sitequiry_Controller extends Template_Controller
 			$idfield = $_REQUEST['fields'];
 			$value	 = $_REQUEST['lkvals'];
 			$baseurl = url::base(TRUE,'http');
-			$url =  sprintf('index.php/%s/page/1?op=%s&controller=%s&fields=%s&lkvals=%s',$controller,$op,$controller,$idfield,$value);
-		
+			$url   = sprintf('index.php/%s/page/1?op=%s&controller=%s&fields=%s&lkvals=%s',$controller,$op,$controller,$idfield,$value);
+			$r_url = sprintf('index.php/%s/page/#NO#?op=%s&controller=%s&fields=%s&lkvals=%s',$controller,$op,$controller,$idfield,$value);
+			$this->refresh_url = $baseurl."/".$r_url;
 			$pagebody = new Sitehtml_Controller();
 			$pagebody->add('<div id="enq_display">');
 			$pagebody->add('<iframe src="'.$url.'" frameborder=0 width="98%" height=600px scrolling="auto"></iframe>');
 
 			$pagebody->add('</div>');
-			$this->content->pagebody = $pagebody->getHtml();
+			$this->content->pageody = $pagebody->getHtml();
 			$this->setPageContent($this->htmlhead->getHtml(),$this->content);
 		}
 	}
@@ -156,7 +161,8 @@ _HTML_;
 		if($this->viewable)
 		{	
 			$request = $_REQUEST;
-		
+			$config['refresh_url'] = str_replace("#NO#",$pagenum,$this->refresh_url);
+			$config['refresh_icon'] = $this->refresh_icon;
 			/*from enquirydefs*/
 			$table = $this->enqparam['tablename'];
 			$idfield = $this->enqparam['idfield'];

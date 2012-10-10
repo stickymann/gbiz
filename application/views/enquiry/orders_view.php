@@ -348,8 +348,10 @@ function printToScreen($enquiryrecords,$pagination,$labels,$config)
 		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
 		$invoice_id	  = 'INV'.date("YmdHis").$num;
 		$quotation_id = 'QTE'.date("YmdHis").$num;
-		$enqurl = sprintf('<div id=enqtot>Total : %s</div><div id=enqpag>%s</div>',$config['total_items'],$pagination);
-		$pdfurl = ""; 
+		$enqurl  = sprintf('<div id=enqtot><a href="%s" title="Refresh Page"><img src="%s" align="middle";></a>',$config['refresh_url'],$config['refresh_icon']);
+		$enqurl .= sprintf(' Total : %s </div>',$config['total_items']);
+		$enqurl .= sprintf('<div id=enqpag>%s</div>',$pagination);
+		$pdfurl  = ""; 
 		if($config['printable'])
 		{
 			$pdfurl = sprintf('<div id=enqprt>[ <a href=%sindex.php/pdfbuilder/index/%s target=_blank>Quotation</a> ] ',url::base(),$quotation_id)."\n";
