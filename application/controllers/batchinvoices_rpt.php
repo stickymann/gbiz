@@ -174,7 +174,7 @@ _XML_;
 
 	public function createInvoices($data,$arr)
 	{
-		$arr['pdf_template'] = "GBIZ_BATCHINVOICES";
+		$arr['pdf_template'] = "BATCHINVOICES";
 		
 		$batch_id = $data['batch_id'];
 		$table = 'batchinvoicedetails';
@@ -224,7 +224,7 @@ _XML_;
 		$pdf = new Pdf_Controller();
 		$data['pdf'] = $pdf;
 		$arr['pdf_id']			= $data['payments'];
-		$arr['pdf_template']	= "GBIZ_BATCHINVOICESUMMARY";
+		$arr['pdf_template']	= "BATCHINVOICESUMMARY";
 		$arr['controller']		= $data['controller'];
 		$arr['type']			= $data['type'];
 		$arr['data']			= $pdf_data;
