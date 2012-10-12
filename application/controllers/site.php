@@ -771,7 +771,8 @@ class Site_Controller extends Template_Controller
 							break;
 							
 							case 'xmltable':
-								$XMLTABLE_HTML = $this->editXMLTable($key,$this->form[$key],"black");
+								$XMLTABLE_HTML = $this->editXMLTable($key,"black");
+								//$pagebody->add("<td valign='top'>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::textarea($key,$this->form[$key],' rows="10" cols="120"')."<span class='viewtext'>".$XMLTABLE_HTML."</span>");
 								$pagebody->add("<td valign='top'>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::hidden($key,$this->form[$key])."<span class='viewtext'>".$XMLTABLE_HTML."</span>");
 							break;
 
@@ -1906,17 +1907,20 @@ $TABLETAG = "\n\n".sprintf('<div id="sf" class="sf"><table %s id="subform_table_
 	
 	public function  viewXMLTable($key,$xml,$color)
 	{
-		$HTML = "<table id='subformview' width='90%'>"."\n";
+		$controller = $this->param['controller'];
 		$TABLEHEADER = ""; $TABLEROWS ="";
-		$formfields = new SimpleXMLElement($xml);
-		
-		foreach($formfields->header->column as $val)
-		{
-			$val = sprintf('%s',$val);
-			$TABLEHEADER .= sprintf("<th>%s</th>",$val);
-		}
-		$TABLEHEADER = "<tr valign='top'>".$TABLEHEADER."</tr>"."\n";
+		$HTML = "<table id='subformview' width='90%'>"."\n";
 
+		$subopt  = $this->param['primarymodel']->getFormSubTableOptions($controller,$key);
+		foreach($subopt as $subkey => $row)
+		{
+			$sublabel = $row['sublabel'];
+			$TABLEHEADER .= sprintf("<th>%s</th>",$sublabel);
+		}
+
+		$TABLEHEADER = "<tr valign='top'>".$TABLEHEADER."</tr>"."\n";
+		
+		$formfields = new SimpleXMLElement($xml);
 		foreach($formfields->rows->row as $row)
 		{
 			$TABLEROWS .= "<tr>";
@@ -1933,7 +1937,7 @@ $TABLETAG = "\n\n".sprintf('<div id="sf" class="sf"><table %s id="subform_table_
 		return $HTML;
 	}
 
-	public function  editXMLTable($key,$xml)
+	public function  editXMLTable($key)
 	{
 		$TABLEHEADER = ""; $TABLEROWS ="";
 		$subtable_id = "subform_table_".$key;
@@ -1947,44 +1951,50 @@ $TABLETAG = "\n\n".sprintf('<div id="sf" class="sf"><table %s id="subform_table_
 $url = sprintf('%sajaxtodb?option=jxmldatabyid&controller=%s&field=%s&idfield=%s&idval=%s&prefix=%s&tabletype=%s',$baseurl,$controller,$field,$idfield,$idval,$prefix,$tabletype);
 $JSURL = sprintf('<script type="text/javascript">%s_dataurl="%s"</script>',$subtable_id,$url);
 $HTML = "\n".'<div id="sf" class="sf">'.sprintf('<table id="%s" class="easyui-datagrid" resizable="true" singleSelect="true"  style="width:800px; height:auto;">',$subtable_id)."\n";
-	
-		$i=0;
-		$formfields = new SimpleXMLElement($xml);
-		$row = $formfields->rows->row;
-		foreach ($row->children() as $field)
-		{
-			$colname[$i] = sprintf('%s',$field->getName() );
-			$i++;
-		}
+$HTML .= "</table></div>"."\n";
 
-		$i=0;
-		$TABLEHEADER = "<thead>"."\n"."<tr valign='top'>"."\n"; 
-		foreach($formfields->header->column as $val)
-		{
-			$val = sprintf('%s',$val);
-			$TABLEHEADER .= sprintf("<th field='subform_%s_%s'><b>%s</b></th>",$key,$colname[$i],$val)."\n";
-			$i++;
-		}
-		$TABLEHEADER .="</tr>"."\n"."</thead>"."\n";
-		
-		/*
-		$TABLEROWS ="<tbody>"."\n";
-		foreach($formfields->rows->row as $row)
-		{
-			$TABLEROWS .= "<tr valign='top'>"."\n";
-			foreach ($row->children() as $field)
-			{
-				$subkey = sprintf('%s',$field->getName() );
-				$val	= sprintf('%s',$row->$subkey);
-				//$TABLEROWS .= sprintf("<td valign='top' style='color:%s;'>%s</td>",$color,$val)."\n";
-				$TABLEROWS .= sprintf("<td>%s</td>",$val)."\n";
-			}
-			$TABLEROWS .= "</tr>"."\n"."</tbody>"."\n";;
-		}
-		*/
-		$COLDEF = $this->xmlSubFormColDef($key,$xml);
-		$HTML .= $TABLEHEADER.$TABLEROWS."</table></div>"."\n".$JSURL."\n".$COLDEF."\n";
+		$COLDEF = $this->xmlSubFormColDef($controller,$key);
+		$HTML .= $HTML.$JSURL."\n".$COLDEF."\n";
 		return $HTML;
+	}
+	
+	public function xmlSubFormColDef($controller,$key)
+	{
+		$COLDEFROW = ""; $coldef = "";
+		$subopt  = $this->param['primarymodel']->getFormSubTableOptions($controller,$key);
+		foreach($subopt as $subkey => $row)
+		{
+			$coldef = "";
+			$sublabel = $row['sublabel']; 
+			if(isset($row['width'])){ $coldef .= sprintf("width:%s,",$row['width']); } else { $width = ""; }
+			if(isset($row['align'])){ $coldef .= sprintf("align:'%s',",$row['align']); } else { $align = ""; }
+			if(isset($row['formatter'])){ $coldef .= sprintf("formatter:%s,",$row['formatter']); } else { $formatter = ""; }
+			if(isset($row['editor'])){ $coldef .= sprintf("editor:%s,",$row['editor']); } else { $editor = ""; }
+			$coldef = substr_replace($coldef, '', -1);
+			$subname = $row['subname'];
+			$vals = preg_split('/:/',$row['subname']);
+			if(is_array($vals) && count($vals)==2)
+			{
+				$subname = $vals[1];
+			}			
+			//$coldef = sprintf("
+			$COLDEFROW .= sprintf("{field:'subform_%s_%s',title:'<b>%s</b>',%s},",$key,$subname,$sublabel,$coldef)."\n";
+		}
+		
+		$colArr = $key."_colArr";
+		$DefaultColumns = $key."_DefaultColumns(tt)";
+		$TEXT=<<<_text_
+		<script type="text/javascript">
+		function $DefaultColumns
+		{
+$colArr = [[
+$COLDEFROW
+		]]
+		}
+		</script>
+_text_;
+		$ADDTIONALTEXT = $this->xmlSubFormAdditionalColDef();
+		return $TEXT.$ADDTIONALTEXT;
 	}
 
 	public function viewSubForm($key,$current_no,$color,$subtable_type=false)
@@ -2134,10 +2144,6 @@ $HTML = "\n".'<div id="sf" class="sf">'.sprintf('<table id="%s" class="easyui-da
 
 	public function subFormSummaryHTML($results=null,$labels=null) {}
 	public function subFormFieldExclusionList() { return false;}
-	public function xmlSubFormColDef() {}
-
+	public function xmlSubFormAdditionalColDef() { return "";}
 }
 ?>
-
-
-		

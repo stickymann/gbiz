@@ -50,62 +50,6 @@ class Inventchkout_Controller extends Site_Controller
         }
 	}
 
-	public function xmlSubFormColDef($key,$xml)
-	{
-/*
-function DefaultColumns(tt)
-{
-	colArr = [[
-				{field:'subform_checkout_details_product_id',title:'<b>Product Id</b>',width:120,align:'left'},
-				{field:'subform_checkout_details_description',title:'<b>Description</b>',width:200,align:'left'},
-				{field:'subform_checkout_details_order_qty',title:'<b>Order Qty</b>',width:75,align:'center'},
-				{field:'subform_checkout_details_filled_qty',title:'<b>Filled Qty</b>',width:75,align:'center'},
-				{field:'subform_checkout_details_checkout_qty',title:'<b>Checkout Qty</b>',width:100,align:'center',editor:{type:'numberbox',options:{required:true}}},
-				{field:'subform_checkout_details_status',title:'<b>Checkout Status</b>',width:125,align:'left'},
-			]]
-}
-*/		$i=0;
-		$coldefarr = array(
-			"product_id"	=> "width:120,align:'left'",
-			"description"	=> "width:200,align:'left'",
-			"order_qty"		=> "width:75 ,align:'center'",
-			"filled_qty"	=> "width:120,align:'center'",
-			"checkout_qty"	=> "width:100,align:'left',editor:{type:'numberbox',options:{required:true}}",
-			"status"		=> "width:125,align:'left'"
-		);
-		
-		$formfields = new SimpleXMLElement($xml);
-		$row = $formfields->rows->row;
-		foreach ($row->children() as $field)
-		{
-			$colarr[$i] = sprintf('%s',$field->getName() );
-			$i++;
-		}
-
-		$i=0;
-		$COLDEFROW = "";  
-		foreach($formfields->header->column as $val)
-		{
-			$val = sprintf('%s',$val);
-			$colname = $colarr[$i];
-			if(isset($coldefarr[$colname])) { $coldef = $coldefarr[$colname];} else {$coldef ="";}
-			$COLDEFROW .= sprintf("{field:'subform_%s_%s',title:'<b>%s</b>',%s},",$key,$colname,$val,$coldef)."\n";
-			$i++;
-		}
-
-		$TEXT=<<<_text_
-		<script type="text/javascript">
-		function DefaultColumns(tt)
-		{
-colArr = [[
-$COLDEFROW
-		]]
-		}
-		</script>
-_text_;
-		return $TEXT;
-	}
-
 	public function InsertIntoCheckoutTable($data)
 	{
 		//if order_id does not exist
@@ -167,7 +111,7 @@ _text_;
 							$val = $this->ProcessRow($val);
 							if( $val['status'] == "PARTIAL" ) { $chk_p++;}
 							else if( $val['status'] == "NONE" ) { $chk_n++;}
-							else if( $val['status'] == "COMPLETED" ) { $chk_c++;}
+							else if( $val['status'] == "COMPLETED" ) { $chk_c++; }
 							else if( $val['status'] == "ERROR" ) { $chk_e++;}
 							$xmlrows .= $val['xmlrow'];
 							if( $val['filled_qty'] > 0 )
@@ -178,15 +122,15 @@ _text_;
 						}
 						else
 						{
-							$xmlrows .= sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status']);
+							$xmlrows .= sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status'])."\n";
 						}
-						
+						if($val['order_qty'] == $val['filled_qty']) { $chk_c++; }
 					}
 					
-					$xmlrows = "<rows>".$xmlrows."</rows>";
-					$replacement_xml = "<?xml version='1.0' standalone='yes'?><formfields>";
-					$replacement_xml .= htmlspecialchars_decode( $formfields->header->asXML() );
-					$replacement_xml .= $xmlrows."</formfields>";
+					$xmlrows = "<rows>\n".$xmlrows."</rows>\n";
+					$replacement_xml = "<?xml version='1.0' standalone='yes'?>\n<formfields>\n";
+					//$replacement_xml .= htmlspecialchars_decode( $formfields->header->asXML() );
+					$replacement_xml .= $xmlrows."</formfields>\n";
 					$arr['table'] = $this->param['tb_live'];
 					$arr['order_id'] = $data['order_id'];
 					$arr['checkout_details'] = $replacement_xml;
@@ -194,10 +138,10 @@ _text_;
 					$this->UpdateCheckOutRecord($arr);
 					
 					//create delivery note
-					$dnoterows = "<rows>".$dnoterows."</rows>";
-					$dnote_xml = "<?xml version='1.0' standalone='yes'?><formfields>";
-					$dnote_xml .= "<header><column>Product Id</column><column>Description</column><column>Qty</column></header>";
-					$dnote_xml .= $dnoterows."</formfields>";
+					$dnoterows = "<rows>\n".$dnoterows."</rows>\n";
+					$dnote_xml = "<?xml version='1.0' standalone='yes'?>\n<formfields>\n";
+					//$dnote_xml .= "<header><column>Product Id</column><column>Description</column><column>Qty</column></header>";
+					$dnote_xml .= $dnoterows."</formfields>\n";
 					$dnotedata['order_id']	= $data['order_id'];
 					$dnotedata['details']	= $dnote_xml;
 					$dnotedata['idname']	= Auth::instance()->get_user()->idname;
@@ -207,7 +151,6 @@ _text_;
 					}
 				}
 			}
-			
 			if( $chk_e > 0){ $this->UpdateOrderCheckOutStatus($order->param['tb_live'],$data['order_id'],"ERROR"); }
 			else if( $chk_p > 0 || ( $chk_c > 0 && $chk_n > 0)) { $this->UpdateOrderCheckOutStatus($order->param['tb_live'],$data['order_id'],"PARTIAL"); }
 			else if( $chk_n > 0 && $chk_c == 0 && $chk_p == 0) { $this->UpdateOrderCheckOutStatus($order->param['tb_live'],$data['order_id'],"NONE"); }
@@ -272,14 +215,14 @@ _text_;
 				}
 			}
 		}
-		$xmlrow = sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status']);
+		$xmlrow = sprintf('<row><product_id>%s</product_id><description>%s</description><order_qty>%s</order_qty><filled_qty>%s</filled_qty><checkout_qty>%s</checkout_qty><status>%s</status></row>',$val['product_id'],$val['description'],$val['order_qty'],$val['filled_qty'],$val['checkout_qty'],$val['status'])."\n";
 		$val['xmlrow'] = $xmlrow;
 		
 		$val['dnoterow'] = "";
 		$delivery_qty = $post_filled - $pre_filled;
 		if($delivery_qty > 0)
 		{
-			$dnoterow = sprintf('<row><product_id>%s</product_id><description>%s</description><filled_qty>%s</filled_qty></row>',$val['product_id'],$val['description'],$delivery_qty);
+			$dnoterow = sprintf('<row><product_id>%s</product_id><description>%s</description><filled_qty>%s</filled_qty></row>',$val['product_id'],$val['description'],$delivery_qty)."\n";
 			$val['dnoterow'] = $dnoterow;
 		}
 		return $val;

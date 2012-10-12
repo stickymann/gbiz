@@ -185,10 +185,11 @@ function InventoryCheckoutStatus($item)
 	$TABLEHEADER = ""; $TABLEROWS =""; 
 	$querystr = sprintf('select checkout_details from %s where order_id = "%s"',$invchk->param['tb_live'],$order_id);
 	$results = $invchk->param['primarymodel']->executeSelectQuery($querystr);
+	$subopt  = $invchk->param['primarymodel']->getFormSubTableOptions("inventchkout","checkout_details");
 	$HTML = sprintf('Inventory Checkout Id : <a href="%s/inventchkout/index/%s" target="enquiry" title="Edit Inventory Checkout">%s</a><br><br>',$baseurl,$order_id,$order_id);
 	if($results)
 	{
-		$HTML .= viewXMLTable($results[0]->checkout_details);	
+		$HTML .= viewXMLTable($results[0]->checkout_details,$subopt);	
 	}
 	return $HTML;
 }
@@ -201,6 +202,7 @@ function DeliveryNote($item)
 	$TABLEHEADER = ""; $TABLEROWS =""; $HTML = "";
 	$querystr = sprintf('select id,deliverynote_id,deliverynote_date,details,status,delivered_by,delivery_date,returned_signed_by,returned_signed_date,comments from %s where order_id = "%s"',$dnote->param['tb_live'],$order_id);
 	$results = $dnote->param['primarymodel']->executeSelectQuery($querystr);
+	$subopt  = $dnote->param['primarymodel']->getFormSubTableOptions("deliverynote","details");
 	if($results)
 	{
 		foreach($results as $key => $row)
@@ -240,26 +242,26 @@ function DeliveryNote($item)
 			</tr>
 	</table>
 _HTML_;
-		$HTML2 = viewXMLTable($row->details);	
+		$HTML2 = viewXMLTable($row->details,$subopt);	
 		$HTML .= $HTML1.$HTML2."<p></p>";
 		}
 	}
 	return $HTML;
 }
 
-function viewXMLTable($xml)
+function viewXMLTable($xml,&$subopt)
 {
 	$HTML = "<table id='order_enq_details' width='100%'>"."\n";
 	$TABLEHEADER = ""; $TABLEROWS ="";
-	$formfields = new SimpleXMLElement($xml);
-		
-	foreach($formfields->header->column as $val)
+
+	foreach($subopt as $subkey => $row)
 	{
-		$val = sprintf('%s',$val);
-		$TABLEHEADER .= sprintf("<th>%s</th>",$val);
+		$sublabel = $row['sublabel'];
+		$TABLEHEADER .= sprintf("<th>%s</th>",$sublabel);
 	}
 	$TABLEHEADER = "<tr valign='top'>".$TABLEHEADER."</tr>"."\n";
-
+	
+	$formfields = new SimpleXMLElement($xml);
 	foreach($formfields->rows->row as $row)
 	{
 		$TABLEROWS .= "<tr>";

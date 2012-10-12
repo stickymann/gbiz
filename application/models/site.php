@@ -559,7 +559,6 @@ class Site_Model extends Model
 		$result = $this->db->query($query);
 		$arr = array();
 		$row = $result[0];
-		
 		$formfields = new SimpleXMLElement($row->formfields);
 		foreach ($formfields->subformfields->subfield as $subfield)
 		{
@@ -570,6 +569,36 @@ class Site_Model extends Model
 			if($subfield->width) { $arr[$val]['width'] = sprintf('%s',$subfield->width); }
 			if($subfield->align) { $arr[$val]['align'] = sprintf('%s',$subfield->align); }
 			if($subfield->editor) { $arr[$val]['editor'] = sprintf('%s',$subfield->editor); }
+		}
+		return $arr;
+	}
+
+	public function getFormSubTableOptions($controller,$fieldname)
+	{
+		$labels = false; 
+		$query = sprintf('select %s from %s where %s = "%s"','formfields','params','controller',$controller);
+		$result = $this->db->query($query);
+		$arr = array();
+		$row = $result[0];
+		$formfields = new SimpleXMLElement($row->formfields);
+		
+		//$subfield = $formfields->$field->subtable->subfield;
+		foreach ($formfields->field as $field)
+		{
+			if(sprintf('%s',$field->name) == $fieldname)
+			{
+				foreach ($field->subtable->subfield as $subfield)
+				{
+					$val = sprintf('%s',$subfield->subname);
+					$arr[$val]['subname'] = sprintf('%s',$subfield->subname); 
+					$arr[$val]['sublabel'] = sprintf('%s',$subfield->sublabel); 
+					if($subfield->formatter) { $arr[$val]['formatter'] = sprintf('%s',$subfield->formatter); }
+					if($subfield->width) { $arr[$val]['width'] = sprintf('%s',$subfield->width); }
+					if($subfield->align) { $arr[$val]['align'] = sprintf('%s',$subfield->align); }
+					if($subfield->editor) { $arr[$val]['editor'] = sprintf('%s',$subfield->editor); }
+				}
+				break;
+			}
 		}
 		return $arr;
 	}

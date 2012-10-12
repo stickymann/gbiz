@@ -62,48 +62,7 @@ class Deliverynote_Controller extends Site_Controller
 		if (array_key_exists('msg_new', $validation->errors())) return;
 		if($_POST['status'] == "NEW") { $validation->add_error($field, 'msg_new');}
 	}
-
-	public function xmlSubFormColDef($key,$xml)
-	{
-		$i=0;
-		$coldefarr = array(
-			"product_id"	=> "width:120,align:'left'",
-			"description"	=> "width:400,align:'left'",
-			"filled_qty"		=> "width:120,align:'center'"
-		);
-		
-		$formfields = new SimpleXMLElement($xml);
-		$row = $formfields->rows->row;
-		foreach ($row->children() as $field)
-		{
-			$colarr[$i] = sprintf('%s',$field->getName() );
-			$i++;
-		}
-
-		$i=0;
-		$COLDEFROW = "";  
-		foreach($formfields->header->column as $val)
-		{
-			$val = sprintf('%s',$val);
-			$colname = $colarr[$i];
-			if(isset($coldefarr[$colname])) { $coldef = $coldefarr[$colname];} else {$coldef ="";}
-			$COLDEFROW .= sprintf("{field:'subform_%s_%s',title:'<b>%s</b>',%s},",$key,$colname,$val,$coldef)."\n";
-			$i++;
-		}
-
-		$TEXT=<<<_text_
-		<script type="text/javascript">
-		function DefaultColumns(tt)
-		{
-colArr = [[
-$COLDEFROW
-		]]
-		}
-		</script>
-_text_;
-		return $TEXT;
-	}
-
+	
 	public function InsertIntoDeliveryNoteTable($data)
 	{
 		//set up new checkout record and insert into checkout table 

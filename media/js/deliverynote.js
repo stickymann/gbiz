@@ -13,7 +13,7 @@ $(document).ready(function()
 	returned_signed_date = $('#returned_signed_date').val();
 	delivered_by = $('#delivered_by').val();
 	returned_signed_by = $('#returned_signed_by').val();
-	DefaultColumns(subtable);
+	details_DefaultColumns(subtable);
 	subform_InitDataGridReadWrite(subtable);
 });
 
@@ -22,7 +22,7 @@ function subform_InitDataGridReadWrite(tt)
 	$('#'+tt).datagrid(
 	{
 		url: subform_table_details_dataurl,
-		columns: colArr
+		columns: details_colArr
 	});
 }
 
