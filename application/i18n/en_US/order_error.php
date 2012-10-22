@@ -57,10 +57,10 @@ $lang = array
 	
 	'order_details' => array
     (
-        'required' => 'Order Detail: required.',
-		'zero_orderdetails' => 'Order Detail: zero products selected, at least one required.', 
-		'usertext_required' => 'Order Detail: user text required, must be 3 or more characters.',
-        'default' => 'Order Detail: invalid input.'
+        'required' => 'Order Details: required.',
+		'zero_orderdetails' => 'Order Details: zero products selected, at least one required.', 
+		'usertext_required' => 'Order Details: user text required, must be 3 or more characters.',
+        'default' => 'Order Details: invalid input.'
     ),
 
 	'inventory_checkout_type' => array
