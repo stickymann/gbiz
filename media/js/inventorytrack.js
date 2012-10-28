@@ -5,11 +5,14 @@ var subtable = "subform_table_stockbatch_details";
 var stock_status =  
 [
 	{item_status:'STOCK-NEW',name:'STOCK-NEW'},
+	{item_status:'STOCK-NEW',name:'STOCK-USED'},
 	{item_status:'STOCK-REFURBISHED',name:'STOCK-REFURBISHED'},
 	{item_status:'VEHICLE-NEW',name:'VEHICLE-NEW'},
+	{item_status:'VEHICLE-NEW',name:'VEHICLE-USED'},
 	{item_status:'VEHICLE-REFURBISHED',name:'VEHICLE-REFURBISHED'},
 	{item_status:'REPAIR-INHOUSE',name:'REPAIR-INHOUSE'},
 	{item_status:'REPAIR-RMA',name:'REPAIR-RMA'},
+	{item_status:'FLOATING',name:'FLOATING'},
 	{item_status:'DISPOSED',name:'DISPOSED'}
 ]; 
 

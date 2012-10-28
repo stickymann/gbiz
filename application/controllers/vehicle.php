@@ -56,4 +56,85 @@ class Vehicle_Controller extends Site_Controller
             $validation->add_error($field, 'msg_duplicate');
         }
 	}
+
+	public function updateItemStatus()
+	{
+		$vehicle_id		= $_POST['vehicle_id'];
+		$device_id		= $_POST['device_id'];
+		$current_no		= $_POST['current_no'];
+		$new_status		= "";
+		$item_status	= "";
+
+		$itd = new Inventory_track_detail_Controller();
+		$querystr = sprintf('select imei,item_status from %s where device_id = "%s"',"vw_device_info",$device_id);
+		$item = $this->param['primarymodel']->executeSelectQuery($querystr);
+		
+		if($item && $device_id != "NO.DEVICE")
+		{
+			$item_status = $item[0]->item_status; 
+			$serial_no	 = $item[0]->imei;
+			
+			switch($item_status)
+			{
+				case "STOCK-NEW": 
+					$new_status = "VEHICLE-NEW";
+				break;
+			
+				case "STOCK-USED":
+				case "FLOATING": 
+					$new_status = "VEHICLE-USED";
+				break;
+			
+				case "STOCK-REFURBISHED": 
+				case "REPAIR-INHOUSE":
+				case "REPAIR-RMA":
+				case "DISPOSED": 
+					$new_status = "VEHICLE-REFURBISHED";
+				break;
+			}
+			$querystr = sprintf('update %s set item_status = "%s" where serial_no = "%s"',$itd->param['tb_live'],$new_status,$serial_no);
+			$itd->param['primarymodel']->executeNonSelectQuery($querystr);
+		}
+		
+		if($current_no > 1)
+		{
+			$querystr = sprintf('select device_id from %s where vehicle_id ="%s" and current_no = "%s"',$this->param['tb_hist'],$vehicle_id,$current_no-1);
+			$vehist = $this->param['primarymodel']->executeSelectQuery($querystr);
+			if($vehist)
+			{
+				$prev_id = $vehist[0]->device_id;
+				if($device_id != $prev_id && $prev_id != "NO.DEVICE")
+				{
+					$querystr = sprintf('select imei,item_status,device_status from %s where device_id = "%s"',"vw_device_info",$prev_id);
+					$item2 = $this->param['primarymodel']->executeSelectQuery($querystr);
+					if($item2)
+					{
+						$serial_no	 = $item2[0]->imei; $device_status = $item2[0]->device_status; $item_status = $item2[0]->item_status;
+						switch($item_status)
+						{
+							case "VEHICLE-NEW": 
+							case "VEHICLE-USED":
+							case "VEHICLE-REFURBISHED":
+							if($device_status == "ACTIVE")
+							{
+								$querystr = sprintf('update %s set item_status = "%s" where serial_no = "%s"',$itd->param['tb_live'],"FLOATING",$serial_no);
+								$itd->param['primarymodel']->executeNonSelectQuery($querystr);
+							}
+							break;
+						}
+					}
+				}
+			}			
+		}
+	}
+	
+	public function authorize_post_update_existing_record()
+	{
+		$this->updateItemStatus();
+	}
+
+	public function authorize_post_insert_new_record()
+	{
+		$this->updateItemStatus();
+	}
 }

@@ -8,6 +8,7 @@ $(document).ready(function()
 {
 	device.SetSMS();
 	device.SetGPRS();
+	$('#imei').focus(function() { device.SetModel(); });
 	$('#sms_enabled').change(function() {device.SetSMS();});
 	$('#gprs_enabled').change(function() {device.SetGPRS();});
 	if( $('#phone_textback2').val() == '0' ){ $('#phone_textback2').val(''); }
@@ -65,5 +66,14 @@ var device = new function()
 			$('#realtime_appname').val(realtime_appname);
 			$('#realtime_appname').removeAttr('readonly');
 		}
+	}
+	
+	this.SetModel = function()
+	{
+		var imei = $('#imei').val(); 
+		var url = siteutils.getAjaxURL() + "option=jdata&dbtable=vw_device_instock&fields=product_id&prefix=&wfields=serial_no&wvals=" + imei;
+		$.getJSON(url, function(data){
+			$('#model').val( data[0].product_id );
+		});
 	}
 }

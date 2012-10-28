@@ -35,7 +35,7 @@ class Device_Controller extends Site_Controller
 		$validation->add_rules('passcode','numeric');
 		$validation->add_rules('sms_enabled','required', 'length[1]', 'alpha');
 		$validation->add_rules('gprs_enabled','required', 'length[1]', 'alpha');
-		$validation->add_rules('imei','numeric');
+		$validation->add_rules('imei','required','standard_text');
 		$validation->add_rules('phone_device','required','length[7]','numeric');
 		$validation->add_rules('phone_textback1','required','length[7]','numeric');
 		$validation->add_rules('phone_textback2','length[7]','numeric');
@@ -61,5 +61,43 @@ class Device_Controller extends Site_Controller
         {
             $validation->add_error($field, 'msg_duplicate');
         }
+	}
+	
+	public function updateItemStatus()
+	{
+		$device_id		= $_POST['device_id'];
+		$serial_no		= $_POST['imei'];
+		$device_status	= $_POST['device_status'];
+		$current_no		= $_POST['current_no'];
+print "imei: ".$serial_no.", device_status: ".$device_status.", current_no: ".$current_no."<br>"; 
+		
+		$itd = new Inventory_track_detail_Controller();
+		if($device_status == "RETIRED")
+		{
+			$querystr = sprintf('update %s set item_status = "%s" where serial_no = "%s"',$itd->param['tb_live'],"FLOATING",$serial_no);
+			$itd->param['primarymodel']->executeNonSelectQuery($querystr);
+		}
+		else if($device_status == "ACTIVE" && $current_no > 1  )
+		{
+			$vc = new Vehicle_Controller();
+			$querystr = sprintf('select count(device_id) as count from %s where device_id = "%s"',$vc->param['tb_live'],$device_id);
+			$result = $vc->param['primarymodel']->executeSelectQuery($querystr);
+			$recs = $result[0];
+			if( $recs->count > 0 )
+			{
+				$querystr = sprintf('update %s set item_status = "%s" where serial_no = "%s"',$itd->param['tb_live'],"VEHICLE-USED",$serial_no);
+				$itd->param['primarymodel']->executeNonSelectQuery($querystr);
+			}
+		}
+	}
+	
+	public function authorize_post_update_existing_record()
+	{
+		$this->updateItemStatus();
+	}
+
+	public function authorize_post_insert_new_record()
+	{
+		$this->updateItemStatus();
 	}
 }

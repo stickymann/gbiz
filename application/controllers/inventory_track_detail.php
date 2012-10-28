@@ -21,9 +21,9 @@ class Inventory_track_detail_Controller extends Site_Controller
 		$validation->pre_filter('trim', TRUE);
 		
 		$validation->add_rules('id','required','numeric');
-		$validation->add_rules('serial_no','required', 'length[3,50]', 'standard_text');
+		$validation->add_rules('serial_no','required', 'standard_text');
 		
-		$validation->add_callbacks('?????_id', array($this, '_duplicate_altid'));
+		//$validation->add_callbacks('?????_id', array($this, '_duplicate_altid'));
 		
 		//$validation->post_filter('strtoupper', '?????_id');
 		$this->param['isinputvalid'] = $validation->validate();
@@ -42,5 +42,29 @@ class Inventory_track_detail_Controller extends Site_Controller
         {
             $validation->add_error($field, 'msg_duplicate');
         }
+	}
+	
+	public function updateStockBatchCurrentNo()
+	{
+		$stockbatch_id	= $_POST['stockbatch_id'];
+		$current_no		= $_POST['current_no'];
+		
+		$it = new Inventory_track_Controller();	
+		$querystr = sprintf('update %s set current_no = "%s" where stockbatch_id = "%s"',$it->param['tb_live'],$current_no,$stockbatch_id);
+		$result = $it->param['primarymodel']->executeNonSelectQuery($querystr);
+		if($result > 0)
+		{
+			$querystr = sprintf('update %s set current_no = "%s" where stockbatch_id = "%s"',$this->param['tb_live'],$current_no,$stockbatch_id);
+			$result = $this->param['primarymodel']->executeNonSelectQuery($querystr);
+		}
+	}
+
+	public function authorize_post_update_existing_record()
+	{
+		$this->updateStockBatchCurrentNo();
+	}
+	public function authorize_post_insert_new_record()
+	{
+		$this->updateStockBatchCurrentNo();
 	}
 }
