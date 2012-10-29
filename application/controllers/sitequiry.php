@@ -76,7 +76,7 @@ class Sitequiry_Controller extends Template_Controller
 			$pagebody->add('<iframe src="'.$url.'" frameborder=0 width="98%" height=600px scrolling="auto"></iframe>');
 
 			$pagebody->add('</div>');
-			$this->content->pageody = $pagebody->getHtml();
+			$this->content->pagebody = $pagebody->getHtml();
 			$this->setPageContent($this->htmlhead->getHtml(),$this->content);
 		}
 	}
@@ -191,7 +191,12 @@ _HTML_;
 				foreach($lkarr as $key => $value)
 				{
 					if($op == 'eq'){$filter .= sprintf('%s = "%s%s" AND ',$key,$value,"%");}
-					else if($op == 'like'){$filter .= sprintf('%s LIKE "%s%s" AND ',$key,$value,"%");}
+					else if($op == 'like')
+					{
+						$filter .= sprintf('%s LIKE "%s%s" AND ',$key,$value,"%");
+						/*ISNULL() was added to get result from left and right joins*/
+						//$filter .= sprintf('(%s LIKE "%s%s" OR ISNULL(%s)) AND ',$key,$value,"%",$key);
+					}
 				}
 				$filter = substr_replace($filter, '', -5);
 						
@@ -216,6 +221,8 @@ _HTML_;
 			$config['printuser']	= $this->enqparam['printuser'];
 			$config['printdatetime']= $this->enqparam['printdatetime'];
 			$config['type']			= 'enquiry';
+			$config['query']		= $querystr."<hr>";				
+
 			$this->template->content->config = $config;
 			$this->template->content->labels = $this->enqparam['labels'];
 			$this->template->content->pagination = $paging->render();

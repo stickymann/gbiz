@@ -172,13 +172,64 @@ _HTML_;
 	return $HTML;
 }
 
+function VehicleInstallationHistory($item)
+{
+	$baseurl = url::base()."/"."index.php";
+	$vehicle = new Vehicle_Controller();
+	$vehicle_id = $item->vehicle_id;
+	$tb_live = $vehicle->param['tb_live'];
+	$tb_hist = $vehicle->param['tb_hist'];
+
+$querystr=<<<_SQL_
+SELECT DISTINCT owner_id,device_id,make,model,color,installer,installation_date,record_status FROM $tb_live WHERE vehicle_id = "$vehicle_id"
+UNION
+SELECT DISTINCT owner_id,device_id,make,model,color,installer,installation_date,record_status FROM $tb_hist WHERE vehicle_id = "$vehicle_id"
+ORDER BY record_status DESC,installation_date DESC;
+_SQL_;
+	$results = $vehicle->param['primarymodel']->executeSelectQuery($querystr);
+
+	$HTML = "<table id='order_enq_details' width='100%'>"."\n";
+	$TABLEHEADER = sprintf('<tr valign="top"><th>%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th><tr>',"Owner Id","Device Id","Make","Model","Color","Installer","Install Date","Status"); 
+	$TABLEROWS ="";
+
+	if($results)
+	{
+		foreach($results as $index => $row)
+		{
+			$TABLEROWS .= "<tr>";
+			foreach ($row as $field => $value)
+			{
+				if($field == "owner_id")
+				{
+					$data = sprintf('<a href="%s/customer/index/%s" target="enquiry" title="Customer">%s</a>',$baseurl,$value,$value); 
+					$TABLEROWS .= sprintf('<td valign="top" style="color:%s;">%s</td>',"black",$data);
+				}
+				else if($field == "device_id")
+				{
+					$data = sprintf('<a href="%s/device/index/%s" target="enquiry" title="Vehicle">%s</a>',$baseurl,$value,$value); 
+					$TABLEROWS .= sprintf('<td valign="top" style="color:%s;">%s</td>',"black",$data);
+				}
+				else
+				{
+					$TABLEROWS .= sprintf('<td valign="top" style="color:%s;">%s</td>',"black",$value);
+				}
+			}
+			$TABLEROWS .= "</tr>"."\n";
+		}
+	}
+	$HTML .= $TABLEHEADER.$TABLEROWS."\n"."</table>"."\n";
+	return $HTML;
+}
+
 function printToScreen($enquiryrecords,$pagination,$labels,$config)
 {
 	foreach ($enquiryrecords as $item )
 	{
+		$section1 = ""; $section2 = ""; $section3 = ""; $section4 = "";
 		$section1 = getSection1($item,$labels);
 		$section2 = getSection2($item,$labels);
 		$section3 = getSection3($item,$labels);
+		$section4 = VehicleInstallationHistory($item);
 		$num = rand(0,999999);
 		$num = str_pad($num, 6, "0", STR_PAD_LEFT);
 		$pdf_id	  = 'PDF'.date("YmdHis").$num;
@@ -186,23 +237,34 @@ function printToScreen($enquiryrecords,$pagination,$labels,$config)
 		$enqurl .= sprintf(' Total : %s </div>',$config['total_items']);
 		$enqurl .= sprintf('<div id=enqpag>%s</div>',$pagination);
 		$pdfurl = ""; 
+		/*
 		if($config['printable'])
 		{
 			$pdfurl = sprintf('<div id=enqprt><a href=%sindex.php/pdfdoc/index/%s target=_blank>Printable Version</a></div>',url::base(),$pdf_id)."\n";
 		}
-$HTML=<<<_HTML_
+		*/
+$HTML1=<<<_HTML_
 	<style>
 	.enqhdr {width:100%; color: #000000; background-color: #ffffff; font-family: verdana, arial, helvetica, sans-serif; font-size: 13pt; font-weight:  bold; margin: 0px 0px 0px 0px;  padding: 5px 0px 5px 0px; text-align: center; clear: both;}
-	.enqshd {width: 100%; color: #000000; font-size: 1.3em; font-weight: bold; background-color: silver;  margin: 0px 5px 0px 0px;  padding: 5px 2px 5px 2px; text-align: left; clear: both;}
+	.enqshd {width: 100%; color: #ffffff; font-size: 1.3em; font-weight: bold; background-color:#000066;  margin: 0px 5px 0px 0px;  padding: 5px 2px 5px 2px; text-align: left; clear: both;}
 	</style>
 	<div class='enqshd'>Vehicle Information</div>
 	<div>$section1</div>
+_HTML_;
+	
+$HTML2=<<<_HTML_
 	<div class='enqshd'>Customer Information</div>
 	<div>$section2</div>
 	<div class='enqshd'>Device Information</div>
 	<div>$section3</div>
 _HTML_;
-		print $enqurl.$pdfurl.$HTML;
+
+$HIST=<<<_HTML_
+	<div class='enqshd'>Vehicle History</div>
+	<div>$section4</div><br>
+_HTML_;
+		$HTML = $HTML1.$HTML2;
+		print $enqurl.$pdfurl.$HTML1.$HIST.$HTML2;
 		$pdf_header = sprintf("<div class='enqhdr'>%s</div>",$config['enqheader']);
 		$pdf_audit="";
 		if($config['printuser'] || $config['printdatetime'] )
@@ -225,7 +287,7 @@ _HTML_;
 		$arr['data']			= $pdf_html;
 		$arr['datatype']		= "html";
 		$arr['idname']			= $config['idname'];
-		$pdf->InsertIntoPDFTable($arr);
+		//$pdf->InsertIntoPDFTable($arr);
 	}
 }
 ?>

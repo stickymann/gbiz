@@ -807,7 +807,7 @@ CREATE TABLE `csvs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_csv_id` (`csv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=396 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1275,7 +1275,7 @@ CREATE TABLE `devices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_device_id` (`device_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3187 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3191 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1364,7 +1364,7 @@ CREATE TABLE `enquirydefs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_controller` (`controller`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=503 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1574,7 +1574,7 @@ CREATE TABLE `inventory_track_details_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_serial_no` (`serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=505 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=506 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1991,7 +1991,7 @@ CREATE TABLE `menudefs_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2598,7 +2598,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59703 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59759 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2820,7 +2820,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10659 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10678 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3105,7 +3105,7 @@ CREATE TABLE `roles_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1009 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4373,55 +4373,6 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary table structure for view `vw_stockbatch_info`
---
-
-DROP TABLE IF EXISTS `vw_stockbatch_info`;
-/*!50001 DROP VIEW IF EXISTS `vw_stockbatch_info`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `vw_stockbatch_info` (
-  `itd_id` int(11) unsigned,
-  `serial_no` varchar(50),
-  `stockbatch_id` varchar(16),
-  `item_status` varchar(25),
-  `item_comments` varchar(255),
-  `inputter` varchar(50),
-  `input_date` datetime,
-  `authorizer` varchar(50),
-  `auth_date` datetime,
-  `record_status` char(4),
-  `current_no` int(11),
-  `it_id` int(11) unsigned,
-  `stock_description` varchar(50),
-  `product_id` varchar(50),
-  `stockin_date` date,
-  `stockin_quantity` int(11) unsigned,
-  `stockbatch_status` enum('EDIT','CLOSED'),
-  `it_comments` text,
-  `d_id` int(11) unsigned,
-  `device_id` varchar(50),
-  `model` varchar(50),
-  `device_status` enum('ACTIVE','RETIRED'),
-  `warranty_expiry_date` date,
-  `passcode` varchar(255),
-  `sms_enabled` enum('Y','N'),
-  `gprs_enabled` enum('Y','N'),
-  `imei` varchar(50),
-  `phone_device` int(7) unsigned,
-  `phone_textback1` int(7) unsigned,
-  `phone_textback2` int(7) unsigned,
-  `sms_server` int(7) unsigned,
-  `gprs_server` varchar(50),
-  `realtime_useraccount` varchar(50),
-  `realtime_password` varchar(50),
-  `realtime_appname` varchar(50),
-  `order_id` varchar(16),
-  `device_comments` text
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
-
---
 -- Temporary table structure for view `vw_technicians`
 --
 
@@ -4450,6 +4401,55 @@ SET character_set_client = utf8;
   `username` varchar(511),
   `mobile` varchar(512),
   `duplicate_telno` char(1)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `vw_trackers_info`
+--
+
+DROP TABLE IF EXISTS `vw_trackers_info`;
+/*!50001 DROP VIEW IF EXISTS `vw_trackers_info`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `vw_trackers_info` (
+  `id` int(11) unsigned,
+  `serial_no` varchar(50),
+  `stockbatch_id` varchar(16),
+  `item_status` varchar(25),
+  `item_comments` varchar(255),
+  `inputter` varchar(50),
+  `input_date` datetime,
+  `authorizer` varchar(50),
+  `auth_date` datetime,
+  `record_status` char(4),
+  `current_no` int(11),
+  `it_id` int(11) unsigned,
+  `stock_description` varchar(50),
+  `product_id` varchar(50),
+  `stockin_date` date,
+  `stockin_quantity` int(11) unsigned,
+  `stockbatch_status` enum('EDIT','CLOSED'),
+  `it_comments` text,
+  `d_id` int(11) unsigned,
+  `device_id` varchar(100),
+  `model` varchar(50),
+  `device_status` enum('ACTIVE','RETIRED'),
+  `warranty_expiry_date` date,
+  `passcode` varchar(255),
+  `sms_enabled` enum('Y','N'),
+  `gprs_enabled` enum('Y','N'),
+  `imei` varchar(50),
+  `phone_device` varchar(100),
+  `phone_textback1` varchar(100),
+  `phone_textback2` int(7) unsigned,
+  `sms_server` int(7) unsigned,
+  `gprs_server` varchar(50),
+  `realtime_useraccount` varchar(50),
+  `realtime_password` varchar(50),
+  `realtime_appname` varchar(50),
+  `order_id` varchar(16),
+  `device_comments` text
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -4920,6 +4920,32 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `func_SetNullToBlank` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`dbuser`@`%`*/ /*!50003 FUNCTION `func_SetNullToBlank`(var VARCHAR(100)) RETURNS varchar(100) CHARSET latin1
+    DETERMINISTIC
+BEGIN
+	DECLARE ret VARCHAR(100);
+	IF ISNULL(var) THEN
+             SET ret="";
+          ELSE
+             SET ret=var;
+        END IF;
+        RETURN(ret);
+    END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `func_SetNullToZero` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4934,7 +4960,7 @@ DELIMITER ;;
     DETERMINISTIC
 BEGIN
 	DECLARE ret FLOAT(16,2);
-	IF var=null THEN
+	IF isnull(var) THEN
              SET ret='0.00';
           ELSE
              SET ret=var;
@@ -5530,25 +5556,6 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `vw_stockbatch_info`
---
-
-/*!50001 DROP TABLE IF EXISTS `vw_stockbatch_info`*/;
-/*!50001 DROP VIEW IF EXISTS `vw_stockbatch_info`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_stockbatch_info` AS (select `inventory_track_details`.`id` AS `itd_id`,`inventory_track_details`.`serial_no` AS `serial_no`,`inventory_track_details`.`stockbatch_id` AS `stockbatch_id`,`inventory_track_details`.`item_status` AS `item_status`,`inventory_track_details`.`item_comments` AS `item_comments`,`inventory_track_details`.`inputter` AS `inputter`,`inventory_track_details`.`input_date` AS `input_date`,`inventory_track_details`.`authorizer` AS `authorizer`,`inventory_track_details`.`auth_date` AS `auth_date`,`inventory_track_details`.`record_status` AS `record_status`,`inventory_track_details`.`current_no` AS `current_no`,`inventory_tracks`.`id` AS `it_id`,`inventory_tracks`.`stock_description` AS `stock_description`,`inventory_tracks`.`product_id` AS `product_id`,`inventory_tracks`.`stockin_date` AS `stockin_date`,`inventory_tracks`.`stockin_quantity` AS `stockin_quantity`,`inventory_tracks`.`stockbatch_status` AS `stockbatch_status`,`inventory_tracks`.`comments` AS `it_comments`,`devices`.`id` AS `d_id`,`devices`.`device_id` AS `device_id`,`devices`.`model` AS `model`,`devices`.`device_status` AS `device_status`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`devices`.`phone_device` AS `phone_device`,`devices`.`phone_textback1` AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments` from ((`inventory_track_details` join `inventory_tracks` on((`inventory_track_details`.`stockbatch_id` = `inventory_tracks`.`stockbatch_id`))) left join `devices` on((`inventory_track_details`.`serial_no` = `devices`.`imei`)))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
 -- Final view structure for view `vw_technicians`
 --
 
@@ -5582,6 +5589,25 @@ DELIMITER ;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_telbooks_available` AS (select `vw_vehicle_accounts`.`id` AS `id`,`vw_vehicle_accounts`.`vehicle_id` AS `vehicle_id`,`vw_vehicle_accounts`.`phone_device` AS `telno`,trim(both ' ' from ucase(concat(convert(`func_SetToBlankCo`(`vw_vehicle_accounts`.`first_name`) using utf8),' ',convert(`vw_vehicle_accounts`.`last_name` using utf8)))) AS `username`,concat(`func_SetToBlankZero`(`vw_vehicle_accounts`.`phone_textback1`),'#',`func_SetToBlankZero`(`vw_vehicle_accounts`.`phone_textback2`),'#') AS `mobile`,`func_DuplicateTelbookPhoneNo`(`vw_vehicle_accounts`.`phone_device`) AS `duplicate_telno` from `vw_vehicle_accounts` where ((`vw_vehicle_accounts`.`sms_enabled` = 'Y') and (not(`vw_vehicle_accounts`.`vehicle_id` in (select `telbooks`.`plate` AS `plate` from `telbooks` where ((`telbooks`.`plate` <> NULL) or (`telbooks`.`plate` <> ''))))))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_trackers_info`
+--
+
+/*!50001 DROP TABLE IF EXISTS `vw_trackers_info`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_trackers_info`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_trackers_info` AS (select `inventory_track_details`.`id` AS `id`,`inventory_track_details`.`serial_no` AS `serial_no`,`inventory_track_details`.`stockbatch_id` AS `stockbatch_id`,`inventory_track_details`.`item_status` AS `item_status`,`inventory_track_details`.`item_comments` AS `item_comments`,`inventory_track_details`.`inputter` AS `inputter`,`inventory_track_details`.`input_date` AS `input_date`,`inventory_track_details`.`authorizer` AS `authorizer`,`inventory_track_details`.`auth_date` AS `auth_date`,`inventory_track_details`.`record_status` AS `record_status`,`inventory_track_details`.`current_no` AS `current_no`,`inventory_tracks`.`id` AS `it_id`,`inventory_tracks`.`stock_description` AS `stock_description`,`inventory_tracks`.`product_id` AS `product_id`,`inventory_tracks`.`stockin_date` AS `stockin_date`,`inventory_tracks`.`stockin_quantity` AS `stockin_quantity`,`inventory_tracks`.`stockbatch_status` AS `stockbatch_status`,`inventory_tracks`.`comments` AS `it_comments`,`devices`.`id` AS `d_id`,`func_SetNullToBlank`(`devices`.`device_id`) AS `device_id`,`devices`.`model` AS `model`,`devices`.`device_status` AS `device_status`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`func_SetNullToBlank`(`devices`.`phone_device`) AS `phone_device`,`func_SetNullToBlank`(`devices`.`phone_textback1`) AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments` from ((`inventory_track_details` left join `inventory_tracks` on((`inventory_track_details`.`stockbatch_id` = `inventory_tracks`.`stockbatch_id`))) left join `devices` on((`inventory_track_details`.`serial_no` = `devices`.`imei`)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -5690,4 +5716,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-27 23:17:26
+-- Dump completed on 2012-10-29  3:18:40
