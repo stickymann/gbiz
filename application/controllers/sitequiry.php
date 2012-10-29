@@ -195,7 +195,7 @@ _HTML_;
 					{
 						$filter .= sprintf('%s LIKE "%s%s" AND ',$key,$value,"%");
 						/*ISNULL() was added to get result from left and right joins*/
-						//$filter .= sprintf('(%s LIKE "%s%s" OR ISNULL(%s)) AND ',$key,$value,"%",$key);
+						//$filter .= sprintf('(%s LIKE "%s%s" OR ISNULL(%s)) AND ',$key,$value,"%",$key );
 					}
 				}
 				$filter = substr_replace($filter, '', -5);
