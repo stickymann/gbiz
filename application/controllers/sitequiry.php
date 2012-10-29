@@ -186,27 +186,29 @@ _HTML_;
 				$fields = $request['fields'];
 				$lkvals = $request['lkvals'];
 				$op = $request['op'];
-				$filter = "";
+				$filter = ""; $where = "";
 				$lkarr = array_combine(preg_split('/,/',$fields),preg_split('/,/',$lkvals));
 				foreach($lkarr as $key => $value)
 				{
-					if($op == 'eq'){$filter .= sprintf('%s = "%s%s" AND ',$key,$value,"%");}
-					else if($op == 'like')
-					{
-						$filter .= sprintf('%s LIKE "%s%s" AND ',$key,$value,"%");
-						/*ISNULL() was added to get result from left and right joins*/
-						//$filter .= sprintf('(%s LIKE "%s%s" OR ISNULL(%s)) AND ',$key,$value,"%",$key );
+					if( $value != "" )
+					{   
+						$where = "where";
+						if($op == 'eq'){$filter .= sprintf('%s = "%s%s" AND ',$key,$value,"%");}
+						else if($op == 'like')
+						{
+							$filter .= sprintf('%s LIKE "%s%s" AND ',$key,$value,"%");
+						}
 					}
 				}
 				$filter = substr_replace($filter, '', -5);
 						
-				$querystr = sprintf('select %s from %s where %s',join(',',$this->enqparam['fieldnames']),$table,$filter);
+				$querystr = sprintf('select %s from %s %s %s',join(',',$this->enqparam['fieldnames']),$table,$where,$filter);
 				$paging = new Pagination(array
 				(
 					'total_items' => $this->model->count_records($querystr),
 					'items_per_page' => 1
 				));
-				$querystr = sprintf('select %s from %s where %s limit %s offset %s',join(',',$this->enqparam['fieldnames']),$table,$filter,$paging->items_per_page,$paging->sql_offset);
+				$querystr = sprintf('select %s from %s %s %s limit %s offset %s',join(',',$this->enqparam['fieldnames']),$table,$where,$filter,$paging->items_per_page,$paging->sql_offset);
 				$this->template->content->enquiryrecords =  $this->model->browse($querystr);
 			}
    
