@@ -69,7 +69,6 @@ class Device_Controller extends Site_Controller
 		$serial_no		= $_POST['imei'];
 		$device_status	= $_POST['device_status'];
 		$current_no		= $_POST['current_no'];
-print "imei: ".$serial_no.", device_status: ".$device_status.", current_no: ".$current_no."<br>"; 
 		
 		$itd = new Inventory_track_detail_Controller();
 		if($device_status == "RETIRED")
