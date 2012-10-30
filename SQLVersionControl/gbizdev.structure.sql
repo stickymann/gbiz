@@ -515,140 +515,6 @@ CREATE TABLE `certofinstallations_is` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `certs`
---
-
-DROP TABLE IF EXISTS `certs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `certs` (
-  `id` int(11) unsigned NOT NULL,
-  `certificate_id` varchar(20) NOT NULL,
-  `certificate_status` enum('ACTIVE','RETIRED','EXPIRED') NOT NULL,
-  `vehicle_id` varchar(50) NOT NULL,
-  `chassis_number` varchar(100) NOT NULL,
-  `vehicle_type` varchar(50) NOT NULL,
-  `vehicle_make` varchar(50) NOT NULL,
-  `vehicle_model` varchar(50) NOT NULL,
-  `vehicle_colour` varchar(50) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `address1` varchar(100) NOT NULL,
-  `address2` varchar(100) NOT NULL,
-  `city` varchar(50) NOT NULL,
-  `installation_type` varchar(50) NOT NULL,
-  `device_model` varchar(50) NOT NULL,
-  `device_serial_no` varchar(50) NOT NULL,
-  `expiry_date` date NOT NULL,
-  `issue_date` date NOT NULL,
-  `cert_date` date NOT NULL,
-  `cert_date_ok` enum('Y','N') NOT NULL,
-  `commisioning_fld01` varchar(3) NOT NULL,
-  `commisioning_fld02` varchar(3) NOT NULL,
-  `commisioning_fld03` varchar(3) NOT NULL,
-  `commisioning_fld04` varchar(3) NOT NULL,
-  `commisioning_fld05` varchar(3) NOT NULL,
-  `commisioning_fld06` varchar(3) NOT NULL,
-  `commisioning_fld07` varchar(3) NOT NULL,
-  `commisioning_fld08` varchar(3) NOT NULL,
-  `commisioning_fld09` varchar(3) NOT NULL,
-  `commisioning_fld10` varchar(3) NOT NULL,
-  `commisioning_fld11` varchar(3) NOT NULL,
-  `commisioning_fld12` varchar(3) NOT NULL,
-  `usrinstr_fld01` varchar(3) NOT NULL,
-  `usrinstr_fld02` varchar(3) NOT NULL,
-  `usrinstr_fld03` varchar(3) NOT NULL,
-  `usrinstr_fld04` varchar(3) NOT NULL,
-  `usrinstr_fld05` varchar(3) NOT NULL,
-  `usrinstr_fld06` varchar(3) NOT NULL,
-  `usrinstr_fld07` varchar(3) NOT NULL,
-  `usrinstr_fld08` varchar(3) NOT NULL,
-  `usrinstr_fld09` varchar(3) NOT NULL,
-  `usrinstr_fld10` varchar(3) NOT NULL,
-  `usrinstr_fld11` varchar(3) NOT NULL,
-  `usrinstr_fld12` varchar(3) NOT NULL,
-  `variations` varchar(255) NOT NULL,
-  `validation_period` varchar(50) NOT NULL,
-  `signature_name` varchar(50) NOT NULL,
-  `signature_position` varchar(50) NOT NULL,
-  `inputter` varchar(50) NOT NULL,
-  `input_date` datetime NOT NULL,
-  `authorizer` varchar(50) NOT NULL,
-  `auth_date` datetime NOT NULL,
-  `record_status` char(4) NOT NULL,
-  `current_no` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `certs2`
---
-
-DROP TABLE IF EXISTS `certs2`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `certs2` (
-  `id` int(11) unsigned NOT NULL,
-  `certificate_id` varchar(20) NOT NULL,
-  `certificate_status` enum('ACTIVE','RETIRED','EXPIRED') NOT NULL,
-  `vehicle_id` varchar(50) NOT NULL,
-  `chassis_number` varchar(100) NOT NULL,
-  `vehicle_type` varchar(50) NOT NULL,
-  `vehicle_make` varchar(50) NOT NULL,
-  `vehicle_model` varchar(50) NOT NULL,
-  `vehicle_colour` varchar(50) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `address1` varchar(100) NOT NULL,
-  `address2` varchar(100) NOT NULL,
-  `city` varchar(50) NOT NULL,
-  `installation_type` varchar(50) NOT NULL,
-  `device_model` varchar(50) NOT NULL,
-  `device_serial_no` varchar(50) NOT NULL,
-  `expiry_date` date NOT NULL,
-  `issue_date` date NOT NULL,
-  `commisioning_fld01` varchar(3) NOT NULL,
-  `commisioning_fld02` varchar(3) NOT NULL,
-  `commisioning_fld03` varchar(3) NOT NULL,
-  `commisioning_fld04` varchar(3) NOT NULL,
-  `commisioning_fld05` varchar(3) NOT NULL,
-  `commisioning_fld06` varchar(3) NOT NULL,
-  `commisioning_fld07` varchar(3) NOT NULL,
-  `commisioning_fld08` varchar(3) NOT NULL,
-  `commisioning_fld09` varchar(3) NOT NULL,
-  `commisioning_fld10` varchar(3) NOT NULL,
-  `commisioning_fld11` varchar(3) NOT NULL,
-  `commisioning_fld12` varchar(3) NOT NULL,
-  `usrinstr_fld01` varchar(3) NOT NULL,
-  `usrinstr_fld02` varchar(3) NOT NULL,
-  `usrinstr_fld03` varchar(3) NOT NULL,
-  `usrinstr_fld04` varchar(3) NOT NULL,
-  `usrinstr_fld05` varchar(3) NOT NULL,
-  `usrinstr_fld06` varchar(3) NOT NULL,
-  `usrinstr_fld07` varchar(3) NOT NULL,
-  `usrinstr_fld08` varchar(3) NOT NULL,
-  `usrinstr_fld09` varchar(3) NOT NULL,
-  `usrinstr_fld10` varchar(3) NOT NULL,
-  `usrinstr_fld11` varchar(3) NOT NULL,
-  `usrinstr_fld12` varchar(3) NOT NULL,
-  `variations` varchar(255) NOT NULL,
-  `validation_period` varchar(50) NOT NULL,
-  `signature_name` varchar(50) NOT NULL,
-  `signature_position` varchar(50) NOT NULL,
-  `inputter` varchar(50) NOT NULL,
-  `input_date` datetime NOT NULL,
-  `authorizer` varchar(50) NOT NULL,
-  `auth_date` datetime NOT NULL,
-  `record_status` char(4) NOT NULL,
-  `current_no` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `countrys`
 --
 
@@ -4432,7 +4298,7 @@ SET character_set_client = utf8;
   `stockbatch_status` enum('EDIT','CLOSED'),
   `it_comments` text,
   `d_id` int(11) unsigned,
-  `device_id` varchar(100),
+  `device_id` varchar(50),
   `model` varchar(50),
   `device_status` enum('ACTIVE','RETIRED'),
   `warranty_expiry_date` date,
@@ -4440,8 +4306,8 @@ SET character_set_client = utf8;
   `sms_enabled` enum('Y','N'),
   `gprs_enabled` enum('Y','N'),
   `imei` varchar(50),
-  `phone_device` varchar(100),
-  `phone_textback1` varchar(100),
+  `phone_device` int(7) unsigned,
+  `phone_textback1` int(7) unsigned,
   `phone_textback2` int(7) unsigned,
   `sms_server` int(7) unsigned,
   `gprs_server` varchar(50),
@@ -5607,7 +5473,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_trackers_info` AS (select `inventory_track_details`.`id` AS `id`,`inventory_track_details`.`serial_no` AS `serial_no`,`inventory_track_details`.`stockbatch_id` AS `stockbatch_id`,`inventory_track_details`.`item_status` AS `item_status`,`inventory_track_details`.`item_comments` AS `item_comments`,`inventory_track_details`.`inputter` AS `inputter`,`inventory_track_details`.`input_date` AS `input_date`,`inventory_track_details`.`authorizer` AS `authorizer`,`inventory_track_details`.`auth_date` AS `auth_date`,`inventory_track_details`.`record_status` AS `record_status`,`inventory_track_details`.`current_no` AS `current_no`,`inventory_tracks`.`id` AS `it_id`,`inventory_tracks`.`stock_description` AS `stock_description`,`inventory_tracks`.`product_id` AS `product_id`,`inventory_tracks`.`stockin_date` AS `stockin_date`,`inventory_tracks`.`stockin_quantity` AS `stockin_quantity`,`inventory_tracks`.`stockbatch_status` AS `stockbatch_status`,`inventory_tracks`.`comments` AS `it_comments`,`devices`.`id` AS `d_id`,`func_SetNullToBlank`(`devices`.`device_id`) AS `device_id`,`devices`.`model` AS `model`,`devices`.`device_status` AS `device_status`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`func_SetNullToBlank`(`devices`.`phone_device`) AS `phone_device`,`func_SetNullToBlank`(`devices`.`phone_textback1`) AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments` from ((`inventory_track_details` left join `inventory_tracks` on((`inventory_track_details`.`stockbatch_id` = `inventory_tracks`.`stockbatch_id`))) left join `devices` on((`inventory_track_details`.`serial_no` = `devices`.`imei`)))) */;
+/*!50001 VIEW `vw_trackers_info` AS (select `inventory_track_details`.`id` AS `id`,`inventory_track_details`.`serial_no` AS `serial_no`,`inventory_track_details`.`stockbatch_id` AS `stockbatch_id`,`inventory_track_details`.`item_status` AS `item_status`,`inventory_track_details`.`item_comments` AS `item_comments`,`inventory_track_details`.`inputter` AS `inputter`,`inventory_track_details`.`input_date` AS `input_date`,`inventory_track_details`.`authorizer` AS `authorizer`,`inventory_track_details`.`auth_date` AS `auth_date`,`inventory_track_details`.`record_status` AS `record_status`,`inventory_track_details`.`current_no` AS `current_no`,`inventory_tracks`.`id` AS `it_id`,`inventory_tracks`.`stock_description` AS `stock_description`,`inventory_tracks`.`product_id` AS `product_id`,`inventory_tracks`.`stockin_date` AS `stockin_date`,`inventory_tracks`.`stockin_quantity` AS `stockin_quantity`,`inventory_tracks`.`stockbatch_status` AS `stockbatch_status`,`inventory_tracks`.`comments` AS `it_comments`,`devices`.`id` AS `d_id`,`devices`.`device_id` AS `device_id`,`devices`.`model` AS `model`,`devices`.`device_status` AS `device_status`,`devices`.`warranty_expiry_date` AS `warranty_expiry_date`,`devices`.`passcode` AS `passcode`,`devices`.`sms_enabled` AS `sms_enabled`,`devices`.`gprs_enabled` AS `gprs_enabled`,`devices`.`imei` AS `imei`,`devices`.`phone_device` AS `phone_device`,`devices`.`phone_textback1` AS `phone_textback1`,`devices`.`phone_textback2` AS `phone_textback2`,`devices`.`sms_server` AS `sms_server`,`devices`.`gprs_server` AS `gprs_server`,`devices`.`realtime_useraccount` AS `realtime_useraccount`,`devices`.`realtime_password` AS `realtime_password`,`devices`.`realtime_appname` AS `realtime_appname`,`devices`.`order_id` AS `order_id`,`devices`.`comments` AS `device_comments` from ((`inventory_track_details` left join `inventory_tracks` on((`inventory_track_details`.`stockbatch_id` = `inventory_tracks`.`stockbatch_id`))) left join `devices` on((`inventory_track_details`.`serial_no` = `devices`.`imei`)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -5716,4 +5582,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-29 18:31:24
+-- Dump completed on 2012-10-29 20:56:17

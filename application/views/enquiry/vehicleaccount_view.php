@@ -137,7 +137,7 @@ function getSection3($item,$labels)
 	$label_14 = $labels['order_id'];		$item_14 = $item->order_id;
 	$label_15 = $labels['realtime_appname'];$item_15 = $item->realtime_appname;
 	$label_16 = $labels['device_comments'];	$item_16 = $item->device_comments;
-		
+	$label_17 = $labels['device_status'];	$item_17 = $item->device_status;
 
 	$HTML=<<<_HTML_
 		<table border=0 width='100%' cellspacing=0 cellpadding=2>
@@ -145,13 +145,13 @@ function getSection3($item,$labels)
 				<td  width='50%'>
 					<table width='100%' border=0 cellspacing=0 cellpadding=1>
 						<tr valign=top><td width='46%'>$label_01 : </td><td>$item_01</td></tr>
+						<tr valign=top><td>$label_17 : </td><td>$item_17</td></tr>
 						<tr valign=top><td>$label_03 : </td><td>$item_03</td></tr>	
 						<tr valign=top><td>$label_04 : </td><td>$item_04</td></tr>
 						<tr valign=top><td>$label_05 : </td><td>$item_05</td></tr>
 						<tr valign=top><td>$label_06 : </td><td>$item_06</td></tr>
 						<tr valign=top><td>$label_11 : </td><td>$item_11</td></tr>
 						<tr valign=top><td>$label_12 : </td><td>$item_12</td></tr>
-						<tr valign=top><td>$label_13 : </td><td>$item_13</td></tr>	
 				</table>
 				</td>
 				<td width='50%'>
@@ -163,10 +163,11 @@ function getSection3($item,$labels)
 						<tr valign=top><td>$label_10 : </td><td>$item_10</td></tr>	
 						<tr valign=top><td>$label_14 : </td><td>$item_14</td></tr>
 						<tr valign=top><td>$label_15 : </td><td>$item_15</td></tr>
+						<tr valign=top><td>$label_13 : </td><td>$item_13</td></tr>	
 					</table>
 				</td>
 			</tr>
-			<tr><td>$label_16 : </td><td colspan=2>$item_16</td></tr>
+			<tr><td>$label_16 : </td><td>$item_16</td></tr>
 		</table>
 _HTML_;
 	return $HTML;
