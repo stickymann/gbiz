@@ -13,7 +13,7 @@ $lang = array
     (
         'required' => 'Product Id: required.',
         'length' => 'Product Id: must be 3 - 50 characters.',
-        'msg_duplicate' => 'Product Id: duplicate product/branch combo.',
+        'msg_duplicate' => 'Product Id: duplicate product.',
 		'default' => 'Product Id: invalid input.'
     ),
 
@@ -59,6 +59,8 @@ $lang = array
 		'zero_details' => 'Stock Batch Details: zero line items, at least one required.', 
 		'item_comments_required' => 'Stock Batch Details: item comments required, must be 3 or more characters.',
         'quantity_mismatch' => 'Stock Batch Details: quantity mismatch, quantity must be equal to number of line items.',
+		'duplicate_serial_no' => 'Stock Batch Details: duplicate serial number, one or more serial numbers exist in another stockbatch',
+		'duplicate_list_no' => 'Stock Batch Details: duplicate serial numbers in list',
 		'default' => 'Order Details: invalid input.'
     )
 );

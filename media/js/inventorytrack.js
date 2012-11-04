@@ -2,6 +2,8 @@ var lastIndex = 0;
 var order_status = "";
 var edittype = "DEFAULT";
 var subtable = "subform_table_stockbatch_details";
+var listarr = [];
+
 var stock_status =  
 [
 	{item_status:'STOCK-NEW',name:'STOCK-NEW'},
@@ -18,6 +20,9 @@ var stock_status =
 
 $(document).ready(function()	
 {
+	var summarylayout = '<div id="itemcount"></div><div id="duptext">';
+	$('#subform_summary_stockbatch_details').html(summarylayout);
+	
 	if($('#stockbatch_status').val() == "CLOSED")
 	{
 		$('#stockbatch_status_sidelink').html("");
@@ -69,7 +74,7 @@ function getCellsValue(val)
 
 function doRemove()
 {
-	order_UpdateDetails();
+	inventorytrack_UpdateDetails();
 }
 
 function doUndo()
@@ -97,9 +102,11 @@ function inventorytrack_UpdateDetails()
 {
 	var xmlhr = "<?xml version='1.0' standalone='yes'?>"+"<rows>";
 	var xmlft = "</rows>";
-	var xmltxt = "";
+	var xmltxt = "", summaryhtml = ""; 
+	$('#duptext').html("");
 	var rows = $('#'+subtable).datagrid('getRows');
-	
+	listarr = [];
+
 	rowlength = rows.length;
 	for(var i=0; i<rowlength; i++)
 	{  
@@ -109,9 +116,15 @@ function inventorytrack_UpdateDetails()
 		item_status		= "<item_status>" + getCellsValue(rows[i].subform_stockbatch_details_item_status) + "</item_status>";
 		item_comments	= "<item_comments>" + getCellsValue(rows[i].subform_stockbatch_details_item_comments) + "</item_comments>";
 		xmltxt			+= "<row>"+ id + serial_no + stockbatch_id + item_status + item_comments + "</row>";
+		isDuplicateSerialNo( getCellsValue(rows[i].subform_stockbatch_details_serial_no) , $('#stockbatch_id').val() );
+		isDuplicateListNo( getCellsValue(rows[i].subform_stockbatch_details_serial_no) );
 	} 
 	
 	xmltxt = xmlhr + xmltxt + xmlft;
+	summaryhtml += '<table>';
+	summaryhtml += '<tr><td><b>Item Count :</b></td><td style="text-align:right; padding 5px 5px 5px 5px;">' + rowlength + '</td></tr>';
+	summaryhtml += '</table>';
+	$('#itemcount').html(summaryhtml);
 	$('#stockbatch_details').val(xmltxt);
 }
 
@@ -131,6 +144,33 @@ function inventorytrack_ToggleStatusType()
 	else 
 	{ 
 		$('#stockbatch_status').val("CLOSED"); 
+	}
+}
+
+function isDuplicateSerialNo(serial_no,stockbatch_id)
+{
+	var status = "";
+	get_url = siteutils.getBaseURL() + "index.php/inventory_track/isdupserialno?";
+	url = get_url + "serial_no=" + serial_no + "&stockbatch_id=" + stockbatch_id;
+	$.getJSON(url, function(data){
+		if(data.stockbatch_id != "false")
+		{
+			status = data.serial_no + " : " + data.stockbatch_id + " (duplicate -> exist in database)<br>";
+		}
+		$("#duptext").append(status);
+	});
+}
+
+function isDuplicateListNo(serial_no)
+{
+	if( $.inArray(serial_no, listarr) > -1 )
+	{
+		status = serial_no + " : (duplicate -> exist in current list)<br>";
+		$("#duptext").append(status);
+	}
+	else
+	{
+		listarr.push(serial_no);
 	}
 }
 

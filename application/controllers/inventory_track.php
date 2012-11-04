@@ -66,21 +66,30 @@ _text_;
 	
 	public function _stockbatch_details_exist(Validation $validation,$field)
 	{
-		$count = 0; $usertext_required = false; $qty = $_POST['stockin_quantity'];
+		$count = 0; $usertext_required = false; $duplicate_serial_no = false; $duplicate_list_no = false; 
+		$listarr = array();
+		$qty = $_POST['stockin_quantity'];
+		$stockbatch_id = $_POST['stockbatch_id'];
+
 		$rows = new SimpleXMLElement($_POST['stockbatch_details']);
 		if($rows->row) 
 		{ 
 			foreach ($rows->row as $row) 
 			{ 
 				$user_text = sprintf('%s',$row->item_comments);
+				$serial_no = sprintf('%s',$row->serial_no);
+				$count++;
 				if(!($user_text == "?") && (strlen($user_text) < 3)) { $usertext_required = true; }
-				$count++; 
+				if( $this->isDuplicateSerialNo($serial_no,$stockbatch_id) ) { $duplicate_serial_no = true; break; }
+				if( in_array($serial_no, $listarr) ) { $duplicate_list_no = true; break; } else { array_push($listarr, $serial_no); }
 			} 
 		}
 		if (array_key_exists('zero_details', $validation->errors())) {return;}
 		if( !($count > 0) ) { $validation->add_error($field, 'zero_details');}
 		if( $usertext_required ) { $validation->add_error($field, 'item_comments_required');}
 		if( $qty != $count ) { $validation->add_error($field, 'quantity_mismatch');}
+		if( $duplicate_serial_no ) { $validation->add_error($field, 'duplicate_serial_no');}
+		if( $duplicate_list_no ) { $validation->add_error($field, 'duplicate_list_no');}
 	}
 	
 	public function _stockbatch_status_ok(Validation $validation,$field)
@@ -89,5 +98,61 @@ _text_;
 		if($_POST['stockbatch_status'] == "NEW") { $status_new = true; }
 		if (array_key_exists('zero_details', $validation->errors())) {return;}
 		if( $status_new ) { $validation->add_error($field, 'msg_new');}
+	}
+
+	public function subFormSummaryHTML($results,$labels,$color)
+	{
+		$item_count = 0;
+		foreach($results as $index => $row)
+		{
+			$item_count++;
+		}  
+		
+		$summaryhtml = '<div id="itemcount">';
+		$summaryhtml .= '<table class="viewtext" width="30%">';
+		$summaryhtml .= sprintf('<tr><td style="color:%s;"><b>Item Count :</b></td><td style="text-align:right; padding 5px 5px 5px 5px; color:%s;">%s</td></tr>',$color,$color,$item_count);
+		$summaryhtml .= '</table>';
+		$summaryhtml .= '</div>';
+		$summaryhtml .= '<div id="duptext"></div>';
+		return $summaryhtml;
+	}
+
+	public function isDuplicateSerialNo($serial_no,$stockbatch_id)
+	{
+		$itd = new Inventory_track_detail_Controller();
+		$itd->auto_render = FALSE;
+		$table = $itd->param['tb_live'];
+		$querystr = sprintf('select count(serial_no) as count from %s where serial_no = "%s" and stockbatch_id != "%s"',$table,$serial_no,$stockbatch_id);
+		$result = $itd->param['primarymodel']->executeSelectQuery($querystr);
+		$count = $result[0]->count;
+		if($count > 0)
+		{
+			return true;
+		}
+		return false;	
+	}
+	
+	public function isdupserialno()
+	{
+		$serial_no	= $_REQUEST['serial_no'];
+		$stockbatch_id	= $_REQUEST['stockbatch_id'];
+		$itd = new Inventory_track_detail_Controller();
+		$itd->auto_render = FALSE;
+		if( $this->isDuplicateSerialNo($serial_no,$stockbatch_id) ) 
+		{
+			
+			$table = $itd->param['tb_live'];
+			$querystr = sprintf('select serial_no,stockbatch_id from %s where serial_no = "%s" and stockbatch_id != "%s"',$table,$serial_no,$stockbatch_id);
+			$result = $itd->param['primarymodel']->executeSelectQuery($querystr);
+			$data = $result[0];
+			$this->auto_render = FALSE;
+			print json_encode($data);
+		}
+		else
+		{
+			$arr = array("serial_no"=>"false","stockbatch_id"=>"false");
+			$this->auto_render = FALSE;
+			print json_encode($arr);
+		}
 	}
 }

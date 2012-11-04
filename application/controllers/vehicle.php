@@ -92,8 +92,11 @@ class Vehicle_Controller extends Site_Controller
 					$new_status = "VEHICLE-REFURBISHED";
 				break;
 			}
-			$querystr = sprintf('update %s set item_status = "%s" where serial_no = "%s"',$itd->param['tb_live'],$new_status,$serial_no);
-			$itd->param['primarymodel']->executeNonSelectQuery($querystr);
+			if($new_status != "" )
+			{
+				$querystr = sprintf('update %s set item_status = "%s" where serial_no = "%s"',$itd->param['tb_live'],$new_status,$serial_no);
+				$itd->param['primarymodel']->executeNonSelectQuery($querystr);
+			}
 		}
 		
 		if($current_no > 1)
