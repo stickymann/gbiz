@@ -235,18 +235,20 @@ class Site_Model extends Model
 	public function recordExist($table,$field,$id,$unique_id)
 	{
 		$idfield = $field;
-		$query = sprintf('select id from %s where id = "%s" and %s = "%s"',$table,$id,$idfield,$unique_id);
+		$query = sprintf('select count(id) as count from %s where id = "%s" and %s = "%s"',$table,$id,$idfield,$unique_id);
 		$result = $this->db->query($query);
-		if ($row = $result[0])
+		$row = $result[0];
+		if ($row->count > 0 )
 		{
 			return true;
 		}
 		else
 		{
 			$idfield = 'id';
-			$query = sprintf('select id from %s where id = "%s" and %s = "%s"',$table,$id,$idfield,$unique_id);
+			$query = sprintf('select count(id) as count from %s where id = "%s" and %s = "%s"',$table,$id,$idfield,$unique_id);
 			$result = $this->db->query($query);
-			if ($row = $result[0])
+			$row = $result[0];
+			if ($row->count > 0 )
 			{
 				return true;
 			}
@@ -258,9 +260,10 @@ class Site_Model extends Model
 	
 	public function recordExistDualKey($table,$field1,$field2,$value1,$value2)
 	{
-		$query = sprintf('select id from %s where %s = "%s" and %s = "%s"',$table,$field1,$value1,$field2,$value2);
+		$query = sprintf('select count(id) as count from %s where %s = "%s" and %s = "%s"',$table,$field1,$value1,$field2,$value2);
 		$result = $this->db->query($query);
-		if ($row = $result[0])
+		$row = $result[0];
+		if ($row->count > 0 )
 		{
 			return true;
 		}
@@ -687,22 +690,19 @@ class Site_Model extends Model
 			{
 //print "[LOOKUP_INSERT]<hr>";					
 				$counter = $row_1->counter;
-				if($this->recordExist($tb_live,"id",$counter,$counter) || $this->recordExist($tb_inau,"id",$counter,$counter))
+				while($this->recordExist($tb_live,"id",$counter,$counter) || $this->recordExist($tb_inau,"id",$counter,$counter))
 				{
-					$query = sprintf('update _sys_autoids set counter = (counter + 1) where tb_inau = "%s"',$tb_inau);
+					$counter++;
+				}
+				
+				$query = sprintf('update _sys_autoids set counter = "%s" where tb_inau = "%s"',$counter,$tb_inau);
+				if($result = $this->db->query($query))
+				{
+					$query = sprintf('select counter from _sys_autoids where tb_inau = "%s"',$tb_inau);
 					if($result = $this->db->query($query))
 					{
-						$query = sprintf('select counter from _sys_autoids where tb_inau = "%s"',$tb_inau);
-						if($result = $this->db->query($query))
-						{
-							$row_2 = $result[0];
-							$counter = $row_2->counter;
-						}
-						else
-						{
-							$this->setDBErrMsg($str);
-							return null;
-						}
+						$row_2 = $result[0];
+						$counter = $row_2->counter;
 					}
 					else
 					{
@@ -710,6 +710,12 @@ class Site_Model extends Model
 						return null;
 					}
 				}
+				else
+				{
+					$this->setDBErrMsg($str);
+					return null;
+				}
+				
 				$query = sprintf('insert into `%s` (`id`,`current_no`) values("%s","0")',$tb_inau,$counter);	
 				if($result = $this->db->query($query))
 				{

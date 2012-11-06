@@ -809,7 +809,7 @@ CREATE TABLE `customers_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2790 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2791 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1440,7 +1440,7 @@ CREATE TABLE `inventory_track_details_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_serial_no` (`serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=2610 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2630 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1523,7 +1523,7 @@ CREATE TABLE `inventory_tracks_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_stockbatch_id` (`stockbatch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1018 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1025 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2686,7 +2686,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11310 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11325 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5582,4 +5582,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-03 23:57:23
+-- Dump completed on 2012-11-06  8:18:05
