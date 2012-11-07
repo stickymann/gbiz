@@ -44,6 +44,7 @@ $page_config['col5_width'] = 25;
 $page_config['col6_width'] = 25;
 
 page_title($this->pdf, $page_config);
+
 invoice_info($this->pdf, $page_config);
 invoice_info_border($this->pdf, $page_config);
 invoice_details($this->pdf,$page_config);

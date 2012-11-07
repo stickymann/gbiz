@@ -80,6 +80,8 @@ class Deliverynote_Controller extends Site_Controller
 			$arr['order_id']		 = $data['order_id'];
 			$arr['deliverynote_date']= date('Y-m-d H:i:s'); 
 			$arr['details']			 = $data['details'];
+			$arr['delivery_date']	 = "0000-00-00";
+			$arr['returned_signed_date'] = "0000-00-00";
 			$arr['status']			 = "NEW";
 			$arr['inputter']		 = $data['idname'];
 			$arr['input_date']		 = date('Y-m-d H:i:s'); 

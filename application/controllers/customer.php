@@ -48,7 +48,7 @@ class Customer_Controller extends Site_Controller
 		$validation->add_rules('city','required', 'length[1,255]','standard_text');
 		$validation->add_rules('region_id','required','numeric');
 		$validation->add_rules('country_id','required', 'length[2]','standard_text');
-		$validation->add_rules('date_of_birth', 'length[10]','alpha_dash');
+		$validation->add_rules('date_of_birth','required', 'length[10]','alpha_dash');
 		$validation->add_rules('gender','required', 'length[1]', 'alpha');
 		$validation->add_rules('phone_home', 'length[7]','numeric');
 		$validation->add_rules('phone_work', 'length[7]','numeric');

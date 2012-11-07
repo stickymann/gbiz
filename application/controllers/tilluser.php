@@ -56,12 +56,31 @@ class Tilluser_Controller extends Site_Controller
         }
 	}
 	
-	public function authorize_post_insert_new_record()
+	public function insertInitialTillTransaction()
 	{
 		$data['till_id']			= $_POST['till_id'];
 		$data['initial_balance']	= $_POST['initial_balance'];
 		$data['idname']				= Auth::instance()->get_user()->idname; 
 		$tilltransaction = new Tilltransaction_Controller();
 		$tilltransaction->InsertIntoTillTransactionTable($data);
+	}
+	
+	public function closeExpiredTills()
+	{
+		$current_no = $_POST['current_no'];
+		$current_date = date('Y-m-d');
+		$table = $this->param['tb_live'];
+		
+		if($current_no == 1)
+		{
+			$querystr = sprintf('update %s set status = "CLOSED" where expiry_date < "%s" and status != "CLOSED"',$table,$current_date);
+			$this->param['primarymodel']->executeNonSelectQuery($querystr);
+		}
+	}
+
+	public function authorize_post_insert_new_record()
+	{
+		$this->insertInitialTillTransaction();
+		$this->closeExpiredTills();
 	}
 }

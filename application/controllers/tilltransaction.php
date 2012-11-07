@@ -101,6 +101,7 @@ class Tilltransaction_Controller extends Site_Controller
 			$arr['till_id']				= $data['till_id'];
 			$arr['amount']				= $data['initial_balance'];
 			$arr['transaction_type']	= "CASH";
+			$arr['transaction_date']	= date('Y-m-d');
 			$arr['movement']			= "IN";
 			$arr['reason']				= "Initial balance for till ".$data['till_id'];
 			$arr['inputter']			= $data['idname'];

@@ -68,7 +68,8 @@ $lang = array
 	
 	'date_of_birth' => array
     (
-        'length' => 'Date Of Birth: must be 10 characters.',
+        'required' => 'Date Of Birth: individual birthdate or company date of incoporation required',
+		'length' => 'Date Of Birth: must be 10 characters.',
         'alpha_dash' => 'Date Of Birth: date format is incorrect (YYYY-MM-DD).',
 		'default' => 'Date Of Birth: invalid input.'
     ),

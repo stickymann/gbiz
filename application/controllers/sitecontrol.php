@@ -36,32 +36,39 @@ class Sitecontrol_Controller extends Controller
 		//$menu=$this->param['primarymodel']->getMenuControls('menudefs',$this->param['url_input']);
 	
 		$menu=$this->param['primarymodel']->getUserMenuControls('menudefs_users','url_input',$this->param['url_input'],Auth::instance()->get_user()->idname);
-		$lookup = preg_split('/,/',$menu->controls_input);
+		if($menu)
+		{
+			$lookup = preg_split('/,/',$menu->controls_input);
 		
-		//print_r($lookup);
-		//print '<hr>';
-		foreach($lookup as $key)
-		{
-			$control[$key]=true;
-		}
+			//print_r($lookup);
+			//print '<hr>';
+			foreach($lookup as $key)
+			{
+				$control[$key]=true;
+			}
 
-		$lookup = preg_split('/,/',$menu->controls_enquiry);
-		foreach($lookup as $key)
-		{
-			$control[$key]=true;
-		}
+			$lookup = preg_split('/,/',$menu->controls_enquiry);
+			foreach($lookup as $key)
+			{
+				$control[$key]=true;
+			}
 
-		if(!$this->param['globalauthmodeon'] || !$this->param['controllerauthmodeon'])
-		{
-			$control['ao']=false;
-			$control['as']=false;
-		}
+			if(!$this->param['globalauthmodeon'] || !$this->param['controllerauthmodeon'])
+			{
+				$control['ao']=false;
+				$control['as']=false;
+			}
 
-		if(!$this->param['globalindexfldon'])
+			if(!$this->param['globalindexfldon'])
 			$control['if']=false;
-		$this->param['controls'] = $control;
+			$this->param['controls'] = $control;
+		}
+		else
+		{
+			$this->param['controls'] = array('vw'=>false,'pr'=>false,'nw'=>false,'cp'=>false,'iw'=>false,'in'=>false,'ao'=>false,'as'=>false,'rj'=>false,'de'=>false,'hd'=>false,'va'=>false,'df'=>false,'ls'=>false,'hs'=>false,'is'=>false,'ex'=>false);
+		}
 	}
-		
+	
 	public function getInputControls()
 	{	
 		$post =$_POST;
@@ -71,32 +78,39 @@ class Sitecontrol_Controller extends Controller
 		$ctrl = $this->param['controls'];
 		if(!$post)
 		{
-			$controls .= form::submit('submit','Submit','class="bttn"').'&nbsp</td><td>';
-			//should i check for if key exist in controls array? with frontend errors should never occur 
-			//if (array_key_exists('vw', $this->param['controls']->control['vw']))
-			
-			if($ctrl['vw']) 
-				$controls .= form::radio('func','v',TRUE).form::label('func','view').'&nbsp';
-			
-			if($ctrl['nw']) 
-				$controls .= form::radio('func','n').form::label('func','new').'&nbsp';
-			
-			if($ctrl['cp']) 
-				$controls .= form::radio('func','c').form::label('func','copy').'&nbsp';
-						
-			if($ctrl['in']) 
-				{$controls .= form::radio('func','i').form::label('func','edit').'&nbsp';}
-			else if($ctrl['iw']) 
-				{$controls .= form::radio('func','w').form::label('func','edit new').'&nbsp';}
-
-			if($ctrl['ao'] || $ctrl['as']) 
+			if( isset($ctrl['if']) )
 			{
-				$controls .= form::radio('func','a').form::label('func','authorize').'&nbsp';
-				$controls .=form::hidden('auth','y');
+				$controls .= form::submit('submit','Submit','class="bttn"').'&nbsp</td><td>';
+				//should i check for if key exist in controls array? with frontend errors should never occur 
+				//if (array_key_exists('vw', $this->param['controls']->control['vw']))
+			
+				if($ctrl['vw']) 
+					$controls .= form::radio('func','v',TRUE).form::label('func','view').'&nbsp';
+			
+				if($ctrl['nw']) 
+					$controls .= form::radio('func','n').form::label('func','new').'&nbsp';
+			
+				if($ctrl['cp']) 
+					$controls .= form::radio('func','c').form::label('func','copy').'&nbsp';
+						
+				if($ctrl['in']) 
+					{$controls .= form::radio('func','i').form::label('func','edit').'&nbsp';}
+				else if($ctrl['iw']) 
+					{$controls .= form::radio('func','w').form::label('func','edit new').'&nbsp';}
+
+				if($ctrl['ao'] || $ctrl['as']) 
+				{
+					$controls .= form::radio('func','a').form::label('func','authorize').'&nbsp';
+					$controls .=form::hidden('auth','y');
+				}
+				else
+				{
+					$controls .=form::hidden('auth','');
+				}
 			}
 			else
 			{
-				$controls .=form::hidden('auth','');
+				$controls .= '<span style="color:red;"><b>Insufficient Permissions</b></span></td><td>';
 			}
 			
 			if($ctrl['rj'])

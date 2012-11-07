@@ -17,7 +17,7 @@ if(!$isLoginOk)
 	//print '<br><img src="'.$urlbase.'/media/img/login/soulmap_large.png" border=0 align=middle><br>';
 	
 	print '<div id="frmsignin">';
-    print form::open('login');
+    print form::open('login',array('autocomplete'=>'off'));
     print '<p id="puser">';
 	print form::label('username', 'Username:');
 	print form::input('username', $form['username']);

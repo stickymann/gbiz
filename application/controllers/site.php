@@ -395,16 +395,20 @@ class Site_Controller extends Template_Controller
 			//build form
 			$content->pagebody = "";
 			$content->pagebody .=form::open($this->param['controller']);
+			
 			$content->pagebody .="<table>\n";
 			$content->pagebody .="<tr valign='center'><td>".$this->getUserControls()."</td></tr>\n";
 			$ctrl=$this->param['permissions'];
-			if($ctrl['if']) 
+			if( isset($ctrl['if']) )
 			{
-				$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50" class="input-i"')."</td></tr>\n"; 
-			}
-			else
-			{
-				$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50" class="input-i" readonly')."</td><td></td></tr>\n"; 
+				if($ctrl['if']) 
+				{
+					$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50" class="input-i"')."</td></tr>\n"; 
+				}
+				else
+				{
+					$content->pagebody .="<tr valign='center'><td>".form::label($this->param['indexfield'],$this->param['indexlabel']).$this->colon."</td><td align='left'>".form::input($this->param['indexfield'], $this->param['indexfieldvalue'],'size="50" maxlength="50" class="input-i" readonly')."</td><td></td></tr>\n"; 
+				}
 			}
 			$content->pagebody .="</table>\n";
 			$content->pagebody .=form::close();
@@ -636,8 +640,8 @@ class Site_Controller extends Template_Controller
 				unset($_POST['bttnclicked']); unset($_POST['js_idname']); unset($_POST['js_tmpvar']);
 				
 				//set audit data
-				$_POST['inputter']=Auth::instance()->get_user()->idname;$_POST['authorizer']='';
-				$_POST['input_date']=date('Y-m-d H:i:s'); $_POST['auth_date']='';  $_POST['record_status']='INAU';
+				$_POST['inputter']=Auth::instance()->get_user()->idname; $_POST['authorizer']='SYSINAU';
+				$_POST['input_date']=date('Y-m-d H:i:s'); $_POST['auth_date']=date('Y-m-d H:i:s');  $_POST['record_status']='INAU';
 
 				$this->input_pre_update_existing_record();		
 				if( $this->param['primarymodel']->updateRecord($this->param['tb_inau'],$_POST))
@@ -1421,8 +1425,8 @@ class Site_Controller extends Template_Controller
 		unset($_POST['js_idname']); unset($_POST['js_tmpvar']);
 			
 		//set audit data
-		$_POST['inputter']=Auth::instance()->get_user()->idname;$_POST['authorizer']='';
-		$_POST['input_date']=date('Y-m-d H:i:s'); $_POST['auth_date']='';  $_POST['record_status']='IHLD';
+		$_POST['inputter']=Auth::instance()->get_user()->idname; $_POST['authorizer']='SYSINAU';
+		$_POST['input_date']=date('Y-m-d H:i:s'); $_POST['auth_date']=date('Y-m-d H:i:s');  $_POST['record_status']='IHLD';
 		
 		//$this->param['primarymodel']->removeRecordLock(Auth::instance()->get_user()->idname,$this->param['tb_inau'],$_POST['id']);
 		if( $this->param['primarymodel']->updateRecord($this->param['tb_inau'],$_POST))
@@ -1898,7 +1902,7 @@ $TABLETAG = "\n\n".sprintf('<div id="sf" class="sf"><table %s id="subform_table_
 			$TABLEROWS .= "</tr>";
 		}
 		$TABLEROWS .= "\n"."</tbody>"."\n";
-		$style = 'style="width:800px; height:250px;"'; 
+		$style = 'style="width:800px; height:350px;"'; 
 $TABLETAG = "\n\n".sprintf('<div id="sf" class="sf"><table %s id="subform_table_%s" resizable="true" title="%s" singleSelect="true" idField="subform_%s_id">',$style,$key,$subheader,$key)."\n\n";
 		$TABLE = $TABLETAG."\n".$TABLEHEAD.$TABLEROWS."</table></div>"."\n";
 		$TABLE .= sprintf('<div id="subform_summary_%s"></div>',$key); 

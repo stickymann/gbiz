@@ -163,7 +163,7 @@ CREATE TABLE `batchinvoicedetails_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1221 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +227,7 @@ DROP TABLE IF EXISTS `batchinvoices_is`;
 CREATE TABLE `batchinvoices_is` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `batch_id` varchar(16) DEFAULT NULL,
-  `batch_date` date DEFAULT NULL,
+  `batch_date` date DEFAULT '0000-00-00',
   `batch_description` varchar(255) DEFAULT NULL,
   `batch_type` varchar(50) DEFAULT NULL,
   `batch_details` text,
@@ -240,7 +240,7 @@ CREATE TABLE `batchinvoices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_batch_id` (`batch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1010 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1008 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,8 +473,8 @@ CREATE TABLE `certofinstallations_is` (
   `installation_type` varchar(50) DEFAULT 'New',
   `device_model` varchar(50) DEFAULT NULL,
   `device_serial_no` varchar(50) DEFAULT NULL,
-  `expiry_date` date DEFAULT NULL,
-  `issue_date` date DEFAULT NULL,
+  `expiry_date` date DEFAULT '0000-00-00',
+  `issue_date` date DEFAULT '0000-00-00',
   `commisioning_fld01` varchar(3) DEFAULT 'yes',
   `commisioning_fld02` varchar(3) DEFAULT 'yes',
   `commisioning_fld03` varchar(3) DEFAULT 'yes',
@@ -511,7 +511,7 @@ CREATE TABLE `certofinstallations_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1118 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -673,7 +673,7 @@ CREATE TABLE `csvs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_csv_id` (`csv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=568 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=672 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -697,10 +697,10 @@ CREATE TABLE `customers` (
   `country_id` varchar(2) NOT NULL,
   `date_of_birth` date DEFAULT NULL,
   `gender` enum('M','F','N') NOT NULL,
-  `phone_home` int(7) DEFAULT NULL,
-  `phone_work` int(7) DEFAULT NULL,
-  `phone_mobile1` int(7) NOT NULL,
-  `phone_mobile2` int(7) DEFAULT NULL,
+  `phone_home` varchar(7) DEFAULT NULL,
+  `phone_work` varchar(7) DEFAULT NULL,
+  `phone_mobile1` varchar(7) NOT NULL,
+  `phone_mobile2` varchar(7) DEFAULT NULL,
   `email_address` varchar(255) DEFAULT NULL,
   `driver_permit` varchar(10) NOT NULL,
   `identification_card` varchar(12) DEFAULT NULL,
@@ -743,10 +743,10 @@ CREATE TABLE `customers_hs` (
   `country_id` varchar(2) NOT NULL,
   `date_of_birth` date DEFAULT NULL,
   `gender` enum('M','F','N') NOT NULL,
-  `phone_home` int(7) DEFAULT NULL,
-  `phone_work` int(7) DEFAULT NULL,
-  `phone_mobile1` int(7) DEFAULT NULL,
-  `phone_mobile2` int(7) DEFAULT NULL,
+  `phone_home` varchar(7) DEFAULT NULL,
+  `phone_work` varchar(7) DEFAULT NULL,
+  `phone_mobile1` varchar(7) DEFAULT NULL,
+  `phone_mobile2` varchar(7) DEFAULT NULL,
   `email_address` varchar(255) DEFAULT NULL,
   `driver_permit` varchar(10) NOT NULL,
   `identification_card` varchar(12) DEFAULT NULL,
@@ -786,17 +786,17 @@ CREATE TABLE `customers_is` (
   `city` varchar(255) DEFAULT NULL,
   `region_id` int(11) DEFAULT NULL,
   `country_id` varchar(2) DEFAULT 'TT',
-  `date_of_birth` date DEFAULT NULL,
+  `date_of_birth` date DEFAULT '0000-00-00',
   `gender` enum('M','F','N') DEFAULT NULL,
-  `phone_home` int(7) DEFAULT NULL,
-  `phone_work` int(7) DEFAULT NULL,
-  `phone_mobile1` int(7) DEFAULT NULL,
-  `phone_mobile2` int(7) DEFAULT NULL,
+  `phone_home` varchar(7) DEFAULT NULL,
+  `phone_work` varchar(7) DEFAULT NULL,
+  `phone_mobile1` varchar(7) DEFAULT NULL,
+  `phone_mobile2` varchar(7) DEFAULT NULL,
   `email_address` varchar(255) DEFAULT NULL,
   `driver_permit` varchar(10) DEFAULT NULL,
   `identification_card` varchar(12) DEFAULT NULL,
   `passport` varchar(10) DEFAULT NULL,
-  `driver_permit_expiry_date` date DEFAULT NULL,
+  `driver_permit_expiry_date` date DEFAULT '0000-00-00',
   `emergency_contact` varchar(255) DEFAULT NULL,
   `emergency_contact_phone` varchar(7) DEFAULT NULL,
   `branch_id` varchar(50) DEFAULT 'HEAD.OFFICE',
@@ -809,7 +809,7 @@ CREATE TABLE `customers_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2791 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2804 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -963,7 +963,7 @@ CREATE TABLE `deliverynotes_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_deliverynote_id` (`deliverynote_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1331 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1340 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1048,10 +1048,10 @@ CREATE TABLE `devices` (
   `sms_enabled` enum('Y','N') NOT NULL,
   `gprs_enabled` enum('Y','N') NOT NULL,
   `imei` varchar(50) NOT NULL,
-  `phone_device` int(7) unsigned NOT NULL,
-  `phone_textback1` int(7) unsigned NOT NULL,
-  `phone_textback2` int(7) unsigned DEFAULT NULL,
-  `sms_server` int(7) unsigned NOT NULL,
+  `phone_device` varchar(7) NOT NULL,
+  `phone_textback1` varchar(7) NOT NULL,
+  `phone_textback2` varchar(7) DEFAULT NULL,
+  `sms_server` varchar(7) NOT NULL,
   `gprs_server` varchar(50) DEFAULT NULL,
   `realtime_useraccount` varchar(50) DEFAULT NULL,
   `realtime_password` varchar(50) DEFAULT NULL,
@@ -1086,10 +1086,10 @@ CREATE TABLE `devices_hs` (
   `sms_enabled` enum('Y','N') NOT NULL,
   `gprs_enabled` enum('Y','N') NOT NULL,
   `imei` varchar(50) NOT NULL,
-  `phone_device` int(7) unsigned NOT NULL,
-  `phone_textback1` int(7) unsigned NOT NULL,
-  `phone_textback2` int(7) unsigned DEFAULT NULL,
-  `sms_server` int(7) unsigned NOT NULL,
+  `phone_device` varchar(7) NOT NULL,
+  `phone_textback1` varchar(7) NOT NULL,
+  `phone_textback2` varchar(7) DEFAULT NULL,
+  `sms_server` varchar(7) NOT NULL,
   `gprs_server` varchar(50) DEFAULT NULL,
   `realtime_useraccount` varchar(50) DEFAULT NULL,
   `realtime_password` varchar(50) DEFAULT NULL,
@@ -1123,10 +1123,10 @@ CREATE TABLE `devices_is` (
   `sms_enabled` enum('Y','N') DEFAULT 'N',
   `gprs_enabled` enum('Y','N') DEFAULT 'N',
   `imei` varchar(50) DEFAULT NULL,
-  `phone_device` int(7) unsigned DEFAULT NULL,
-  `phone_textback1` int(7) unsigned DEFAULT NULL,
-  `phone_textback2` int(7) unsigned DEFAULT NULL,
-  `sms_server` int(7) unsigned DEFAULT NULL,
+  `phone_device` varchar(7) DEFAULT NULL,
+  `phone_textback1` varchar(7) DEFAULT NULL,
+  `phone_textback2` varchar(7) DEFAULT NULL,
+  `sms_server` varchar(7) DEFAULT NULL,
   `gprs_server` varchar(50) DEFAULT NULL,
   `realtime_useraccount` varchar(50) DEFAULT NULL,
   `realtime_password` varchar(50) DEFAULT NULL,
@@ -1141,7 +1141,7 @@ CREATE TABLE `devices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_device_id` (`device_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3253 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3263 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1369,7 +1369,7 @@ CREATE TABLE `inventchkouts_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1374 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1384 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1440,7 +1440,7 @@ CREATE TABLE `inventory_track_details_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_serial_no` (`serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=2630 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1523,7 +1523,7 @@ CREATE TABLE `inventory_tracks_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_stockbatch_id` (`stockbatch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1025 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1674,7 +1674,7 @@ CREATE TABLE `inventupdtypes_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_update_type_id` (`update_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1857,7 +1857,7 @@ CREATE TABLE `menudefs_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=522 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2078,7 +2078,7 @@ CREATE TABLE `orderdetails_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1939 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1960 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2164,7 +2164,7 @@ CREATE TABLE `orders_is` (
   `order_details` text,
   `order_date` date DEFAULT NULL,
   `quotation_date` date DEFAULT NULL,
-  `invoice_date` date DEFAULT NULL,
+  `invoice_date` date DEFAULT '0000-00-00',
   `status_change_date` date DEFAULT NULL,
   `inventory_checkout_type` enum('AUTO','MANUAL') DEFAULT 'AUTO',
   `inventory_update_type` enum('SALE','LOAN') DEFAULT 'SALE',
@@ -2179,7 +2179,7 @@ CREATE TABLE `orders_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13990 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14003 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2298,7 +2298,7 @@ CREATE TABLE `params_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=519 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2387,7 +2387,7 @@ CREATE TABLE `payments_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_payment_id` (`payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1377 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1403 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2464,7 +2464,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64571 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64747 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2663,7 +2663,7 @@ CREATE TABLE `products_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=534 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2686,7 +2686,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11325 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11483 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2903,7 +2903,7 @@ CREATE TABLE `reportdefs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2971,7 +2971,7 @@ CREATE TABLE `roles_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1012 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3229,11 +3229,11 @@ CREATE TABLE `telbooks` (
   `authorizer` varchar(50) NOT NULL DEFAULT 'TS01',
   `auth_date` datetime NOT NULL DEFAULT '2011-01-01 00:00:00',
   `record_status` char(4) NOT NULL DEFAULT 'LIVE',
-  `current_no` int(11) NOT NULL DEFAULT '2',
+  `current_no` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_plate` (`plate`),
   UNIQUE KEY `uniq_telno` (`telno`)
-) ENGINE=InnoDB AUTO_INCREMENT=2013 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2032 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3264,6 +3264,38 @@ CREATE TABLE `telbooks_hs` (
   `current_no` int(11) NOT NULL,
   PRIMARY KEY (`id`,`current_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `telbooks_is`
+--
+
+DROP TABLE IF EXISTS `telbooks_is`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `telbooks_is` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `telno` varchar(50) DEFAULT NULL,
+  `plate` varchar(50) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `mobile` varchar(255) DEFAULT NULL,
+  `totalmoney` decimal(11,0) DEFAULT '75',
+  `centerpassword` varchar(50) DEFAULT '666666',
+  `hasalarm` decimal(11,0) DEFAULT '0',
+  `groupid` decimal(11,0) DEFAULT '0',
+  `modemkind` decimal(11,0) DEFAULT NULL,
+  `vehicle_id` varchar(50) DEFAULT NULL,
+  `security_code` varchar(2) DEFAULT NULL,
+  `inputter` varchar(50) DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `authorizer` varchar(50) DEFAULT NULL,
+  `auth_date` datetime DEFAULT NULL,
+  `record_status` char(4) DEFAULT 'IHLD',
+  `current_no` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_plate` (`plate`),
+  UNIQUE KEY `uniq_telno` (`telno`)
+) ENGINE=InnoDB AUTO_INCREMENT=2030 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3343,7 +3375,7 @@ CREATE TABLE `tills_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_till_id` (`till_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1146 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1155 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3426,7 +3458,7 @@ CREATE TABLE `tilltransactions_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_transaction_id` (`transaction_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1148 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1156 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3603,7 +3635,7 @@ CREATE TABLE `users_is` (
   `record_status` char(4) NOT NULL DEFAULT 'IHLD',
   `current_no` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1010 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3701,7 +3733,7 @@ CREATE TABLE `vehicles_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_vehicle_id` (`vehicle_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3159 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3171 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3901,7 +3933,7 @@ SET character_set_client = utf8;
   `last_name` varchar(255),
   `device_tag_id` varchar(50),
   `device_model` varchar(50),
-  `phone_device` int(7) unsigned
+  `phone_device` varchar(7)
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -3950,10 +3982,10 @@ SET character_set_client = utf8;
   `sms_enabled` enum('Y','N'),
   `gprs_enabled` enum('Y','N'),
   `imei` varchar(50),
-  `phone_device` int(7) unsigned,
-  `phone_textback1` int(7) unsigned,
-  `phone_textback2` int(7) unsigned,
-  `sms_server` int(7) unsigned,
+  `phone_device` varchar(7),
+  `phone_textback1` varchar(7),
+  `phone_textback2` varchar(7),
+  `sms_server` varchar(7),
   `gprs_server` varchar(50),
   `realtime_useraccount` varchar(50),
   `realtime_password` varchar(50),
@@ -4019,7 +4051,7 @@ SET character_set_client = utf8;
   `device_id` varchar(50),
   `imei` varchar(50),
   `model` varchar(50),
-  `phone_device` int(7) unsigned,
+  `phone_device` varchar(7),
   `item_status` varchar(25)
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
@@ -4176,9 +4208,9 @@ SET character_set_client = utf8;
   `address1` varchar(255),
   `address2` varchar(255),
   `city` varchar(255),
-  `phone_mobile1` int(7),
-  `phone_home` int(7),
-  `phone_work` int(7),
+  `phone_mobile1` varchar(7),
+  `phone_home` varchar(7),
+  `phone_work` varchar(7),
   `order_details` varchar(341),
   `payment_type` varchar(341),
   `order_date` date,
@@ -4263,9 +4295,9 @@ SET character_set_client = utf8;
 /*!50001 CREATE TABLE `vw_telbooks_available` (
   `id` int(11) unsigned,
   `vehicle_id` varchar(20),
-  `telno` int(7) unsigned,
+  `telno` varchar(7),
   `username` varchar(511),
-  `mobile` varchar(512),
+  `mobile` varchar(16),
   `duplicate_telno` char(1)
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
@@ -4306,10 +4338,10 @@ SET character_set_client = utf8;
   `sms_enabled` enum('Y','N'),
   `gprs_enabled` enum('Y','N'),
   `imei` varchar(50),
-  `phone_device` int(7) unsigned,
-  `phone_textback1` int(7) unsigned,
-  `phone_textback2` int(7) unsigned,
-  `sms_server` int(7) unsigned,
+  `phone_device` varchar(7),
+  `phone_textback1` varchar(7),
+  `phone_textback2` varchar(7),
+  `sms_server` varchar(7),
   `gprs_server` varchar(50),
   `realtime_useraccount` varchar(50),
   `realtime_password` varchar(50),
@@ -4379,10 +4411,10 @@ SET character_set_client = utf8;
   `country_id` varchar(2),
   `date_of_birth` date,
   `gender` enum('M','F','N'),
-  `phone_home` int(7),
-  `phone_work` int(7),
-  `phone_mobile1` int(7),
-  `phone_mobile2` int(7),
+  `phone_home` varchar(7),
+  `phone_work` varchar(7),
+  `phone_mobile1` varchar(7),
+  `phone_mobile2` varchar(7),
   `email_address` varchar(255),
   `driver_permit` varchar(10),
   `identification_card` varchar(12),
@@ -4401,10 +4433,10 @@ SET character_set_client = utf8;
   `sms_enabled` enum('Y','N'),
   `gprs_enabled` enum('Y','N'),
   `imei` varchar(50),
-  `phone_device` int(7) unsigned,
-  `phone_textback1` int(7) unsigned,
-  `phone_textback2` int(7) unsigned,
-  `sms_server` int(7) unsigned,
+  `phone_device` varchar(7),
+  `phone_textback1` varchar(7),
+  `phone_textback2` varchar(7),
+  `sms_server` varchar(7),
   `gprs_server` varchar(50),
   `realtime_useraccount` varchar(50),
   `realtime_password` varchar(50),
@@ -5454,7 +5486,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_telbooks_available` AS (select `vw_vehicle_accounts`.`id` AS `id`,`vw_vehicle_accounts`.`vehicle_id` AS `vehicle_id`,`vw_vehicle_accounts`.`phone_device` AS `telno`,trim(both ' ' from ucase(concat(convert(`func_SetToBlankCo`(`vw_vehicle_accounts`.`first_name`) using utf8),' ',convert(`vw_vehicle_accounts`.`last_name` using utf8)))) AS `username`,concat(`func_SetToBlankZero`(`vw_vehicle_accounts`.`phone_textback1`),'#',`func_SetToBlankZero`(`vw_vehicle_accounts`.`phone_textback2`),'#') AS `mobile`,`func_DuplicateTelbookPhoneNo`(`vw_vehicle_accounts`.`phone_device`) AS `duplicate_telno` from `vw_vehicle_accounts` where ((`vw_vehicle_accounts`.`sms_enabled` = 'Y') and (not(`vw_vehicle_accounts`.`vehicle_id` in (select `telbooks`.`plate` AS `plate` from `telbooks` where ((`telbooks`.`plate` <> NULL) or (`telbooks`.`plate` <> ''))))))) */;
+/*!50001 VIEW `vw_telbooks_available` AS (select `vw_vehicle_accounts`.`id` AS `id`,`vw_vehicle_accounts`.`vehicle_id` AS `vehicle_id`,`vw_vehicle_accounts`.`phone_device` AS `telno`,trim(both ' ' from ucase(concat(convert(`func_SetToBlankCo`(`vw_vehicle_accounts`.`first_name`) using utf8),' ',convert(`vw_vehicle_accounts`.`last_name` using utf8)))) AS `username`,concat(`vw_vehicle_accounts`.`phone_textback1`,'#',`vw_vehicle_accounts`.`phone_textback2`,'#') AS `mobile`,`func_DuplicateTelbookPhoneNo`(`vw_vehicle_accounts`.`phone_device`) AS `duplicate_telno` from `vw_vehicle_accounts` where ((`vw_vehicle_accounts`.`sms_enabled` = 'Y') and (not(`vw_vehicle_accounts`.`vehicle_id` in (select `telbooks`.`plate` AS `plate` from `telbooks` where ((`telbooks`.`plate` <> NULL) or (`telbooks`.`plate` <> ''))))))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -5582,4 +5614,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-06  8:18:05
+-- Dump completed on 2012-11-07 13:45:22
