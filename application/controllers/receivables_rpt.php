@@ -131,8 +131,13 @@ _SQL_;
 		if($end_date == "") { $end_date = date("Y-m-d"); }
 		$rundate = date("Y-m-d H:i:s");
 		
+		$sdate = new DateTime($start_date);
+		$start_date = $sdate->format('d M Y');
+		$edate = new DateTime($end_date);
+		$end_date = $edate->format('d M Y');
+
 		$HTML .= '<div id="e" style="padding:5px 5px 5px 5px;">';
-		$HTML .= sprintf('<div id="rptbp" class="rpth2"> For Period : %s - %s (Branch : %s )</div>',$start_date,$end_date,$branch);
+		$HTML .= sprintf('<div id="rptbp" class="rpth2"> For Period : %s - %s (Branch : %s)</div>',$start_date,$end_date,$branch);
 		
 		$REPORT_HTML = $HTML.$RESULT; 
 		$this->content->pagebody .= $REPORT_HTML;
