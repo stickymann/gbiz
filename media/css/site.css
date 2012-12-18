@@ -133,10 +133,6 @@ table.subform {width:70%; height:250px; 	border-width: 1px;
 #subformview td {border: 1px solid brown; font-weight: normal; padding: 2px; background: transparent; color: brown; }
 #subformview tr:hover td { background: #ebf2f9; color: brown;}
 
-#rpttbl { border: 1px solid white; font-family: verdana, arial, helvetica, sans-serif; font-size: 1em; text-align: left; border-collapse: collapse; }
-#rpttbl th {border: 1px solid white;  font-weight: normal; padding: 2px; background: silver; color: #000000; }
-#rpttbl td {border: 1px solid silver; font-weight: normal; padding: 2px; background: transparent; color:#000000 ; }
-
 /*#e6e6e6*/
 #order_enq_details { border: 1px solid white; font-family: verdana, arial, helvetica, sans-serif; font-size: 1em; text-align: left; border-collapse: collapse; }
 #order_enq_details th {border: 1px solid white;  font-weight: normal; padding: 2px; background: silver; color: #000000; }
@@ -163,3 +159,19 @@ label.valid {display: block; width: 16px; height: 16px;}
 
 /*VALIDATION DIALOG STYLES*/
 #validate_error {border: #0000ad solid 0px; color: red; background-color: #ffffff; width:300px; height:100px; font-family: verdana, arial, helvetica, sans-serif; font-size:.8em; font-weight: normal; padding:5px; position: relative; overflow:auto; }
+
+/*REPORT FONT STYLES*/
+#rpttbl { border: 1px solid white; font-family: verdana, arial, helvetica, sans-serif; font-size: 1em; text-align: left; border-collapse: collapse; }
+#rpttbl th {border: 1px solid white;  font-weight: normal; padding: 2px; background: silver; color: #000000; }
+#rpttbl td {border: 1px solid silver; font-weight: normal; padding: 2px; background: transparent; color:#000000 ; }
+.rpth1 {font-weight: bold; font-size: 1.6em;}
+.rpth2 {font-weight: bold; font-size: 1.5em;}
+.rpth3 {font-weight: bold; font-size: 1.4em;}
+.rpth4 {font-weight: bold; font-size: 1.3em;}
+.rpth5 {font-weight: bold; font-size: 1.2em;}
+.rpth6 {font-weight: bold; font-size: 1.1em;}
+#rpttp {padding: 15px 0px 10px 0px;}
+#rptrp {padding: 0px 10px 0px 0px;}
+#rptbp {padding: 0px 0px 10px 0px;}
+#rptlp {padding: 0px 0px 0px 10px;}
+#rptap {padding: 15px 10px 15px 10px;}
