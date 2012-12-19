@@ -16,6 +16,7 @@ class Quotations_rpt_Controller extends Sitereport_Controller
 	public function report_run()
 	{
 		$branch_id = $_POST['branch_id'];
+		$order_status = $_POST['order_status'];
 		$start_date = $_POST['start_date'];
 		$end_date = $_POST['end_date'];
 		$where = ""; $filter = ""; $HTML =""; $RESULT="";
@@ -31,7 +32,7 @@ class Quotations_rpt_Controller extends Sitereport_Controller
 SELECT 
 SUM(order_total) AS total_sales
 FROM vw_orders
-WHERE order_status = "QUOTATION"
+WHERE order_status = "$order_status"
 _SQL_;
 		$querystr = sprintf('%s %s %s',$querystr,$where,$filter);
 		$result = $this->sitemodel->executeSelectQuery($querystr);
@@ -39,7 +40,7 @@ _SQL_;
 		{
 			$totals = $result[0];
 			$RESULT .= '<table>'."\n";
-			$RESULT .= sprintf('<tr><td><span class="rpth4">Total Quotations Value : </span></td><td align="right"><span class="rpth4">%s</span></td></tr>',"$ ".number_format($totals->total_sales, 2, '.', ','))."\n";
+			$RESULT .= sprintf('<tr><td><span class="rpth4">Total Quotations Value : </span></td><td align="right"><span class="rpth4">%s</span></td><td align="right"><span class="rpth4">%s</span></td></tr>',"$ ".number_format($totals->total_sales, 2, '.', ',')," (".$order_status.") " )."\n";
 			$RESULT .= '</table>'."\n";
 		}
 		else
@@ -58,7 +59,7 @@ order_details,
 order_total
 FROM vw_orders
 WHERE 
-order_status = "QUOTATION"
+order_status = "$order_status"
 _SQL_;
 		$groupby = 'ORDER BY order_date,customer_id;';
 		$querystr = sprintf('%s %s %s %s',$querystr,$where,$filter,$groupby);

@@ -32,7 +32,7 @@ SELECT
 SUM(order_total) AS total_sales,
 SUM(payment_total) AS total_payments,
 SUM(balance) AS balance FROM vw_orderbalances 
-WHERE balance > 0 AND NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION_EXPIRED") OR (order_status = "ORDER.CANCELLED")) 
+WHERE balance > 0 AND NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION.EXPIRED") OR (order_status = "ORDER.CANCELLED")) 
 _SQL_;
 		$querystr = sprintf('%s %s %s',$querystr,$where,$filter);
 		$result = $this->sitemodel->executeSelectQuery($querystr);
@@ -62,7 +62,7 @@ SUM(balance) AS balance
 FROM vw_orderbalances
 WHERE 
 balance > 0
-AND NOT ((order_status = "QUOTATION") OR (order_status = "ORDER.CANCELLED"))  
+AND NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION.EXPIRED") OR (order_status = "ORDER.CANCELLED"))  
 _SQL_;
 		$groupby = 'GROUP BY customer_id ORDER BY customer_id;';
 		$querystr = sprintf('%s %s %s %s',$querystr,$where,$filter,$groupby);

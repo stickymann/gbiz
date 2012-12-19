@@ -146,12 +146,23 @@ class Sitereport_Controller extends Template_Controller
 				if(!(isset($this->formopts[$key]['options']))){unset($this->form[$key]);unset($_POST[$key]); continue;}
 				
 				$options = $this->formopts[$key]['options'];
-				$POPOUT_HTML = $this->createPopOut($key);
-				if($this->formopts[$key]['inputtype']=="date")
-				{
-					$DATEICON_HTML = $this->createDatePopOut($key);
+				switch($this->formopts[$key]['inputtype'])
+				{	
+					case 'input':
+					case 'date':
+						$POPOUT_HTML = $this->createPopOut($key);
+						if($this->formopts[$key]['inputtype']=="date")
+						{
+							$DATEICON_HTML = $this->createDatePopOut($key);
+						}
+						$pagebody->add('<tr valign="center"><td>'.form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key],$options." class='input-r'").$DATEICON_HTML.$POPOUT_HTML."</td></tr>\n"); 
+					break;
+					case 'dropdown':
+						list($arrval,$arrtxt)=explode("::",$options);
+						$selection = array_combine(explode(",",$arrval),explode(",",$arrtxt));
+						$pagebody->add("<tr valign='center'><td>".form::label($key,$this->label[$key]).$this->colon."</td><td>".form::dropdown($key,$selection,$this->form[$key])."</td></tr>\n"); 
+					break;
 				}
-				$pagebody->add('<tr valign="center"><td>'.form::label($key,$this->label[$key]).$this->colon."</td><td>".form::input($key,$this->form[$key],$options." class='input-r'").$DATEICON_HTML.$POPOUT_HTML."</td></tr>\n"); 
 			}
 			
 			$pagebody->add("</table>");
