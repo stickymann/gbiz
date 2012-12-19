@@ -216,6 +216,21 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 		}
 	}
 
+	public function ExpireQuotations()
+	{
+		$seq_no = substr($_POST['order_id'], -4);
+		$current_no = $_POST['current_no'];
+		$current_date = date('Y-m-d');
+		$table = $this->param['tb_live'];
+		
+		if($current_no == 1 && $seq_no == "0001")
+		{
+			$querystr = sprintf('update %s set order_status = "QUOTATION.EXPIRED" where quotation_date < (select date_add("%s", interval -30 day)) and order_status = "QUOTATION"',$table,$current_date);
+			$this->param['primarymodel']->executeNonSelectQuery($querystr);
+		}	
+	
+	}
+
 	public function UpdateOrderInvoiceDate($table,$order_id,$invoice_date)
 	{
 		$querystr = sprintf('update %s set invoice_date = "%s" where order_id = "%s"',$table,$invoice_date,$order_id);
@@ -232,5 +247,6 @@ $xmlfooter = "</rows>"."\n"."</formfields>"."\n";
 	{
 		$this->inventoryCheckout();
 		$this->SetZeroChargeOrderStatus();
+		$this->ExpireQuotations();
 	}
 }
