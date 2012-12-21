@@ -64,7 +64,7 @@ WHERE
 balance > 0
 AND NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION.EXPIRED") OR (order_status = "ORDER.CANCELLED"))  
 _SQL_;
-		$groupby = 'GROUP BY customer_id ORDER BY customer_id;';
+		$groupby = 'GROUP BY customer_id,branch_id ORDER BY customer_id;';
 		$querystr = sprintf('%s %s %s %s',$querystr,$where,$filter,$groupby);
 		$printstr = $querystr;
 		$result = $this->sitemodel->executeSelectQuery($querystr);

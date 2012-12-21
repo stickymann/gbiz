@@ -21,7 +21,7 @@ class Sales_rpt_Controller extends Sitereport_Controller
 		$where = ""; $filter = ""; $HTML =""; $RESULT="";
 		
 		/*query filter*/
-		if($branch_id != "" ) { $filter .= sprintf('branch_id >= "%s" AND ',$branch_id); $where=" AND";}
+		if($branch_id != "" ) { $filter .= sprintf('branch_id = "%s" AND ',$branch_id); $where=" AND";}
 		if($start_date != "" ) { $filter .= sprintf('order_date >= "%s" AND ',$start_date); $where=" AND";}
 		if($end_date != "" ) { $filter .= sprintf('order_date <= "%s" AND ',$end_date); $where=" AND";}
 		$filter = substr_replace($filter, '', -5);
@@ -50,7 +50,7 @@ _SQL_;
 			$RESULT .= 'No Result.<br>';		
 		}
 		
-		/*line details*/
+		/*item count line details*/
 		$querystr=<<<_SQL_
 SELECT 
 `orders`.`branch_id` as branch,
@@ -62,7 +62,7 @@ FROM orderdetails JOIN orders
 ON `orderdetails`.`order_id` = `orders`.`order_id`
 WHERE NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION.EXPIRED") OR (order_status = "ORDER.CANCELLED")) 
 _SQL_;
-		$groupby = 'GROUP BY `orderdetails`.`description` ORDER BY product_id;';
+		$groupby = 'GROUP BY `orderdetails`.`description`,`orders`.`branch_id` ORDER BY product_id;';
 		$querystr = sprintf('%s %s %s %s',$querystr,$where,$filter,$groupby);
 		$result = $this->sitemodel->executeSelectQuery($querystr);
 		if($branch_id == "") { $branch = "ALL"; } else { $branch = $branch_id; }
@@ -123,6 +123,78 @@ _SQL_;
 			$RESULT .= 'No Result.<br>';		
 		}
 		
+		/*daily totals line details*/
+		$querystr=<<<_SQL_
+SELECT 
+branch_id as branch,
+order_date,
+SUM(order_total) AS order_total,
+SUM(payment_total) AS payment_total,
+SUM(balance) AS balance 
+FROM vw_orderbalances
+WHERE NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION.EXPIRED") OR (order_status = "ORDER.CANCELLED")) 
+_SQL_;
+		$groupby = 'GROUP BY order_date,branch_id;';
+		$querystr = sprintf('%s %s %s %s',$querystr,$where,$filter,$groupby);
+		$result = $this->sitemodel->executeSelectQuery($querystr);
+		if($branch_id == "") { $branch = "ALL"; } else { $branch = $branch_id; }
+
+		if($result) 
+		{
+			$RESULT .= sprintf('<br><div></div>');
+			$RESULT .= '<table id="rpttbl">'."\n";
+			$firstpass = true;
+			foreach($result as $row => $linerec)
+			{	
+				$linerec = (array)$linerec;
+				$header = ''; $data = ''; $align = ''; $i = 0;
+				foreach ($linerec as $key => $value)
+				{
+					if($firstpass)
+					{
+						$headtxt = Site_Controller::strtotitlecase(str_replace("_"," ",$key));
+						if($branch == "ALL")
+						{
+							if($i==2){$align = 'align="right"'; }
+							$header .= sprintf('<th %s><b>%s</b></th>',$align,$headtxt);
+						}
+						else
+						{
+							if($i>0)
+							{
+								if($i==1){$align = 'align="right"'; }
+								$header .= sprintf('<th %s><b>%s</b></th>',$align,$headtxt);
+							}
+						}
+						$i++;
+					}
+				}
+			
+				if($firstpass)
+				{
+					$header = "\n".'<thead>'."\n".'<tr>'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
+					$RESULT .=$header;
+				}
+				if($branch == "ALL")
+				{
+					$data .= sprintf('<td width="10%s">%s</td><td width="20%s">%s</td><td align="right">%s</td><td align="right">%s</td><td align="right">%s</td>',"%",$linerec['branch'],"%",$linerec['order_date'],"$ ".number_format($linerec['order_total'], 2, '.', ','),"$ ".number_format($linerec['payment_total'], 2, '.', ','),"$ ".number_format($linerec['balance'], 2, '.', ',')); 
+				}
+				else
+				{
+					$data .= sprintf('<td width="20%s">%s</td><td align="right">%s</td><td align="right">%s</td><td align="right">%s</td>',"%",$linerec['order_date'],"$ ".number_format($linerec['order_total'], 2, '.', ','),"$ ".number_format($linerec['payment_total'], 2, '.', ','),"$ ".number_format($linerec['balance'], 2, '.', ',')); 
+				}
+				
+				$data = '<tr valign="top">'.$data.'</tr>'."\n"; 
+				$RESULT .= $data;
+				$firstpass = false;
+			}
+			$RESULT .='</tbody>'."\n".'</table>'."\n";
+		}
+		else
+		{
+			$RESULT .= 'No Result.<br>';		
+		}
+
 		/*set defaults*/
 		if($start_date == "") { $start_date = "2012-01-01"; }
 		if($end_date == "") { $end_date = date("Y-m-d"); }
