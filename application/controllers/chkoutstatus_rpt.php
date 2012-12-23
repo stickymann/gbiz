@@ -28,12 +28,12 @@ class Chkoutstatus_rpt_Controller extends Sitereport_Controller
 		$filter = substr_replace($filter, '', -5);
 		
 		/*summary totals*/
-/*		
 		$querystr=<<<_SQL_
 SELECT 
-SUM(order_total) AS total_sales
-FROM vw_orders
-WHERE order_status = "$order_status"
+count(order_id) as record_count
+FROM vw_inventory_checkout_status
+WHERE NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION.EXPIRED") OR (order_status = "ORDER.CANCELLED")) 
+AND checkout_status = "$checkout_status"
 _SQL_;
 		$querystr = sprintf('%s %s %s',$querystr,$where,$filter);
 		$result = $this->sitemodel->executeSelectQuery($querystr);
@@ -41,14 +41,15 @@ _SQL_;
 		{
 			$totals = $result[0];
 			$RESULT .= '<table>'."\n";
-			$RESULT .= sprintf('<tr><td><span class="rpth4">Total Quotations Value : </span></td><td align="right"><span class="rpth4">%s</span></td><td align="right"><span class="rpth4">%s</span></td></tr>',"$ ".number_format($totals->total_sales, 2, '.', ',')," (".$order_status.") " )."\n";
+			$RESULT .= sprintf('<tr><td><span class="rpth4">Checkout Status : </td><td><span class="rpth4">%s</span></td></tr>',$checkout_status)."\n";
+			$RESULT .= sprintf('<tr><td><span class="rpth4">Record Count : </span></td><td><span class="rpth4">%s</span></td></tr>',$totals->record_count)."\n";
 			$RESULT .= '</table>'."\n";
 		}
 		else
 		{
 			$RESULT .= 'No Result.<br>';		
 		}
-*/		
+		
 		$querystr=<<<_SQL_
 SELECT 
 branch_id AS branch,
