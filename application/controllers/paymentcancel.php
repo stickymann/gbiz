@@ -4,7 +4,7 @@ class Paymentcancel_Controller extends Site_Controller
 {
 	public function __construct()
     {
-		parent::__construct('payment');
+		parent::__construct('paymentcancel');
 	}	
 		
 	public function index($opt="")

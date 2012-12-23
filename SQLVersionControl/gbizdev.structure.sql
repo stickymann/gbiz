@@ -1839,9 +1839,9 @@ CREATE TABLE `menudefs_is` (
   `menu_id` int(11) unsigned DEFAULT NULL,
   `parent_id` int(11) unsigned DEFAULT NULL,
   `sortpos` float(16,5) DEFAULT NULL,
-  `nleft` int(11) DEFAULT NULL,
-  `nright` int(11) DEFAULT NULL,
-  `nlevel` int(11) DEFAULT NULL,
+  `nleft` int(11) DEFAULT '0',
+  `nright` int(11) DEFAULT '0',
+  `nlevel` int(11) DEFAULT '0',
   `node_or_leaf` enum('L','N') DEFAULT NULL,
   `module` varchar(50) DEFAULT NULL,
   `label_input` varchar(255) DEFAULT NULL,
@@ -1857,7 +1857,7 @@ CREATE TABLE `menudefs_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2387,7 +2387,7 @@ CREATE TABLE `payments_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_payment_id` (`payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1512 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1544 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2686,7 +2686,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13308 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=13316 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5853,7 +5853,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_payments_till` AS (select `orders`.`order_id` AS `order_id`,`payments`.`till_id` AS `till_id`,`payments`.`payment_type` AS `tender_type`,coalesce(group_concat(distinct if((`payments`.`payment_status` <> 'CANCELLED'),`payments`.`payment_type`,NULL),'(',`payments`.`amount`,')' separator '; '),'') AS `payment_type`,sum(if((`payments`.`payment_status` = 'VALID'),`payments`.`amount`,0)) AS `payment_total` from (`orders` left join `payments` on((`orders`.`order_id` = `payments`.`order_id`))) group by `orders`.`order_id`,`payments`.`till_id`) */;
+/*!50001 VIEW `vw_payments_till` AS (select `orders`.`order_id` AS `order_id`,`payments`.`till_id` AS `till_id`,`payments`.`payment_type` AS `tender_type`,coalesce(group_concat(distinct if((`payments`.`payment_status` <> 'CANCELLED'),`payments`.`payment_type`,NULL),'(',`payments`.`amount`,')' separator '; '),'') AS `payment_type`,sum(if((`payments`.`payment_status` = 'VALID'),`payments`.`amount`,0)) AS `payment_total` from (`orders` left join `payments` on((`orders`.`order_id` = `payments`.`order_id`))) group by `orders`.`order_id`,`payments`.`till_id`,`payments`.`payment_type`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -6171,4 +6171,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-23 14:44:59
+-- Dump completed on 2012-12-23 18:06:35
