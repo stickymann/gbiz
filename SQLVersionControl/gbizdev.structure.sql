@@ -163,7 +163,7 @@ CREATE TABLE `batchinvoicedetails_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1272 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1228 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +240,7 @@ CREATE TABLE `batchinvoices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_batch_id` (`batch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1013 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -511,7 +511,7 @@ CREATE TABLE `certofinstallations_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_certificate_id` (`certificate_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1263 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -673,7 +673,7 @@ CREATE TABLE `csvs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_csv_id` (`csv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1077 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1078 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -809,7 +809,7 @@ CREATE TABLE `customers_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2895 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2803 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -963,7 +963,7 @@ CREATE TABLE `deliverynotes_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_deliverynote_id` (`deliverynote_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1448 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1141,7 +1141,7 @@ CREATE TABLE `devices_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_device_id` (`device_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3415 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3378 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1369,7 +1369,7 @@ CREATE TABLE `inventchkouts_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1514 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1114 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1440,7 +1440,7 @@ CREATE TABLE `inventory_track_details_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_serial_no` (`serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=2787 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2668 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1523,7 +1523,7 @@ CREATE TABLE `inventory_tracks_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_stockbatch_id` (`stockbatch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1021 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1857,7 +1857,7 @@ CREATE TABLE `menudefs_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2078,7 +2078,7 @@ CREATE TABLE `orderdetails_is` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2245 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2231 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2179,7 +2179,7 @@ CREATE TABLE `orders_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14147 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14118 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2387,7 +2387,7 @@ CREATE TABLE `payments_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_payment_id` (`payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1543 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1512 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2464,7 +2464,7 @@ CREATE TABLE `pdfs_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_pdf_id` (`pdf_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66689 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66723 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2686,7 +2686,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13306 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=13307 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2971,7 +2971,7 @@ CREATE TABLE `roles_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1009 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3295,7 +3295,7 @@ CREATE TABLE `telbooks_is` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_plate` (`plate`),
   UNIQUE KEY `uniq_telno` (`telno`)
-) ENGINE=InnoDB AUTO_INCREMENT=2155 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2138 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3375,7 +3375,7 @@ CREATE TABLE `tills_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_till_id` (`till_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1230 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3458,7 +3458,7 @@ CREATE TABLE `tilltransactions_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_transaction_id` (`transaction_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1228 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3733,7 +3733,7 @@ CREATE TABLE `vehicles_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_vehicle_id` (`vehicle_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3303 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4145,6 +4145,30 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary table structure for view `vw_inventory_checkout_status`
+--
+
+DROP TABLE IF EXISTS `vw_inventory_checkout_status`;
+/*!50001 DROP VIEW IF EXISTS `vw_inventory_checkout_status`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `vw_inventory_checkout_status` (
+  `branch_id` varchar(50),
+  `customer_id` varchar(8),
+  `customer_name` varchar(511),
+  `order_id` varchar(20),
+  `order_status` varchar(20),
+  `order_details` text,
+  `checkout_details` text,
+  `checkout_status` enum('NONE','PARTIAL','COMPLETED'),
+  `order_date` date,
+  `order_total` double(19,2),
+  `payment_total` double(19,2),
+  `balance` double(19,2)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary table structure for view `vw_inventprod_available`
 --
 
@@ -4365,6 +4389,21 @@ DROP TABLE IF EXISTS `vw_payments`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `vw_payments` (
+  `order_id` varchar(20),
+  `payment_type` varchar(341),
+  `payment_total` double(19,2)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `vw_payments_till`
+--
+
+DROP TABLE IF EXISTS `vw_payments_till`;
+/*!50001 DROP VIEW IF EXISTS `vw_payments_till`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `vw_payments_till` (
   `order_id` varchar(20),
   `till_id` varchar(59),
   `tender_type` enum('CASH','CHEQUE','DEBIT.CARD','CREDIT.CARD'),
@@ -4917,6 +4956,44 @@ BEGIN
         END IF;
         RETURN(ret);
 END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `func_OrderCheckoutStatusReadable` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`dbuser`@`localhost`*/ /*!50003 FUNCTION `func_OrderCheckoutStatusReadable`(xml TEXT) RETURNS text CHARSET latin1
+    DETERMINISTIC
+BEGIN
+	DECLARE i INT DEFAULT 1;
+	DECLARE ctotal int DEFAULT 0; 
+	DECLARE ret TEXT DEFAULT "";
+	declare product_id VARCHAR(50) DEFAULT "";
+	DECLARE order_qty text DEFAULT "";
+	DECLARE filled_qty text DEFAULT "";
+	DECLARE checkout_qty text DEFAULT "";
+	DECLARE cstatus TEXT DEFAULT "";
+	SET ctotal = ExtractValue(xml,'count(/formfields/rows/row)');
+	WHILE i <= ctotal DO
+		SET product_id 	= concat('/formfields/rows/row[',i,']/product_id');
+		SET order_qty  	= CONCAT('/formfields/rows/row[',i,']/order_qty');
+		SET filled_qty 	= CONCAT('/formfields/rows/row[',i,']/filled_qty');
+		SET checkout_qty = CONCAT('/formfields/rows/row[',i,']/checkout_qty');
+		SET cstatus 	= CONCAT('/formfields/rows/row[',i,']/status');
+		SET ret = CONCAT(ret,ExtractValue(xml,product_id),";STATUS=",ExtractValue(xml,cstatus),"; Total=",ExtractValue(xml,order_qty),";Filled=",ExtractValue(xml,filled_qty),";Pending=",ExtractValue(xml,checkout_qty)," ");
+		SET i = i+1;
+	END WHILE;
+	RETURN ret;
+    END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5592,6 +5669,25 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_inventory_checkout_status`
+--
+
+/*!50001 DROP TABLE IF EXISTS `vw_inventory_checkout_status`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_inventory_checkout_status`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_inventory_checkout_status` AS (select `vw_orderbalances`.`branch_id` AS `branch_id`,`vw_orderbalances`.`customer_id` AS `customer_id`,if((`vw_orderbalances`.`first_name` = 'Co.'),`vw_orderbalances`.`last_name`,concat(`vw_orderbalances`.`first_name`,' ',`vw_orderbalances`.`last_name`)) AS `customer_name`,`vw_orderbalances`.`order_id` AS `order_id`,`vw_orderbalances`.`order_status` AS `order_status`,`vw_orderbalances`.`order_details` AS `order_details`,`func_OrderCheckoutStatusReadable`(`inventchkouts`.`checkout_details`) AS `checkout_details`,`vw_orderbalances`.`inventory_checkout_status` AS `checkout_status`,`vw_orderbalances`.`order_date` AS `order_date`,`vw_orderbalances`.`order_total` AS `order_total`,`vw_orderbalances`.`payment_total` AS `payment_total`,`vw_orderbalances`.`balance` AS `balance` from (`vw_orderbalances` join `inventchkouts` on((`vw_orderbalances`.`order_id` = `inventchkouts`.`order_id`)))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_inventprod_available`
 --
 
@@ -5738,7 +5834,26 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_payments` AS (select `orders`.`order_id` AS `order_id`,`payments`.`till_id` AS `till_id`,`payments`.`payment_type` AS `tender_type`,coalesce(group_concat(distinct if((`payments`.`payment_status` <> 'CANCELLED'),`payments`.`payment_type`,NULL),'(',`payments`.`amount`,')' separator '; '),'') AS `payment_type`,sum(if((`payments`.`payment_status` = 'VALID'),`payments`.`amount`,0)) AS `payment_total` from (`orders` left join `payments` on((`orders`.`order_id` = `payments`.`order_id`))) group by `orders`.`order_id`,`payments`.`till_id`) */;
+/*!50001 VIEW `vw_payments` AS (select `orders`.`order_id` AS `order_id`,coalesce(group_concat(distinct if((`payments`.`payment_status` <> 'CANCELLED'),`payments`.`payment_type`,NULL),'(',`payments`.`amount`,')' separator '; '),'') AS `payment_type`,sum(if((`payments`.`payment_status` = 'VALID'),`payments`.`amount`,0)) AS `payment_total` from (`orders` left join `payments` on((`orders`.`order_id` = `payments`.`order_id`))) group by `orders`.`order_id`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_payments_till`
+--
+
+/*!50001 DROP TABLE IF EXISTS `vw_payments_till`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_payments_till`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_payments_till` AS (select `orders`.`order_id` AS `order_id`,`payments`.`till_id` AS `till_id`,`payments`.`payment_type` AS `tender_type`,coalesce(group_concat(distinct if((`payments`.`payment_status` <> 'CANCELLED'),`payments`.`payment_type`,NULL),'(',`payments`.`amount`,')' separator '; '),'') AS `payment_type`,sum(if((`payments`.`payment_status` = 'VALID'),`payments`.`amount`,0)) AS `payment_total` from (`orders` left join `payments` on((`orders`.`order_id` = `payments`.`order_id`))) group by `orders`.`order_id`,`payments`.`till_id`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -5852,7 +5967,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_tillpayments_types` AS (select `vw_payments`.`till_id` AS `till_id`,`vw_payments`.`tender_type` AS `tender_type`,sum(`vw_payments`.`payment_total`) AS `amount` from `vw_payments` group by `vw_payments`.`tender_type`,`vw_payments`.`till_id`) */;
+/*!50001 VIEW `vw_tillpayments_types` AS (select `vw_payments_till`.`till_id` AS `till_id`,`vw_payments_till`.`tender_type` AS `tender_type`,sum(`vw_payments_till`.`payment_total`) AS `amount` from `vw_payments_till` group by `vw_payments_till`.`tender_type`,`vw_payments_till`.`till_id`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -6056,4 +6171,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-22 14:00:45
+-- Dump completed on 2012-12-23  2:19:35

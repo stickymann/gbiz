@@ -69,7 +69,7 @@ _SQL_;
 			
 				if($firstpass)
 				{
-					$header = "\n".'<thead>'."\n".'<tr>'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
+					$header = "\n".'<thead>'."\n".'<tr valign="top">'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
 					$RESULT .=$header;
 				}
 				if($branch == "ALL")

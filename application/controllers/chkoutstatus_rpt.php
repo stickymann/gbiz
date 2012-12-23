@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Quotations_rpt_Controller extends Sitereport_Controller
+class Chkoutstatus_rpt_Controller extends Sitereport_Controller
 {
 
 	public function __construct()
     {
-		parent::__construct('quotations_rpt');
+		parent::__construct('chkoutstatus_rpt');
 	}	
 		
 	public function index()
@@ -16,7 +16,7 @@ class Quotations_rpt_Controller extends Sitereport_Controller
 	public function report_run()
 	{
 		$branch_id = $_POST['branch_id'];
-		$order_status = $_POST['order_status'];
+		$checkout_status = $_POST['checkout_status'];
 		$start_date = $_POST['start_date'];
 		$end_date = $_POST['end_date'];
 		$where = ""; $filter = ""; $HTML =""; $RESULT="";
@@ -28,6 +28,7 @@ class Quotations_rpt_Controller extends Sitereport_Controller
 		$filter = substr_replace($filter, '', -5);
 		
 		/*summary totals*/
+/*		
 		$querystr=<<<_SQL_
 SELECT 
 SUM(order_total) AS total_sales
@@ -47,21 +48,23 @@ _SQL_;
 		{
 			$RESULT .= 'No Result.<br>';		
 		}
-		
+*/		
 		$querystr=<<<_SQL_
-SELECT
-branch_id AS branch, 
+SELECT 
+branch_id AS branch,
 customer_id, 
-IF(first_name="Co.",last_name,CONCAT(first_name," ",last_name)) AS customer_name,
+customer_name,
 order_id,
-order_date,
 order_details,
-order_total
-FROM vw_orders
-WHERE 
-order_status = "$order_status"
+checkout_details,
+order_total,
+payment_total,
+balance
+FROM vw_inventory_checkout_status
+WHERE NOT ((order_status = "QUOTATION") OR (order_status = "QUOTATION.EXPIRED") OR (order_status = "ORDER.CANCELLED")) 
+AND checkout_status = "$checkout_status"
 _SQL_;
-		$groupby = 'ORDER BY order_date,customer_id;';
+		$groupby = 'ORDER BY order_id,customer_id;';
 		$querystr = sprintf('%s %s %s %s',$querystr,$where,$filter,$groupby);
 		$printstr = $querystr;
 		$result = $this->sitemodel->executeSelectQuery($querystr);
@@ -103,13 +106,29 @@ _SQL_;
 					$header = "\n".'<thead>'."\n".'<tr valign="top">'.$header.'</tr>'."\n".'</thead>'."\n".'<tbody>'."\n";
 					$RESULT .=$header;
 				}
+			
 				if($branch == "ALL")
 				{
-					$data .= sprintf('<td width="10%s">%s</td><td width="10%s">%s</td><td width="15%s">%s</td><td width="20%s">%s</td><td width="12%s">%s</td><td width="5%s">%s</td><td align="right">%s</td>',"%",$linerec['branch'],"%",$linerec['customer_id'],"%",$linerec['customer_name'],"%",$linerec['order_id'],"%",$linerec['order_date'],"%",$linerec['order_details'],"$ ".number_format($linerec['order_total'], 2, '.', ',')); 
+					$data .= sprintf('<td>%s</td>',$linerec['branch']);
+					$data .= sprintf('<td width="2%s">%s</td>',"%",$linerec['customer_id']);
+					$data .= sprintf('<td>%s</td>',$linerec['customer_name']);
+					$data .= sprintf('<td>%s</td>',$linerec['order_id']);
+					$data .= sprintf('<td width="10%s">%s</td>',"%",$linerec['order_details']);
+					$data .= sprintf('<td width="10%s">%s</td>',"%",$linerec['checkout_details']);
+					$data .= sprintf('<td align="right">%s</td>',"$ ".number_format($linerec['order_total'], 2, '.', ',')); 
+					$data .= sprintf('<td align="right">%s</td>',"$ ".number_format($linerec['payment_total'], 2, '.', ',')); 
+					$data .= sprintf('<td align="right">%s</td>',"$ ".number_format($linerec['balance'], 2, '.', ',')); 
 				}
 				else
 				{
-					$data .= sprintf('<td width="10%s">%s</td><td width="15%s">%s</td><td width="20%s">%s</td><td width="12%s">%s</td><td width="5%s">%s</td><td align="right">%s</td>',"%",$linerec['customer_id'],"%",$linerec['customer_name'],"%",$linerec['order_id'],"%",$linerec['order_date'],"%",$linerec['order_details'],"$ ".number_format($linerec['order_total'], 2, '.', ',')); 
+					$data .= sprintf('<td>%s</td>',$linerec['customer_id']);
+					$data .= sprintf('<td width="2%s">%s</td>',"%",$linerec['customer_name']);
+					$data .= sprintf('<td>%s</td>',$linerec['order_id']);
+					$data .= sprintf('<td width="10%s">%s</td>',"%",$linerec['order_details']);
+					$data .= sprintf('<td width="10%s">%s</td>',"%",$linerec['checkout_details']);
+					$data .= sprintf('<td align="right">%s</td>',"$ ".number_format($linerec['order_total'], 2, '.', ',')); 
+					$data .= sprintf('<td align="right">%s</td>',"$ ".number_format($linerec['payment_total'], 2, '.', ',')); 
+					$data .= sprintf('<td align="right">%s</td>',"$ ".number_format($linerec['balance'], 2, '.', ',')); 
 				}
 				
 				$data = '<tr valign="top">'.$data.'</tr>'."\n"; 
