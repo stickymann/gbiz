@@ -71,8 +71,7 @@ var product = new function()
 				
 			if( $('#'+_checkbox[key]).attr("checked") == "checked" )
 			{
-				pitems = $('#package_items').val() + $('#'+_checkbox[key]).val() + ":" + $('#'+_checkbox[key]+'_inp').val() + ",";
-				$('#package_items').val(pitems);
+				pitems = $('#package_items').val() + $('#'+_checkbox[key]).val() + "=" + $('#'+_checkbox[key]+'_inp').val() + ";";				$('#package_items').val(pitems);
 			}
 		}
 		str = $('#package_items').val();

@@ -149,10 +149,10 @@ $xmlrows .=sprintf('<row><product_id>%s</product_id><description>%s</description
 						}
 						else if($result->type == "PACKAGE")
 						{
-							$packages = preg_split('/,/',$result->package_items);
+							$packages = preg_split('/;/',$result->package_items);
 							foreach($packages as $idx => $packagestr)
 							{
-								$arr = preg_split('/:/',$packagestr);
+								$arr = preg_split('/=/',$packagestr);
 								$pck_pid = $arr[0];
 								$pck_qty = $arr[1] * $qty;
 								$pck_result = $this->param['primarymodel']->getRecordByIdVal($table,$unique_id ,$pck_pid,$fields);
