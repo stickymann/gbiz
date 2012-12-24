@@ -965,6 +965,8 @@ class Site_Controller extends Template_Controller
 
 				if($authorize)
 				{
+					$PRINT_POST = $_POST;
+					$PRINT_POST['record_status']='LIVE';
 					//remove indexes 'submit and 'func' from array, do not need for update, not database fields
 					unset($_POST['submit']); unset($_POST['func']); unset($_POST['preval']); unset($_POST['recordlockid']);
 					unset($_POST['auth']); unset($_POST['rjct']);
@@ -1000,7 +1002,7 @@ class Site_Controller extends Template_Controller
 							}
 														
 							$this->authorize_post_insert_new_record();
-							$this->setRecordStatusMsg($_POST);
+							$this->setRecordStatusMsg($PRINT_POST);
 										
 							if($this->param['primarymodel']->deleteRecordById($this->param['tb_inau'],$_POST['id']))
 							{
@@ -1088,8 +1090,7 @@ class Site_Controller extends Template_Controller
 									}
 								}
 
-								$this->authorize_post_update_existing_record();		
-								$this->setRecordStatusMsg($_POST);
+								$this->setRecordStatusMsg($PRINT_POST);
 								$isTrue=false;
 								if($this->param['tb_inau'] == $this->param['tb_live']){ $isTrue = true; }
 								else 
@@ -1122,6 +1123,7 @@ class Site_Controller extends Template_Controller
 								{
 									$this->param['htmlbody']->pagebody= $this->param['primarymodel']->getDBErrMsg();
 								}
+								$this->authorize_post_update_existing_record();
 							}
 							else
 							{
@@ -2129,6 +2131,42 @@ _text_;
 		$str = strtolower($str);
 		return preg_replace('/\b(\w)/e', 'strtoupper("$1")', $str);
 	} 
+
+	/*formless functions*/
+	public function getFormlessRecord($idval)
+	{
+		$this->param['defaultlookupfields']=array_merge($this->param['defaultlookupfields'],$this->frmaudtfields);
+		$formarr=$this->param['primarymodel']->getRecordByLookUp($this->param['tb_live'],$this->param['tb_inau'],$this->param['indexfield'],$idval,$this->param['defaultlookupfields'],'i');
+		$this->form = (array)$formarr;
+		if($this->form)
+		{
+			$this->form['record_status'] = 'IHLD';
+			$this->param['primarymodel']->setRecordStatus($this->param['tb_inau'],$this->form['id'],$this->form['record_status']);;
+			return $this->form;
+		}
+		return false;
+	}
+	
+	public function updateFormlessRecord($form) 
+	{
+		$_POST = $form;
+		//setup authorization data
+		$this->param['pageheader'] = $this->getPageHeader($this->param['appheader'],"");
+		$_POST['submit']='Authorize'; $_POST['recordlockid']=0; $_POST['func']=""; 
+		$_POST['preval']=""; $_POST['auth']=""; $_POST['rjct']="";
+				
+		//set audit data
+		$_POST['inputter']=Auth::instance()->get_user()->idname; $_POST['authorizer']="";
+		$_POST['input_date']=date('Y-m-d H:i:s'); $_POST['auth_date']="";  $_POST['record_status']='INAU';
+		
+		if( $this->param['primarymodel']->updateRecord($this->param['tb_inau'],$form))
+		{
+			//create update subform records if any
+			$this->createSubFormRecords();
+			return true;
+		}
+		return false;
+	}
 
 	/*abstracts*/
 	public function authorize_pre_insert_new_record(){}

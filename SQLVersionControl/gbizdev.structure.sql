@@ -2298,7 +2298,81 @@ CREATE TABLE `params_is` (
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_controller` (`controller`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `paymentcancels`
+--
+
+DROP TABLE IF EXISTS `paymentcancels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `paymentcancels` (
+  `id` int(11) unsigned NOT NULL,
+  `paymentcancel_id` varchar(16) NOT NULL,
+  `payment_id` varchar(16) NOT NULL,
+  `amount` float(16,2) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  `comments` text,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_paymentcancel_id` (`paymentcancel_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `paymentcancels_hs`
+--
+
+DROP TABLE IF EXISTS `paymentcancels_hs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `paymentcancels_hs` (
+  `id` int(11) unsigned NOT NULL,
+  `paymentcancel_id` varchar(16) NOT NULL,
+  `payment_id` varchar(16) NOT NULL,
+  `amount` float(16,2) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  `comments` text,
+  `inputter` varchar(50) NOT NULL,
+  `input_date` datetime NOT NULL,
+  `authorizer` varchar(50) NOT NULL,
+  `auth_date` datetime NOT NULL,
+  `record_status` char(4) NOT NULL,
+  `current_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`current_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `paymentcancels_is`
+--
+
+DROP TABLE IF EXISTS `paymentcancels_is`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `paymentcancels_is` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `paymentcancel_id` varchar(16) DEFAULT NULL,
+  `payment_id` varchar(16) DEFAULT NULL,
+  `amount` float(16,2) DEFAULT NULL,
+  `reason` varchar(255) DEFAULT NULL,
+  `comments` text,
+  `inputter` varchar(50) DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `authorizer` varchar(50) DEFAULT NULL,
+  `auth_date` datetime DEFAULT NULL,
+  `record_status` char(4) DEFAULT NULL,
+  `current_no` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_paymentcancel_id` (`paymentcancel_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1020 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2686,7 +2760,7 @@ CREATE TABLE `recordlocks` (
   `record_status` char(4) DEFAULT NULL,
   `current_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13316 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=13379 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4413,6 +4487,26 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary table structure for view `vw_payments_valid`
+--
+
+DROP TABLE IF EXISTS `vw_payments_valid`;
+/*!50001 DROP VIEW IF EXISTS `vw_payments_valid`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `vw_payments_valid` (
+  `id` int(11) unsigned,
+  `payment_id` varchar(16),
+  `payment_date` date,
+  `amount` float(16,2),
+  `payment_type` enum('CASH','CHEQUE','DEBIT.CARD','CREDIT.CARD'),
+  `order_id` varchar(16),
+  `branch_id` varchar(50),
+  `till_id` varchar(59)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary table structure for view `vw_technicians`
 --
 
@@ -5859,6 +5953,25 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_payments_valid`
+--
+
+/*!50001 DROP TABLE IF EXISTS `vw_payments_valid`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_payments_valid`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`dbuser`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_payments_valid` AS (select `payments`.`id` AS `id`,`payments`.`payment_id` AS `payment_id`,`payments`.`payment_date` AS `payment_date`,`payments`.`amount` AS `amount`,`payments`.`payment_type` AS `payment_type`,`payments`.`order_id` AS `order_id`,`payments`.`branch_id` AS `branch_id`,`payments`.`till_id` AS `till_id` from `payments` where (`payments`.`payment_status` = 'VALID')) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_technicians`
 --
 
@@ -6171,4 +6284,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-23 18:06:35
+-- Dump completed on 2012-12-24  2:18:31

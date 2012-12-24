@@ -13,7 +13,7 @@ $lang = array
     (
         'required' => 'Payment Id: required.',
         'length' => 'Payment Id: must be 16 characters.',
-        'msg_duplicate' => 'Payment Id: duplicate Tilltransaction Id.',
+        'msg_duplicate' => 'Payment Id: duplicate Payment Id.',
 		'default' => 'Payment Id: invalid input.'
     ),
 
